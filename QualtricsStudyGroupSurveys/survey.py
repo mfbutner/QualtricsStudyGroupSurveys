@@ -1,4 +1,4 @@
-from Project.question import Question
+from QualtricsStudyGroupSurveys.question import Question
 
 class Survey:
     def __init__(self, name:str):

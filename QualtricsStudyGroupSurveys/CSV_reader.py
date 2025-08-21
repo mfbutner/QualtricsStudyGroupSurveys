@@ -1,6 +1,6 @@
 import pandas
 from typing import TextIO
-from Project.survey import Survey
+from QualtricsStudyGroupSurveys.survey import Survey
 
 class CSV_reader:
 
