@@ -1,5 +1,3 @@
-
-
 if __name__ == '__main__':
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
     # if two command line parameters are entered, then the second is assumed to be your API token
