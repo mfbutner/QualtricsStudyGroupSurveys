@@ -1,5 +1,5 @@
-from QualtricsStudyGroupSurveys.question import Question
-from QualtricsStudyGroupSurveys.qualtrics_connection import QualtricsConnection
+from .question import Question
+from .qualtrics_connection import QualtricsConnection
 
 class Survey:
     def __init__(self, name:str):

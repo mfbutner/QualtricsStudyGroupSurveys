@@ -1,4 +1,3 @@
-from QualtricsStudyGroupSurveys.survey import Survey
 from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader
 
 if __name__ == '__main__':

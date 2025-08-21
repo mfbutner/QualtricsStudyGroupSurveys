@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import List
-from QualtricsStudyGroupSurveys.survey import Survey
-from QualtricsStudyGroupSurveys.student import Student
+from .survey import Survey
+from .student import Student
 
 class CSV_reader:
     def __init__(self, CSV_file_path:str):
