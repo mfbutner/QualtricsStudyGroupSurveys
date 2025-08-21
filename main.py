@@ -24,9 +24,11 @@ if __name__ == '__main__':
             print('Incorrect number of command line arguments entered')
             exit(1)
 
-    print(qualtrics.who_am_i())
-    print(qualtrics.list_surveys())
-    # print(qualtrics.get_survey('ENTER SURVEY ID HERE if using this'))
+    # print(qualtrics.who_am_i())
+    surveys = qualtrics.list_surveys()
+    # print(surveys)
+    my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
+    # print(qualtrics.get_survey(my_servey['id']))
     reader = CSV_reader("ExampleContacts.csv")
-    survey = reader.make_survey_from_CSV("Test-Butner-Survey")
+    survey = reader.make_survey_from_CSV(my_servey['name'])
     survey.pushToQualtrics(qualtrics)
