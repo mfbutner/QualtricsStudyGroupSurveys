@@ -1,11 +1,12 @@
-from question import Question
+from Project.question import Question
 
 class Survey:
     def __init__(self, name:str):
         self._questions = []
         self._name = name
     
-    def pushToQualtrics(self, client_ID:str, client_secret:str):
+    def pushToQualtrics(self, client_ID:str, client_secret:str): #TODO: confirm using OAuth vs other approaches?
+        print("Yep, totally pushing to Qualtrics right now.") #TODO: modify Prof. Butner's sample code to push to personal test survey
         return
     
     def addQuestion(self, question:Question):
