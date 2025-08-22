@@ -1,8 +1,6 @@
 import pandas as pd
 from typing import List
 from .student import Student
-from .question import *
-from .validation import *
 
 class CSV_reader:
     @staticmethod
