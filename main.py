@@ -34,4 +34,4 @@ if __name__ == '__main__':
     students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
     survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], my_servey['name'])
     survey.pushToQualtrics(qualtrics)
-    print(json.dumps(survey.generate_json(), indent=4))
+    print(json.dumps(survey.generate_json(), indent=4)) # indent for pretty-print
