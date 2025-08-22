@@ -1,8 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
-import json
 from .mc_choice import Choice
 from .validation import Validation
+from enum import Enum
+
+class Selector(Enum):
+    SL = 0
+    ESTB = 1
+    DL = 2
+    MAVR = 2
+    SAVR = 3
 
 class Question(ABC):
     def __init__(self, name:str, description:str, validation:Validation):
@@ -15,17 +22,72 @@ class Question(ABC):
         pass
 
 class Multiple_Choice(Question):
-    def __init__(self, name:str, description:str, validation:Validation, choices:List[Choice] = []):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice] = []):
         super().__init__(name, description, validation)
+        self._selector = selector
+        self._usesSubSelector = usesSubSelector
         self._choices = choices
+    
+    def addChoice(self, choice:Choice):
+        self._choices.append(choice)
+    
+    def generate_json(self) -> dict[str, Any]:
+        output = {
+            "questionType": {
+                "type":"MC",
+                "selector":self._selector.name,
+                "subSelector":"DL" if self._usesSubSelector else "null",
+            },
+            "questionText":self._description,
+            "questionLabel":"null",
+            "validation":self._validation.generate_json(),
+            "choices":{
+                str(i + 1): choice.generate_json(i) for (i, choice) in enumerate(self._choices)
+            },
+            "questionName":self._name
+        }
+        # for (i, choice) in zip(self._choices):
+        #     output["choices"][i + 1] = choice.generate_json(i)
+        
+        return output
 
+    
 class Text_Entry(Question):
-    def __init__(self, name:str, description:str, validation:Validation):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector):
         super().__init__(name, description, validation)
+        self._selector = selector
+    
+    def generate_json(self) -> dict[str, Any]:
+        return {
+            "questionType": {
+                "type":"TE",
+                "selector":self._selector.name, 
+                "subSelector":"null"
+            },
+            "questionText":self._description,
+            "questionLabel":"null",
+            "validation":self._validation.generate_json(),
+            "questionName":self._name
+        }
+
 
 class File_Upload(Question):
     def __init__(self, name:str, description:str, validation:Validation):
         super().__init__(name, description, validation)
+    
+    def generate_json(self) -> dict[str, Any]:
+        return {
+            "questionType": {
+                "type":"FileUpload", 
+                "selector":"FileUpload",
+                "subSelector":"null"
+            },
+            "questionText":self._description,
+            "questionLabel":"null",
+            "validation":self._validation.generate_json(),
+            "questionName":self._name
+        }
+
 
 
 # These are defined in the docs, but we might not need them:

@@ -1,4 +1,3 @@
-from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader
 
 if __name__ == '__main__':
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
@@ -8,8 +7,11 @@ if __name__ == '__main__':
     # - sys.argv[3] is your oath client secret
     # - optionally, sys.argv[4] can be your scope, if not entered it will default to manage:all
     import sys
+    import json
     from QualtricsStudyGroupSurveys import QualtricsConnection
     from QualtricsStudyGroupSurveys import OathInformation
+    from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader
+    from QualtricsStudyGroupSurveys.survey_generator import Survey_Generator
 
     match sys.argv:
         case [_, data_center, api_token]:
@@ -29,6 +31,7 @@ if __name__ == '__main__':
     # print(surveys)
     my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
     # print(qualtrics.get_survey(my_servey['id']))
-    reader = CSV_reader("ExampleContacts.csv")
-    survey = reader.make_survey_from_CSV(my_servey['name'])
+    students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
+    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], my_servey['name'])
     survey.pushToQualtrics(qualtrics)
+    print(json.dumps(survey.generate_json(), indent=4))
