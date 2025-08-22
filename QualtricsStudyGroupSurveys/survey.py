@@ -11,12 +11,12 @@ class Survey:
             "name": self._name,
             "ownerID": "Manually Removed Due To Being publiclly hosted",
             "organizationId": "ucdavis",
-            "isActive": "true",
+            "isActive": True,
             "creationDate": "2025-08-01T23:40:20Z",
             "lastModifiedDate": "2025-08-21T23:02:47Z",
             "expiration": {
-                "startDate": "null",
-                "endDate": "null"
+                "startDate": None,
+                "endDate": None
             }
         }
     

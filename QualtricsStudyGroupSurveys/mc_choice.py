@@ -10,7 +10,7 @@ class Choice:
             "recode":index,
             "description":self._name,
             "choiceText":self._description,
-            "imageDescription":"null",
-            "variableName":"null",
-            "analyze":"true"
+            "imageDescription":None,
+            "variableName":None,
+            "analyze":True
         }

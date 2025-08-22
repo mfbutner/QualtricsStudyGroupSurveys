@@ -36,19 +36,16 @@ class Multiple_Choice(Question):
             "questionType": {
                 "type":"MC",
                 "selector":self._selector.name,
-                "subSelector":"DL" if self._usesSubSelector else "null",
+                "subSelector":"DL" if self._usesSubSelector else None,
             },
             "questionText":self._description,
-            "questionLabel":"null",
+            "questionLabel":None,
             "validation":self._validation.generate_json(),
+            "questionName":self._name,
             "choices":{
                 str(i + 1): choice.generate_json(i) for (i, choice) in enumerate(self._choices)
-            },
-            "questionName":self._name
-        }
-        # for (i, choice) in zip(self._choices):
-        #     output["choices"][i + 1] = choice.generate_json(i)
-        
+            }
+        }        
         return output
 
     
@@ -62,10 +59,10 @@ class Text_Entry(Question):
             "questionType": {
                 "type":"TE",
                 "selector":self._selector.name, 
-                "subSelector":"null"
+                "subSelector":None
             },
             "questionText":self._description,
-            "questionLabel":"null",
+            "questionLabel":None,
             "validation":self._validation.generate_json(),
             "questionName":self._name
         }
@@ -80,10 +77,10 @@ class File_Upload(Question):
             "questionType": {
                 "type":"FileUpload", 
                 "selector":"FileUpload",
-                "subSelector":"null"
+                "subSelector":None
             },
             "questionText":self._description,
-            "questionLabel":"null",
+            "questionLabel":None,
             "validation":self._validation.generate_json(),
             "questionName":self._name
         }
