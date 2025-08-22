@@ -28,19 +28,6 @@ class Survey:
         self._questions.append(question)
     
     def generate_json(self) -> Dict[str, Any]:
-        return {
-            "id" : "Manually Removed Due To Being publiclly hosted",
-            "name": self._name,
-            "ownerID": "Manually Removed Due To Being publiclly hosted",
-            "organizationId": "ucdavis",
-            "isActive": "true",
-            "creationDate": "2025-08-01T23:40:20Z",
-            "lastModifiedDate": "2025-08-21T23:02:47Z",
-            "expiration": {
-                "startDate": "null",
-                "endDate": "null"
-            },
-            "questions": {
-                f"QID{i + 1}": question.generate_json() for (i, question) in enumerate(self._questions)
-            }
-        }
+        output = self._header
+        self._header["questions"] = {f"QID{i + 1}": question.generate_json() for (i, question) in enumerate(self._questions)}
+        return output
