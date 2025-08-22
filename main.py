@@ -32,6 +32,7 @@ if __name__ == '__main__':
     my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
     # print(qualtrics.get_survey(my_servey['id']))
     students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
-    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], my_servey['name'])
+    activities = [f"Activity {i}" for i in range(1,4)]
+    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [5, 10, 20, "More than 20"], my_servey['name'])
     survey.pushToQualtrics(qualtrics)
     print(json.dumps(survey.generate_json(), indent=4)) # indent for pretty-print

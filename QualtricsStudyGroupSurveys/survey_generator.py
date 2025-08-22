@@ -7,7 +7,7 @@ from .mc_choice import Choice
 
 class Survey_Generator:
     @staticmethod
-    def generate_survey_from_students(students:List[Student], dates:List[int], survey_name:str) -> Survey: # TODO: different datatype for dates. Probably datetime.
+    def generate_survey_from_students(students:List[Student], dates:List[int], activities:List[str], durations:List[str], survey_name:str) -> Survey: # TODO: different datatype for dates. Probably datetime.
         survey = Survey(survey_name)
         survey.addQuestion(Text_Entry("Q1.1", "How many times did you meet with your group this week? Report at most your top 10 interactions.",
                            Validation(True, Validation_Type.VALIDNUMBER, {"maxDecimals":0, "maximum":10.0, "minimum":0.0}), Selector.SL))
@@ -17,9 +17,38 @@ class Survey_Generator:
                                        "with your group. For example, if you didn't meet with your group because you reached out to them but no one" \
                                        "responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to" \
                                        "zip them first. <br><br>This question is optional.<br>", Validation(False)))
-        q3_1 = Multiple_Choice("Q1.3", "When was your ${lm://Field/2} meeting?", Validation(True), Selector.DL, False)
+        
+        q3_1 = Multiple_Choice("Q3.1", "When was your ${lm://Field/2} meeting?", Validation(True), Selector.DL, False)
         for date in dates:
             q3_1.addChoice(Choice(f"Date{date}", f"Date{date}"))
         q3_1.addChoice(Choice("Click to write Choice 4", "Click to write Choice 4"))
         survey.addQuestion(q3_1)
+
+        q3_2 = Multiple_Choice("Q3.2", "Who did you meet with during your ${lm://Field/2} meeting?", 
+                               Validation(True, Validation_Type.MINCHOICES, {"minChoices":1}), Selector.MAVR, True)
+        for student in students:
+            q3_2.addChoice(Choice(student.get_name_first_last(), student.get_name_first_last()))
+        survey.addQuestion(q3_2)
+
+        q3_3 = Multiple_Choice("Q3.3", "What did you do during your ${lm://Field/2} meeting?", 
+                               Validation(True, Validation_Type.MINCHOICES, {"minChoices":1}), Selector.MAVR, True)
+        for activity in activities:
+            q3_3.addChoice(Choice(activity, activity))
+        survey.addQuestion(q3_3)
+
+        q3_4 = Multiple_Choice("Q3.4", "How long did your ${lm://Field/2} meeting last?", 
+                               Validation(True), Selector.SAVR, True)
+        for duration in durations:
+            q3_4.addChoice(Choice(f"{duration} minutes", f"{duration} minutes"))
+        survey.addQuestion(q3_4)
+
+        q3_5 = Multiple_Choice("Q3.5", "Who did you NOT meet with this week?", 
+                               Validation(True, Validation_Type.MINCHOICES, {"minChoices":1}), Selector.MAVR, True)
+        for student in students:
+            q3_5.addChoice(Choice(student.get_name_first_last(), student.get_name_first_last()))
+        q3_5.addChoice(Choice("I met with everyone in my group", "I met with everyone in my group"))
+        survey.addQuestion(q3_5)
+
+        
+
         return survey

@@ -13,3 +13,6 @@ class Student():
     def __str__(self):
         return f"Student with name ({self._name.last_name}, {self._name.first_name}), email address {self._email}, student ID {self._student_ID}, Canvas ID {self._canvas_ID}, and on team {self._team}"
     
+    def get_name_first_last(self) -> str:
+        return f"{self._name.first_name} {self._name.last_name}"
+    

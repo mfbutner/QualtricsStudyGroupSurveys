@@ -7,7 +7,7 @@ class Choice:
     
     def generate_json(self, index:int) -> dict[str, Any]:
         return {
-            "recode":index,
+            "recode":str(index),
             "description":self._name,
             "choiceText":self._description,
             "imageDescription":None,

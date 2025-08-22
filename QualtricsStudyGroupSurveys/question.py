@@ -8,8 +8,8 @@ class Selector(Enum):
     SL = 0
     ESTB = 1
     DL = 2
-    MAVR = 2
-    SAVR = 3
+    MAVR = 3
+    SAVR = 4
 
 class Question(ABC):
     def __init__(self, name:str, description:str, validation:Validation):
@@ -22,21 +22,21 @@ class Question(ABC):
         pass
 
 class Multiple_Choice(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice] = []):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice] = None):
         super().__init__(name, description, validation)
         self._selector = selector
         self._usesSubSelector = usesSubSelector
-        self._choices = choices
+        self._choices = choices if choices is not None else []
     
     def addChoice(self, choice:Choice):
         self._choices.append(choice)
     
     def generate_json(self) -> dict[str, Any]:
-        output = {
+        return {
             "questionType": {
                 "type":"MC",
                 "selector":self._selector.name,
-                "subSelector":"DL" if self._usesSubSelector else None,
+                "subSelector":"TX" if self._usesSubSelector else None,
             },
             "questionText":self._description,
             "questionLabel":None,
@@ -46,7 +46,6 @@ class Multiple_Choice(Question):
                 str(i + 1): choice.generate_json(i) for (i, choice) in enumerate(self._choices)
             }
         }        
-        return output
 
     
 class Text_Entry(Question):
