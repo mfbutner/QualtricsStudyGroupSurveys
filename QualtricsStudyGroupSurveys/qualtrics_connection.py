@@ -61,6 +61,14 @@ class QualtricsConnection:
         response.raise_for_status()
         return response.json()['result']
 
+    def get_questions(self, survey_id: str) -> dict[str, Any]:
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        headers = {}
+        
+        response = self.connection.get(endpoint, headers=headers)        
+        response.raise_for_status()
+        return response.json()['result']
+
     def who_am_i(self) -> dict[str, Any]:
         endpoint = "/API/v3/whoami"
 
