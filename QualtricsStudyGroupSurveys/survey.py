@@ -1,5 +1,6 @@
 from .question import Question
 from .qualtrics_connection import QualtricsConnection
+from typing import Dict, Any
 
 class Survey:
     def __init__(self, name:str):
@@ -12,3 +13,6 @@ class Survey:
     
     def addQuestion(self, question:Question):
         self._questions.append(question)
+    
+    # def generate_json(self) -> Dict[str, Any]:
+    #     pass

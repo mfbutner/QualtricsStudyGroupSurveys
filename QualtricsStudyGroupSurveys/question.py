@@ -1,103 +1,98 @@
-from enum import Enum
 from abc import ABC, abstractmethod
-
-class QuestionType(Enum):
-    MC =      0
-    DB =      1
-    MATRIX =  2
-    TE =      3
-    SLIDER =  4
-    RO =      5
-    SBS =     6
-    CS =      7
-    PGR =     8
-    HOTSPOT = 9
-    HEATMAP = 10
-    DD =      11
-    HL =      12
-    DRAW =    13
-    TIMING =  14
-    META =    15
-    CAPTCHA = 16
-
+from typing import List, Any
+import json
+from .mc_choice import Choice
+from .validation import Validation
 
 class Question(ABC):
+    def __init__(self, name:str, description:str, validation:Validation):
+        self._name = name
+        self._description = description
+        self._validation = validation
+    
     @abstractmethod
-    def __init__(self):
-        self._type = None
+    def generate_json(self) -> dict[str, Any]:
+        pass
 
 class Multiple_Choice(Question):
-    def __init__(self):
-        self._type = QuestionType.MC
-
-class Descriptive_Text(Question):
-    def __init__(self):
-        self._type = QuestionType.DB
-
-class Text_Or_Grapic(Question):
-    def __init__(self):
-        self._type = QuestionType.DB
-    
-class Matrix_Table(Question):
-    def __init__(self):
-        self._type = QuestionType.MATRIX
+    def __init__(self, name:str, description:str, validation:Validation, choices:List[Choice] = []):
+        super().__init__(name, description, validation)
+        self._choices = choices
 
 class Text_Entry(Question):
-    def __init__(self):
-        self._type = QuestionType.TE
+    def __init__(self, name:str, description:str, validation:Validation):
+        super().__init__(name, description, validation)
+
+class File_Upload(Question):
+    def __init__(self, name:str, description:str, validation:Validation):
+        super().__init__(name, description, validation)
+
+
+# These are defined in the docs, but we might not need them:
+
+# class Text_Or_Grapic(Question):
+#     def __init__(self):
+#         pass
     
-class Slider(Question):
-    def __init__(self):
-        self._type = QuestionType.SLIDER
+# class Matrix_Table(Question):
+#     def __init__(self):
+#         pass
 
-class Rank_Order(Question):
-    def __init__(self):
-        self._type = QuestionType.RO
+# class Descriptive_Text(Question):
+#     def __init__(self, name:str, description:str, force_response:bool):
+#         super().__init__()
+    
+# class Slider(Question):
+#     def __init__(self):
+#         pass
 
-class Side_By_Side(Question):
-    def __init__(self):
-        self._type = QuestionType.SBS
+# class Rank_Order(Question):
+#     def __init__(self):
+#         pass
 
-class Constant_Sum(Question):
-    def __init__(self):
-        self._type = QuestionType.CS
+# class Side_By_Side(Question):
+#     def __init__(self):
+#         pass
 
-class Pick_Group_And_Rank(Question):
-    def __init__(self):
-        self._type = QuestionType.PGR
+# class Constant_Sum(Question):
+#     def __init__(self):
+#         pass
 
-class Hot_Spot(Question):
-    def __init__(self):
-        self._type = QuestionType.HOTSPOT
+# class Pick_Group_And_Rank(Question):
+#     def __init__(self):
+#         pass
 
-class Heat_Map(Question):
-    def __init__(self):
-        self._type = QuestionType.HEATMAP
+# class Hot_Spot(Question):
+#     def __init__(self):
+#         pass
 
-class Drill_Down(Question):
-    def __init__(self):
-        self._type = QuestionType.DD
+# class Heat_Map(Question):
+#     def __init__(self):
+#         pass
+# class Drill_Down(Question):
+#     def __init__(self):
+#         pass
 
-class Net_Promoter_Score(Question):
-    def __init__(self):
-        self._type = QuestionType.MC
+# class Net_Promoter_Score(Question):
+#     def __init__(self):
+#         pass
 
-class Highlight(Question):
-    def __init__(self):
-        self._type = QuestionType.HL
+# class Highlight(Question):
+#     def __init__(self):
+#         pass
 
-class Signature(Question):
-    def __init__(self):
-        self._type = QuestionType.DRAW
+# class Signature(Question):
+#     def __init__(self):
+#         pass
 
-class Timer(Question):
-    def __init__(self):
-        self._type = QuestionType.TIMING
+# class Timer(Question):
+#     def __init__(self):
+#         pass
 
-class Meta_Info(Question):
-    def __init__(self):
-        self._type = QuestionType.META
+# class Meta_Info(Question):
+#     def __init__(self):
+#         pass
 
-class Captcha(Question):
-    def __init__(self):
-        self._type = QuestionType.CAPTCHA
+# class Captcha(Question):
+#     def __init__(self):
+#         pass
