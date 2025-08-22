@@ -1,4 +1,3 @@
-import json
 from requests_toolbelt import sessions
 from typing import Any
 from .oath_information import OathInformation

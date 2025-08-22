@@ -1,5 +1,3 @@
-
-
 if __name__ == '__main__':
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
     # if two command line parameters are entered, then the second is assumed to be your API token
@@ -10,6 +8,7 @@ if __name__ == '__main__':
     import sys
     from QualtricsStudyGroupSurveys import QualtricsConnection
     from QualtricsStudyGroupSurveys import OathInformation
+
     match sys.argv:
         case [_, data_center, api_token]:
             qualtrics = QualtricsConnection(data_center, api_token)
@@ -24,5 +23,5 @@ if __name__ == '__main__':
             exit(1)
 
     print(qualtrics.who_am_i())
-    print(qualtrics.list_surveys())
-    # print(qualtrics.get_survey('ENTER SURVEY ID HERE if using this'))
+    # print(qualtrics.list_surveys())
+    # print(qualtrics.get_survey('SURVEY ID'))
