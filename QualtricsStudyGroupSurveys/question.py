@@ -31,18 +31,24 @@ class Multiple_Choice(Question):
     def addChoice(self, choice:Choice):
         self._choices.append(choice)
     
-    def generate_json(self) -> dict[str, Any]:
+    def generate_json(self, question_ID:str) -> dict[str, Any]:
         return {
-            "questionType": {
-                "type":"MC",
-                "selector":self._selector.name,
-                "subSelector":"TX" if self._usesSubSelector else None,
+            "QuestionText":self._description,
+            "DefaultChoices":False,
+            "DataExportTag":self._name,
+            "QuestionID":question_ID,
+            "QuestionType":"MC",
+            "Selector":self._selector.name,
+            "SubSelector":"TX",
+            "DataVisibility": {
+                "Private":False,
+                "Hidden":False
             },
-            "questionText":self._description,
-            "questionLabel":None,
-            "validation":self._validation.generate_json(),
-            "questionName":self._name,
-            "choices":{
+            "Configuration": {
+                "QuestionDescriptionOption": "UseText"
+            },
+            "QuestionDescription":self._description,
+            "Choices":{
                 str(i + 1): choice.generate_json(i) for (i, choice) in enumerate(self._choices)
             }
         }        
