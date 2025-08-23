@@ -1,1133 +1,965 @@
 {
-  "id": "SV_74gZzH3XX6XjZsO",
-  "name": "Study Group Reports Template",
-  "ownerId": "UR_5pcmYqUqmy1znyB",
-  "organizationId": "ucdavis",
-  "isActive": true,
-  "creationDate": "2025-08-01T23:40:20Z",
-  "lastModifiedDate": "2025-08-23T02:39:02Z",
-  "expiration": {
-    "startDate": null,
-    "endDate": null
+  "QuestionCount": "8",
+  "SurveyOptions": {
+    "BackButton": "false",
+    "SaveAndContinue": "true",
+    "SurveyProtection": "PublicSurvey",
+    "BallotBoxStuffingPrevention": "false",
+    "NoIndex": "Yes",
+    "SecureResponseFiles": "true",
+    "SurveyExpiration": "None",
+    "SurveyTermination": "DefaultMessage",
+    "Header": "",
+    "Footer": "",
+    "ProgressBarDisplay": "None",
+    "PartialData": "+1 week",
+    "ValidationMessage": null,
+    "PreviousButton": "",
+    "NextButton": "",
+    "SurveyTitle": "Qualtrics Survey | Qualtrics Experience Management",
+    "SkinLibrary": "ucdavis",
+    "SkinType": "component",
+    "Skin": {
+      "brandingId": "2562654732",
+      "templateId": "*simple",
+      "overrides": null
+    },
+    "NewScoring": 1,
+    "SurveyMetaDescription": "The most powerful, simple and trusted way to gather experience data. Start your journey to experience management and try a free account today.",
+    "SurveyName": "Study Group Reports Template",
+    "EOSMessage": null,
+    "ShowExportTags": "false",
+    "CollectGeoLocation": "false",
+    "PasswordProtection": "No",
+    "AnonymizeResponse": "No",
+    "RefererCheck": "No",
+    "BallotBoxStuffingPreventionBehavior": null,
+    "BallotBoxStuffingPreventionMessage": null,
+    "BallotBoxStuffingPreventionMessageLibrary": null,
+    "BallotBoxStuffingPreventionURL": null,
+    "RecaptchaV3": "false",
+    "ConfirmStart": false,
+    "AutoConfirmStart": false,
+    "RelevantID": "false",
+    "RelevantIDLockoutPeriod": "+30 days",
+    "UseCustomSurveyLinkCompletedMessage": null,
+    "SurveyLinkCompletedMessage": null,
+    "SurveyLinkCompletedMessageLibrary": null,
+    "ResponseSummary": "No",
+    "EOSMessageLibrary": null,
+    "EOSRedirectURL": null,
+    "EmailThankYou": "false",
+    "ThankYouEmailMessageLibrary": null,
+    "ThankYouEmailMessage": null,
+    "ValidateMessage": "false",
+    "ValidationMessageLibrary": null,
+    "InactiveSurvey": "DefaultMessage",
+    "PartialDeletion": null,
+    "PartialDataCloseAfter": "LastActivity",
+    "InactiveMessageLibrary": null,
+    "InactiveMessage": null,
+    "AvailableLanguages": {
+      "EN": []
+    },
+    "ProtectSelectionIds": true,
+    "SurveyLanguage": "EN",
+    "ActiveResponseSet": "RS_eG74jqbCY277VQi",
+    "SurveyStartDate": null,
+    "SurveyExpirationDate": null,
+    "SurveyCreationDate": "2025-08-01T23:40:20Z"
   },
-  "questions": {
-    "QID6": {
-      "questionType": {
-        "type": "TE",
-        "selector": "SL",
-        "subSelector": null
+  "SurveyID": "SV_74gZzH3XX6XjZsO",
+  "SurveyName": "Study Group Reports Template",
+  "SurveyStatus": "Active",
+  "LastModified": "2025-08-23T02:39:02Z",
+  "BrandID": "ucdavis",
+  "OwnerID": "UR_5pcmYqUqmy1znyB",
+  "DivisionID": "DV_bCz0vLDEYcivdHv",
+  "LastAccessed": null,
+  "CreatorID": "UR_5pcmYqUqmy1znyB",
+  "LastActivated": "2025-08-21T22:35:07Z",
+  "Questions": {
+    "QID1": {
+      "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
+      "DefaultChoices": false,
+      "DataExportTag": "Q3.2",
+      "QuestionID": "QID1",
+      "QuestionType": "MC",
+      "Selector": "MAVR",
+      "SubSelector": "TX",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
       },
-      "questionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true,
-        "type": "ValidNumber",
-        "settings": {
-          "maxDecimals": 0,
-          "maximum": 10.0,
-          "minimum": 0.0
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+      },
+      "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
+      "Choices": {
+        "1": {
+          "Display": "Person 1 Team1",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "1",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team1Person1@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person1@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "2": {
+          "Display": "Person 2 Team 1",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "1",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team1Person2@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person2@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "3": {
+          "Display": "Person 3 Team 1",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "1",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team1Person3@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person3@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "4": {
+          "Display": "Person 4 Team 1",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "1",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team1Person4@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person4@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "5": {
+          "Display": "Person 5 Team 1",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "1",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team1Person5@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person5@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "6": {
+          "Display": "Person 1 Team2",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "2",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 2 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team2Person1@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team2Person1@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "7": {
+          "Display": "Person 2 Team 2",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "2",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 2 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team2Person2@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team2Person2@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "8": {
+          "Display": "Person 3 Team 2",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "2",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 2 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team2Person3@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team2Person3@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
+        },
+        "9": {
+          "Display": "Person 4 Team 2",
+          "DisplayLogic": {
+            "0": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "2",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 2 </span>"
+              },
+              "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": "Team2Person4@ucdavis.edu",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team2Person4@ucdavis.edu</span>",
+                "Conjuction": "And"
+              },
+              "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": false
+          }
         }
       },
-      "questionName": "Q1.1"
-    },
-    "QID7": {
-      "questionType": {
-        "type": "TE",
-        "selector": "ESTB",
-        "subSelector": null
-      },
-      "questionText": "Please explain why you didn't meet with your group this week.",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true,
-        "type": "MinChar",
-        "settings": {
-          "minChars": 10
+      "ChoiceOrder": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "MinChoices",
+          "MinChoices": "1"
         }
       },
-      "questionName": "Q2.1"
-    },
-    "QID8": {
-      "questionType": {
-        "type": "FileUpload",
-        "selector": "FileUpload",
-        "subSelector": null
-      },
-      "questionText": "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. For example, if you didn't meet with your group because you reached out to them but no one responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to zip them first. <br><br>This question is optional.<br>",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": false
-      },
-      "questionName": "Q2.2"
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 10,
+      "NextAnswerId": 1,
+      "QuestionText_Unsafe": "Who did you meet with during your ${lm://Field/2} meeting?"
     },
     "QID2": {
-      "questionType": {
-        "type": "MC",
-        "selector": "DL",
-        "subSelector": null
+      "QuestionText": "When was your ${lm://Field/2} meeting?",
+      "DefaultChoices": false,
+      "DataExportTag": "Q3.1",
+      "QuestionID": "QID2",
+      "QuestionType": "MC",
+      "Selector": "DL",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
       },
-      "questionText": "When was your ${lm://Field/2} meeting?",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
       },
-      "questionName": "Q3.1",
-      "choices": {
+      "QuestionDescription": "When was your ${lm://Field/2} meeting?",
+      "Choices": {
         "1": {
-          "recode": "1",
-          "description": "Date1",
-          "choiceText": "Date1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Date1"
         },
         "2": {
-          "recode": "2",
-          "description": "Date2",
-          "choiceText": "Date2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Date2"
         },
         "3": {
-          "recode": "3",
-          "description": "Date3",
-          "choiceText": "Date3",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Date3"
         },
         "4": {
-          "recode": "4",
-          "description": "Click to write Choice 4",
-          "choiceText": "Click to write Choice 4",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        }
-      }
-    },
-    "QID1": {
-      "questionType": {
-        "type": "MC",
-        "selector": "MAVR",
-        "subSelector": "TX"
-      },
-      "questionText": "Who did you meet with during your ${lm://Field/2} meeting?",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true,
-        "type": "MinChoices",
-        "settings": {
-          "minChoices": 1
+          "Display": "Click to write Choice 4"
         }
       },
-      "questionName": "Q3.2",
-      "choices": {
-        "1": {
-          "recode": "1",
-          "description": "Person 1 Team1",
-          "choiceText": "Person 1 Team1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "2": {
-          "recode": "2",
-          "description": "Person 2 Team 1",
-          "choiceText": "Person 2 Team 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "3": {
-          "recode": "3",
-          "description": "Person 3 Team 1",
-          "choiceText": "Person 3 Team 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "4": {
-          "recode": "4",
-          "description": "Person 4 Team 1",
-          "choiceText": "Person 4 Team 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "5": {
-          "recode": "5",
-          "description": "Person 5 Team 1",
-          "choiceText": "Person 5 Team 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "6": {
-          "recode": "6",
-          "description": "Person 1 Team2",
-          "choiceText": "Person 1 Team2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "7": {
-          "recode": "7",
-          "description": "Person 2 Team 2",
-          "choiceText": "Person 2 Team 2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "8": {
-          "recode": "8",
-          "description": "Person 3 Team 2",
-          "choiceText": "Person 3 Team 2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
-        },
-        "9": {
-          "recode": "9",
-          "description": "Person 4 Team 2",
-          "choiceText": "Person 4 Team 2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+      "ChoiceOrder": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "None"
         }
-      }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 5,
+      "NextAnswerId": 1,
+      "QuestionText_Unsafe": "When was your ${lm://Field/2} meeting?"
     },
     "QID3": {
-      "questionType": {
-        "type": "MC",
-        "selector": "MAVR",
-        "subSelector": "TX"
+      "QuestionText": "What did you do during your ${lm://Field/2} meeting?",
+      "DefaultChoices": false,
+      "DataExportTag": "Q3.3",
+      "QuestionType": "MC",
+      "Selector": "MAVR",
+      "SubSelector": "TX",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
       },
-      "questionText": "What did you do during your ${lm://Field/2} meeting?",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true,
-        "type": "MinChoices",
-        "settings": {
-          "minChoices": 1
-        }
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
       },
-      "questionName": "Q3.3",
-      "choices": {
+      "QuestionDescription": "What did you do during your ${lm://Field/2} meeting?",
+      "Choices": {
         "1": {
-          "recode": "1",
-          "description": "Activity 1",
-          "choiceText": "Activity 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Activity 1"
         },
         "2": {
-          "recode": "2",
-          "description": "Activity 2",
-          "choiceText": "Activity 2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Activity 2"
         },
         "3": {
-          "recode": "3",
-          "description": "Activity 3",
-          "choiceText": "Activity 3",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Activity 3"
         }
-      }
+      },
+      "ChoiceOrder": [
+        "1",
+        "2",
+        "3"
+      ],
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "MinChoices",
+          "MinChoices": "1"
+        }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 4,
+      "NextAnswerId": 1,
+      "QuestionID": "QID3",
+      "QuestionText_Unsafe": "What did you do during your ${lm://Field/2} meeting?"
     },
     "QID4": {
-      "questionType": {
-        "type": "MC",
-        "selector": "SAVR",
-        "subSelector": "TX"
+      "QuestionText": "How long did your&nbsp;${lm://Field/2} meeting last?",
+      "DataExportTag": "Q3.4",
+      "QuestionType": "MC",
+      "Selector": "SAVR",
+      "SubSelector": "TX",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
       },
-      "questionText": "How long did your ${lm://Field/2} meeting last?",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
       },
-      "questionName": "Q3.4",
-      "choices": {
+      "QuestionDescription": "How long did your ${lm://Field/2} meeting last?",
+      "Choices": {
         "1": {
-          "recode": "1",
-          "description": "5 minutes",
-          "choiceText": "5 minutes",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "5 minutes"
         },
         "2": {
-          "recode": "2",
-          "description": "10 minutes",
-          "choiceText": "10 minutes",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "10 minutes"
         },
         "3": {
-          "recode": "3",
-          "description": "20 minutes",
-          "choiceText": "20 minutes",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "20 minutes"
         },
         "4": {
-          "recode": "4",
-          "description": "More than 20 minutes",
-          "choiceText": "More than 20 minutes",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "More than 20 minutes"
         }
-      }
+      },
+      "ChoiceOrder": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "None"
+        }
+      },
+      "Language": [],
+      "NextChoiceId": 5,
+      "NextAnswerId": 1,
+      "QuestionID": "QID4",
+      "QuestionText_Unsafe": "How long did your&nbsp;${lm://Field/2} meeting last?"
     },
     "QID5": {
-      "questionType": {
-        "type": "MC",
-        "selector": "MAVR",
-        "subSelector": "TX"
+      "QuestionText": "Who did you NOT meet with this week?",
+      "DefaultChoices": false,
+      "DataExportTag": "Q4.1",
+      "QuestionType": "MC",
+      "Selector": "MAVR",
+      "SubSelector": "TX",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
       },
-      "questionText": "Who did you NOT meet with this week?",
-      "questionLabel": null,
-      "validation": {
-        "doesForceResponse": true,
-        "type": "MinChoices",
-        "settings": {
-          "minChoices": 1
-        }
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
       },
-      "questionName": "Q4.1",
-      "choices": {
+      "QuestionDescription": "Who did you NOT meet with this week?",
+      "Choices": {
         "1": {
-          "recode": "1",
-          "description": "Person 1",
-          "choiceText": "Person 1",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 1"
         },
         "2": {
-          "recode": "2",
-          "description": "Person 2",
-          "choiceText": "Person 2",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 2"
         },
         "3": {
-          "recode": "3",
-          "description": "Person 3",
-          "choiceText": "Person 3",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 3"
         },
         "4": {
-          "recode": "4",
-          "description": "Person 4",
-          "choiceText": "Person 4",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 4"
         },
         "5": {
-          "recode": "5",
-          "description": "Person 5",
-          "choiceText": "Person 5",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 5"
         },
         "6": {
-          "recode": "6",
-          "description": "Person 6",
-          "choiceText": "Person 6",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 6"
         },
         "7": {
-          "recode": "7",
-          "description": "Person 7",
-          "choiceText": "Person 7",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 7"
         },
         "8": {
-          "recode": "8",
-          "description": "Person 8",
-          "choiceText": "Person 8",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 8"
         },
         "9": {
-          "recode": "9",
-          "description": "Person 9",
-          "choiceText": "Person 9",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "Person 9"
         },
         "10": {
-          "recode": "10",
-          "description": "I met with everyone in my group",
-          "choiceText": "I met with everyone in my group",
-          "imageDescription": null,
-          "variableName": null,
-          "analyze": true
+          "Display": "I met with everyone in my group",
+          "ExclusiveAnswer": true
         }
+      },
+      "ChoiceOrder": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "MinChoices",
+          "MinChoices": "1"
+        }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 11,
+      "NextAnswerId": 1,
+      "QuestionID": "QID5",
+      "QuestionText_Unsafe": "Who did you NOT meet with this week?"
+    },
+    "QID6": {
+      "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
+      "DefaultChoices": false,
+      "DataExportTag": "Q1.1",
+      "QuestionID": "QID6",
+      "QuestionType": "TE",
+      "Selector": "SL",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
+      },
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+      },
+      "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "ContentType",
+          "MinChars": "1",
+          "ContentType": "ValidNumber",
+          "ValidDateType": "DateWithFormat",
+          "ValidPhoneType": "ValidUSPhone",
+          "ValidZipType": "ValidUSZip",
+          "ValidNumber": {
+            "Min": "0",
+            "Max": "10",
+            "NumDecimals": "0"
+          }
+        }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 3,
+      "NextAnswerId": 1,
+      "SearchSource": {
+        "AllowFreeResponse": "false"
+      },
+      "QuestionText_Unsafe": "How many times did you meet with your group this week? Report at most your top 10 interactions."
+    },
+    "QID7": {
+      "QuestionText": "Please explain why you didn't meet with your group this week.",
+      "DefaultChoices": false,
+      "DataExportTag": "Q2.1",
+      "QuestionType": "TE",
+      "Selector": "ESTB",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
+      },
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+      },
+      "QuestionDescription": "Please explain why you didn't meet with your group this week.",
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "ON",
+          "ForceResponseType": "ON",
+          "Type": "MinChar",
+          "MinChars": "10"
+        }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 4,
+      "NextAnswerId": 1,
+      "SearchSource": {
+        "AllowFreeResponse": "false"
+      },
+      "QuestionID": "QID7",
+      "QuestionText_Unsafe": "Please explain why you didn't meet with your group this week.",
+      "DisplayLogic": {
+        "0": {
+          "0": {
+            "LogicType": "Question",
+            "QuestionID": "QID6",
+            "QuestionIsInLoop": "no",
+            "ChoiceLocator": "q://QID6/ChoiceTextEntryValue",
+            "Operator": "EqualTo",
+            "QuestionIDFromLocator": "QID6",
+            "LeftOperand": "q://QID6/ChoiceTextEntryValue",
+            "RightOperand": "0",
+            "Type": "Expression",
+            "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
+          },
+          "Type": "If"
+        },
+        "Type": "BooleanExpression",
+        "inPage": false
+      }
+    },
+    "QID8": {
+      "QuestionText": "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. For example, if you didn't meet with your group because you reached out to them but no one responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to zip them first.&nbsp;<br><br>This question is optional.<br>",
+      "DefaultChoices": false,
+      "DataExportTag": "Q2.2",
+      "QuestionType": "FileUpload",
+      "Selector": "FileUpload",
+      "DataVisibility": {
+        "Private": false,
+        "Hidden": false
+      },
+      "Configuration": {
+        "QuestionDescriptionOption": "UseText",
+        "MinSeconds": "0",
+        "MaxSeconds": "0",
+        "AudioOnly": false,
+        "VideoUpload": false
+      },
+      "QuestionDescription": "Please upload any supporting screenshots, images, or other files that support why you didn't meet...",
+      "Validation": {
+        "Settings": {
+          "ForceResponse": "OFF",
+          "Type": "None"
+        }
+      },
+      "GradingData": [],
+      "Language": [],
+      "NextChoiceId": 4,
+      "NextAnswerId": 1,
+      "ScreenCaptureText": "Capture Screen",
+      "QuestionID": "QID8",
+      "QuestionText_Unsafe": "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. For example, if you didn't meet with your group because you reached out to them but no one responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to zip them first.&nbsp;<br><br>This question is optional.<br>",
+      "DisplayLogic": {
+        "0": {
+          "0": {
+            "LogicType": "Question",
+            "QuestionID": "QID6",
+            "QuestionIsInLoop": "no",
+            "ChoiceLocator": "q://QID6/ChoiceTextEntryValue",
+            "Operator": "EqualTo",
+            "QuestionIDFromLocator": "QID6",
+            "LeftOperand": "q://QID6/ChoiceTextEntryValue",
+            "RightOperand": "0",
+            "Type": "Expression",
+            "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
+          },
+          "Type": "If"
+        },
+        "Type": "BooleanExpression",
+        "inPage": false
       }
     }
   },
-  "exportColumnMap": {
-    "Q1.1": {
-      "question": "QID6"
-    },
-    "Q2.1": {
-      "question": "QID7"
-    },
-    "Q2.2_FILE_ID": {
-      "question": "QID8"
-    },
-    "Q2.2_FILE_NAME": {
-      "question": "QID8"
-    },
-    "Q2.2_FILE_SIZE": {
-      "question": "QID8"
-    },
-    "Q2.2_FILE_TYPE": {
-      "question": "QID8"
-    },
-    "Q3.1(1)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(1)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(1)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(1)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(1)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(1)": {
-      "question": "QID4"
-    },
-    "Q3.1(2)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(2)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(2)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(2)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(2)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(2)": {
-      "question": "QID4"
-    },
-    "Q3.1(3)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(3)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(3)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(3)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(3)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(3)": {
-      "question": "QID4"
-    },
-    "Q3.1(4)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(4)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(4)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(4)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(4)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(4)": {
-      "question": "QID4"
-    },
-    "Q3.1(5)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(5)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(5)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(5)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(5)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(5)": {
-      "question": "QID4"
-    },
-    "Q3.1(6)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(6)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(6)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(6)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(6)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(6)": {
-      "question": "QID4"
-    },
-    "Q3.1(7)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(7)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(7)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(7)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(7)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(7)": {
-      "question": "QID4"
-    },
-    "Q3.1(8)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(8)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(8)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(8)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(8)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(8)": {
-      "question": "QID4"
-    },
-    "Q3.1(9)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(9)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(9)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(9)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(9)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(9)": {
-      "question": "QID4"
-    },
-    "Q3.1(10)": {
-      "question": "QID2"
-    },
-    "Q3.2_1(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.1"
-    },
-    "Q3.2_2(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.2"
-    },
-    "Q3.2_3(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.3"
-    },
-    "Q3.2_4(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.4"
-    },
-    "Q3.2_5(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.5"
-    },
-    "Q3.2_6(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.6"
-    },
-    "Q3.2_7(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.7"
-    },
-    "Q3.2_8(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.8"
-    },
-    "Q3.2_9(10)": {
-      "question": "QID1",
-      "choice": "QID1.choices.9"
-    },
-    "Q3.3_1(10)": {
-      "question": "QID3",
-      "choice": "QID3.choices.1"
-    },
-    "Q3.3_2(10)": {
-      "question": "QID3",
-      "choice": "QID3.choices.2"
-    },
-    "Q3.3_3(10)": {
-      "question": "QID3",
-      "choice": "QID3.choices.3"
-    },
-    "Q3.4(10)": {
-      "question": "QID4"
-    },
-    "Q4.1_1": {
-      "question": "QID5",
-      "choice": "QID5.choices.1"
-    },
-    "Q4.1_2": {
-      "question": "QID5",
-      "choice": "QID5.choices.2"
-    },
-    "Q4.1_3": {
-      "question": "QID5",
-      "choice": "QID5.choices.3"
-    },
-    "Q4.1_4": {
-      "question": "QID5",
-      "choice": "QID5.choices.4"
-    },
-    "Q4.1_5": {
-      "question": "QID5",
-      "choice": "QID5.choices.5"
-    },
-    "Q4.1_6": {
-      "question": "QID5",
-      "choice": "QID5.choices.6"
-    },
-    "Q4.1_7": {
-      "question": "QID5",
-      "choice": "QID5.choices.7"
-    },
-    "Q4.1_8": {
-      "question": "QID5",
-      "choice": "QID5.choices.8"
-    },
-    "Q4.1_9": {
-      "question": "QID5",
-      "choice": "QID5.choices.9"
-    },
-    "Q4.1_10": {
-      "question": "QID5",
-      "choice": "QID5.choices.10"
-    }
-  },
-  "blocks": {
-    "BL_9WSv5TZTjQdZVoG": {
-      "description": "Met with group?",
-      "elements": [
+  "Blocks": {
+    "BL_0chMfZ1I0EJKR5s": {
+      "Type": "Default",
+      "Description": "Interaction Description",
+      "ID": "BL_0chMfZ1I0EJKR5s",
+      "BlockElements": [
         {
-          "type": "Question",
-          "questionId": "QID6"
+          "Type": "Question",
+          "QuestionID": "QID2"
+        },
+        {
+          "Type": "Question",
+          "QuestionID": "QID1"
+        },
+        {
+          "Type": "Question",
+          "QuestionID": "QID3"
+        },
+        {
+          "Type": "Question",
+          "QuestionID": "QID4"
         }
-      ]
+      ],
+      "Options": {
+        "BlockLocking": "false",
+        "RandomizeQuestions": "false",
+        "BlockVisibility": "Expanded",
+        "Looping": "Question",
+        "LoopingOptions": {
+          "Locator": "q://QID6/LoopAndMerge/MergeOnNumericResponse?v=10",
+          "QID": "QID6",
+          "ChoiceGroupLocator": "q://QID6/LoopAndMerge/MergeOnNumericResponse",
+          "Static": {
+            "1": {
+              "2": "1st"
+            },
+            "2": {
+              "2": "2nd"
+            },
+            "3": {
+              "2": "3rd"
+            },
+            "4": {
+              "2": "4th"
+            },
+            "5": {
+              "2": "5th"
+            },
+            "6": {
+              "2": "6th"
+            },
+            "7": {
+              "2": "7th"
+            },
+            "8": {
+              "2": "8th"
+            },
+            "9": {
+              "2": "9th"
+            },
+            "10": {
+              "2": "10th"
+            }
+          },
+          "Randomization": "None"
+        }
+      }
+    },
+    "BL_begi7VhybnYjb5s": {
+      "Type": "Trash",
+      "Description": "Trash / Unused Questions",
+      "ID": "BL_begi7VhybnYjb5s"
+    },
+    "BL_9WSv5TZTjQdZVoG": {
+      "Type": "Standard",
+      "SubType": "",
+      "Description": "Met with group?",
+      "ID": "BL_9WSv5TZTjQdZVoG",
+      "BlockElements": [
+        {
+          "Type": "Question",
+          "QuestionID": "QID6"
+        }
+      ],
+      "Options": {
+        "BlockLocking": "false",
+        "RandomizeQuestions": "false",
+        "BlockVisibility": "Expanded"
+      }
     },
     "BL_5jbctUgMWD6n0do": {
-      "description": "Explanation For Why You Didn't meet",
-      "elements": [
+      "Type": "Standard",
+      "SubType": "",
+      "Description": "Explanation For Why You Didn't meet",
+      "ID": "BL_5jbctUgMWD6n0do",
+      "BlockElements": [
         {
-          "type": "Question",
-          "questionId": "QID7"
+          "Type": "Question",
+          "QuestionID": "QID7"
         },
         {
-          "type": "Question",
-          "questionId": "QID8"
-        }
-      ]
-    },
-    "BL_0chMfZ1I0EJKR5s": {
-      "description": "Interaction Description",
-      "elements": [
-        {
-          "type": "Question",
-          "questionId": "QID2"
-        },
-        {
-          "type": "Question",
-          "questionId": "QID1"
-        },
-        {
-          "type": "Question",
-          "questionId": "QID3"
-        },
-        {
-          "type": "Question",
-          "questionId": "QID4"
+          "Type": "Question",
+          "QuestionID": "QID8"
         }
       ]
     },
     "BL_3yMSBudhDk2bY0e": {
-      "description": "Who didn't you meet with",
-      "elements": [
+      "Type": "Standard",
+      "SubType": "",
+      "Description": "Who didn't you meet with",
+      "ID": "BL_3yMSBudhDk2bY0e",
+      "BlockElements": [
         {
-          "type": "Question",
-          "questionId": "QID5"
+          "Type": "Question",
+          "QuestionID": "QID5"
         }
       ]
     }
   },
-  "flow": [
-    {
-      "type": "EmbeddedData"
-    },
-    {
-      "id": "BL_9WSv5TZTjQdZVoG",
-      "type": "Block"
-    },
-    {
-      "type": "Branch",
-      "flow": [
-        {
-          "id": "BL_5jbctUgMWD6n0do",
-          "type": "Block"
-        },
-        {
-          "type": "EndSurvey"
-        }
-      ]
-    },
-    {
-      "id": "BL_0chMfZ1I0EJKR5s",
-      "type": "Block"
-    },
-    {
-      "id": "BL_3yMSBudhDk2bY0e",
-      "type": "Block"
+  "ResponseSets": {
+    "RS_eG74jqbCY277VQi": "Default Response Set"
+  },
+  "QuotaGroups": {
+    "QG_a6faFx6Kyf5EBQu": {
+      "ID": "QG_a6faFx6Kyf5EBQu",
+      "Name": "Default Quota Group",
+      "Selected": true,
+      "MultipleMatch": "PlaceInAll",
+      "Public": false,
+      "Quotas": []
     }
+  },
+  "QuotaGroupOrder": [
+    "QG_a6faFx6Kyf5EBQu"
   ],
-  "embeddedData": [
-    {
-      "name": "Team"
-    },
-    {
-      "name": "RecipientEmail"
-    }
-  ],
-  "comments": {},
-  "loopAndMerge": {
-    "BL_0chMfZ1I0EJKR5s": {
-      "loopType": "Question",
-      "loopQuestionMeta": {
-        "questionId": "QID6",
-        "questionType": "TE",
-        "maxNumberOfLoops": "10",
-        "loopOn": [
+  "SurveyFlow": {
+    "Type": "Root",
+    "FlowID": "FL_1",
+    "Flow": [
+      {
+        "Type": "EmbeddedData",
+        "FlowID": "FL_8",
+        "EmbeddedData": [
           {
-            "criterion": "MergeOnNumericResponse"
+            "Description": "Team",
+            "Type": "Recipient",
+            "Field": "Team",
+            "VariableType": "String",
+            "DataVisibility": [],
+            "AnalyzeText": false
+          },
+          {
+            "Description": "RecipientEmail",
+            "Type": "Recipient",
+            "Field": "RecipientEmail",
+            "VariableType": "String",
+            "DataVisibility": [],
+            "AnalyzeText": false
           }
         ]
       },
-      "randomizationMeta": {
-        "randomize": "None",
-        "limit": null
+      {
+        "Type": "Standard",
+        "ID": "BL_9WSv5TZTjQdZVoG",
+        "FlowID": "FL_3",
+        "Autofill": []
       },
-      "columnNames": {
-        "field1": [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10"
-        ],
-        "field2": [
-          "1st",
-          "2nd",
-          "3rd",
-          "4th",
-          "5th",
-          "6th",
-          "7th",
-          "8th",
-          "9th",
-          "10th"
+      {
+        "Type": "Branch",
+        "FlowID": "FL_6",
+        "Description": "New Branch",
+        "BranchLogic": {
+          "0": {
+            "0": {
+              "LogicType": "Question",
+              "QuestionID": "QID6",
+              "QuestionIsInLoop": "no",
+              "ChoiceLocator": "q://QID6/ChoiceTextEntryValue",
+              "Operator": "EqualTo",
+              "QuestionIDFromLocator": "QID6",
+              "LeftOperand": "q://QID6/ChoiceTextEntryValue",
+              "RightOperand": "0",
+              "IgnoreCase": 1,
+              "Type": "Expression",
+              "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
+            },
+            "Type": "If"
+          },
+          "Type": "BooleanExpression"
+        },
+        "Flow": [
+          {
+            "Type": "Standard",
+            "ID": "BL_5jbctUgMWD6n0do",
+            "FlowID": "FL_4",
+            "Autofill": []
+          },
+          {
+            "Type": "EndSurvey",
+            "FlowID": "FL_7"
+          }
         ]
+      },
+      {
+        "Type": "Block",
+        "ID": "BL_0chMfZ1I0EJKR5s",
+        "FlowID": "FL_2",
+        "Autofill": []
+      },
+      {
+        "Type": "Standard",
+        "ID": "BL_3yMSBudhDk2bY0e",
+        "FlowID": "FL_5",
+        "Autofill": []
       }
+    ],
+    "Properties": {
+      "Count": 8
     }
   },
-  "responseCounts": {
-    "auditable": 0,
-    "generated": 6,
-    "deleted": 6
-  }
+  "Scoring": {
+    "ScoringCategories": [],
+    "ScoringCategoryGroups": [],
+    "ScoringSummaryCategory": null,
+    "ScoringSummaryAfterQuestions": 0,
+    "ScoringSummaryAfterSurvey": 0,
+    "DefaultScoringCategory": null,
+    "AutoScoringCategory": null
+  },
+  "ProjectInfo": {
+    "SurveyID": "SV_74gZzH3XX6XjZsO",
+    "ProjectCategory": "CORE",
+    "ProjectType": null,
+    "CompositionType": null,
+    "ContentBundle": null
+  },
+  "BrandBaseURL": "https://ucdavis.co1.qualtrics.com"
 }

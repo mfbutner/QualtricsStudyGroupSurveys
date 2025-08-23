@@ -24,16 +24,11 @@ def main():
         case _:
             print('Incorrect number of command line arguments entered')
             exit(1)
-    # print(qualtrics.who_am_i())
-    # print(qualtrics.list_surveys())
-    # print(qualtrics.get_survey('SURVEY ID'))
-    # questions = qualtrics.get_questions('SV_74gZzH3XX6XjZsO')
-    # with open(r'C:\Users\mfbut\PycharmProjects\QualtricsStudyGroupSurveys\template_questions.json', 'w') as template_questions:
-    #     json.dump(questions, template_questions)
-    #
-    survey_id = 'ENTER_ID_HERE'
-    dir_path = 'PATH_TO_DOWNLOAD_SURVEY_INFO_TO'
-    qualtrics.download_all_survey_attributes(survey_id, dir_path)
+
+    survey_id = 'SURVEY_ID'
+    dir_path = r'PATH_TO_DOWNLOAD_SURVEY_INFO_TO'
+    qualtrics.download_all_survey_attributes(survey_id,
+                                             dir_path)
 
 
 def test_create_question(qualtrics_connection: QualtricsConnection):

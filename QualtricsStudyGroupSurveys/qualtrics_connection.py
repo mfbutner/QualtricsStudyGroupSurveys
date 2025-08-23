@@ -57,7 +57,7 @@ class QualtricsConnection:
         return response.json()['result']
 
     def get_survey(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/surveys/{survey_id}'
+        endpoint = f'/API/v3/survey-definitions/{survey_id}'
         return self._url_only_get(endpoint)
 
     def who_am_i(self) -> dict[str, Any]:
@@ -76,7 +76,7 @@ class QualtricsConnection:
         }
         survey = self.get_survey(survey_id)
         blocks = []
-        for block_id in survey['blocks']:
+        for block_id in survey['Blocks']:
             block = self.connection.get(endpoint.format(survey_id=survey_id, block_id=block_id), headers=headers)
             block.raise_for_status()
             blocks.append(block.json()['result'])
