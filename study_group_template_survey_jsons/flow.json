@@ -1,0 +1,85 @@
+{
+  "Type": "Root",
+  "FlowID": "FL_1",
+  "Flow": [
+    {
+      "Type": "EmbeddedData",
+      "FlowID": "FL_8",
+      "EmbeddedData": [
+        {
+          "Description": "Team",
+          "Type": "Recipient",
+          "Field": "Team",
+          "VariableType": "String",
+          "DataVisibility": [],
+          "AnalyzeText": false
+        },
+        {
+          "Description": "RecipientEmail",
+          "Type": "Recipient",
+          "Field": "RecipientEmail",
+          "VariableType": "String",
+          "DataVisibility": [],
+          "AnalyzeText": false
+        }
+      ]
+    },
+    {
+      "Type": "Standard",
+      "ID": "BL_9WSv5TZTjQdZVoG",
+      "FlowID": "FL_3",
+      "Autofill": []
+    },
+    {
+      "Type": "Branch",
+      "FlowID": "FL_6",
+      "Description": "New Branch",
+      "BranchLogic": {
+        "0": {
+          "0": {
+            "LogicType": "Question",
+            "QuestionID": "QID6",
+            "QuestionIsInLoop": "no",
+            "ChoiceLocator": "q://QID6/ChoiceTextEntryValue",
+            "Operator": "EqualTo",
+            "QuestionIDFromLocator": "QID6",
+            "LeftOperand": "q://QID6/ChoiceTextEntryValue",
+            "RightOperand": "0",
+            "IgnoreCase": 1,
+            "Type": "Expression",
+            "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
+          },
+          "Type": "If"
+        },
+        "Type": "BooleanExpression"
+      },
+      "Flow": [
+        {
+          "Type": "Standard",
+          "ID": "BL_5jbctUgMWD6n0do",
+          "FlowID": "FL_4",
+          "Autofill": []
+        },
+        {
+          "Type": "EndSurvey",
+          "FlowID": "FL_7"
+        }
+      ]
+    },
+    {
+      "Type": "Block",
+      "ID": "BL_0chMfZ1I0EJKR5s",
+      "FlowID": "FL_2",
+      "Autofill": []
+    },
+    {
+      "Type": "Standard",
+      "ID": "BL_3yMSBudhDk2bY0e",
+      "FlowID": "FL_5",
+      "Autofill": []
+    }
+  ],
+  "Properties": {
+    "Count": 8
+  }
+}

@@ -1,5 +1,5 @@
 
-if __name__ == '__main__':
+def main():
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
     # if two command line parameters are entered, then the second is assumed to be your API token
     # if 3 or 4 command line parameters are entered then

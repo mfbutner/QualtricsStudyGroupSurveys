@@ -1,3 +1,8 @@
+import json
+from os import PathLike
+import pathlib
+from venv import create
+
 from requests_toolbelt import sessions
 from typing import Any
 from .oath_information import OathInformation
@@ -37,15 +42,14 @@ class QualtricsConnection:
                 common_headers['X-API-TOKEN'] = credentials
                 self.oath_info = None
             case wrong_type:
-                 raise TypeError(f'credentials must be one of str | OathInformation but {type(wrong_type)} was entered')
+                raise TypeError(f'credentials must be one of str | OathInformation but {type(wrong_type)} was entered')
 
         self.connection.headers.update(common_headers)
 
     def list_surveys(self) -> dict[str, Any]:
         endpoint = "/API/v3/surveys"
-
         headers = {
-
+            # purposefully empty
         }
 
         response = self.connection.get(endpoint, headers=headers)
@@ -53,29 +57,70 @@ class QualtricsConnection:
         return response.json()['result']
 
     def get_survey(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/surveys/{survey_id}'
-        headers = {
-        }
-
-        response = self.connection.get(endpoint, headers=headers)
-        response.raise_for_status()
-        return response.json()['result']
-
-    def get_questions(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
-        headers = {}
-        
-        response = self.connection.get(endpoint, headers=headers)        
-        response.raise_for_status()
-        return response.json()['result']
+        endpoint = f'/API/v3/survey-definitions/{survey_id}'
+        return self._url_only_get(endpoint)
 
     def who_am_i(self) -> dict[str, Any]:
         endpoint = "/API/v3/whoami"
 
+        return self._url_only_get(endpoint)
+
+    def get_questions(self, survey_id: str) -> dict[str, Any]:
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        return self._url_only_get(endpoint)
+
+    def get_blocks(self, survey_id: str) -> list[dict[str, Any]]:
+        endpoint = '/API/v3/survey-definitions/{survey_id}/blocks/{block_id}'
         headers = {
-
+            # purposefully empty
         }
+        survey = self.get_survey(survey_id)
+        blocks = []
+        for block_id in survey['Blocks']:
+            block = self.connection.get(endpoint.format(survey_id=survey_id, block_id=block_id), headers=headers)
+            block.raise_for_status()
+            blocks.append(block.json()['result'])
+        return blocks
 
+    def get_flow(self, survey_id: str) -> dict[str, Any]:
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        return self._url_only_get(endpoint)
+
+    def get_survey_options(self, survey_id: str):
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/options'
+        return self._url_only_get(endpoint)
+
+    def download_all_survey_attributes(self, survey_id: str, dir_path: str,
+                                       create_dir_if_missing: bool = False,
+                                       create_parents: bool = False) -> None:
+        """
+        Downloads the survey and its questions, options, flow, and blocks to the specified directory
+        :param survey_id: the survey's id
+        :param dir_path: the path to the directory to download all the json files to
+        :param create_dir_if_missing: create the directory if missing
+        :param create_parents: if the directory is missing, should all missing directories along the path
+        be created?
+        :return:
+        """
+        dir_path = pathlib.Path(str(dir_path))
+        if create_dir_if_missing and not dir_path.exists():
+            dir_path.mkdir(parents=create_parents, exist_ok=True)
+
+        locations_and_generators = {
+            'survey.json': lambda: self.get_survey(survey_id),
+            'questions.json': lambda: self.get_questions(survey_id),
+            'survey_options.json': lambda: self.get_survey_options(survey_id),
+            'flow.json': lambda: self.get_flow(survey_id),
+            'blocks.json': lambda: self.get_blocks(survey_id)
+        }
+        for location, generator in locations_and_generators.items():
+            with open(dir_path / location, 'w') as dest_file:
+                json.dump(generator(), dest_file, indent=2)
+
+    def _url_only_get(self, endpoint):
+        headers = {
+            # purposefully empty
+        }
         response = self.connection.get(endpoint, headers=headers)
-
+        response.raise_for_status()
         return response.json()['result']
