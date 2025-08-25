@@ -1,72 +1,64 @@
-from enum import Enum
-from typing import Any, List
+from abc import ABC, abstractmethod
+from typing import Dict, Any
+from .student import Student
 
-class Operator(Enum): # can add more if needed
-    EQUAL_TO = 0
-    NOT_EQUAL_TO = 1
+class Display_Logic(ABC):
+    @abstractmethod
+    def generate_json(self, choice_number:int) -> Dict[str, Any]:
+        pass
 
-class Logic_Type(Enum):
-    EMBEDDED_FIELD = 0
-    PANEL_DATA = 1
-    QUESTION = 2
-
-class Joining_Type(Enum):
-    EXPRESSION = "Expression"
-    BOOLEAN_EXPRESSION = "BooleanExpression"
-    IF = "If"
-    AND_IF = "AndIf"
-    OR_DIF = "OrIf"
-
-class Conjunction(Enum):
-    AND = 0
-    OR = 1
-    NONE = 2
-
-class Sub_Display_Logic:
-    def __init__(self, logic_type:Logic_Type, lhs:str, operator:Operator, rhs:str, type:Joining_Type, description:str, conjunction:Conjunction = None):
-        self._logic_type = logic_type
-        self._lhs = lhs
-        self._operator = operator
-        self._rhs = rhs
-        self._type = type
-        self._description = description
-        self._conjunction = conjunction
+class Display_My_Team(Display_Logic):
+    def __init__(self, student:Student):
+        self._student = student
     
-    def generate_json(self) -> dict[str, Any]:
-        output = {
-            "LogicType": self._logic_type,
-            "LeftOperand": self._lhs,
-            "Operator": self._operator,
-            "RightOperand": self._rhs,
-            "Type":self._type,
-            "Description": self._description,
+    def generate_json(self, choice_number:int):
+        return {
+            f"{choice_number}": {
+                "0": {
+                    "LogicType": "EmbeddedField",
+                    "LeftOperand": "Team",
+                    "Operator": "EqualTo",
+                    "RightOperand": f"{self._student._team}",
+                    "Type": "Expression",
+                    # "Description": fr"<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> f{self._team_number} </span>"
+                },
+                "1": {
+                    "LogicType": "PanelData",
+                    "LeftOperand": "m://Email1",
+                    "Operator": "NotEqualTo",
+                    "RightOperand": f"{self._student._email}",
+                    "Type": "Expression",
+                    # "Description": fr"<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">{self._student._email}</span>",
+                    "Conjunction": "And"
+                },
+                "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": False
         }
-        if self._conjunction is not None:
-            output["Conjunction"] = self._conjunction
-        return output
 
-class Display_Logic:
-    def __init__(self, sub_logics:List[Sub_Display_Logic], type:Joining_Type):
-       self._sub_logics = sub_logics
-       self._type = type
-    
-    def generate_json(self) -> dict[str, Any]:
-        output = {
-            f"{i}": sub_logic.generate_json() for (i,sub_logic) in enumerate(self._sub_logics)
+class Display_Only_If_Response_Matches(Display_Logic):
+    def __init__(self, question_ID:str):
+        self._question_ID = question_ID
+
+    def generate_json(self, choice_number:int):
+        return {
+            f"{choice_number}": {
+                "0": {
+                    "LogicType": "Question",
+                    "QuestionID": self._question_ID,
+                    "QuestionIsInLoop": "no",
+                    "ChoiceLocator": f"q://{self._question_ID}/ChoiceTextEntryValue",
+                    "Operator": "EqualTo",
+                    "QuestionIDFromLocator": f"{self._question_ID}",
+                    "LeftOperand": f"q://{self._question_ID}/ChoiceTextEntryValue",
+                    "RightOperand": "0",
+                    "Type": "Expression",
+                    # "Description": fr"<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> f{self._team_number} </span>"
+                },
+                "Type": "If"
+            },
+            "Type": "BooleanExpression",
+            "inPage": False
         }
-        output["Type"] = self._type.value
-        return output           
 
-class Display_Logic_Field:
-    def __init__(self, display_logic:List[Display_Logic], joining_type:Joining_Type=None):
-        self._display_logic = display_logic
-        self._joining_type = joining_type
-    
-    def generate_json(self):
-        output = {}
-        for (i, display_logic) in enumerate(self._display_logics):
-            output[f"{i}"] = display_logic.generate_json()
-        if self._joining_type is not None:
-            output["Type"] = self._joining_type
-        output["inPage"] = False
-        return output
