@@ -15,8 +15,8 @@ class Selector(Enum):
 class Question(ABC):
     def __init__(self, name:str, description:str, validation:Validation):
         self._name = name
-        self._description = description
         self._validation = validation
+        self._description = description
         self._display_logic = []
     
     @abstractmethod
