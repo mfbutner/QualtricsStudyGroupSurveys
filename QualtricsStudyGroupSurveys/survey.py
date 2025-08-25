@@ -6,19 +6,19 @@ class Survey:
     def __init__(self, name:str):
         self._questions = []
         self._name = name
-        self._header = {
-            "id" : "Manually Removed Due To Being publiclly hosted",
-            "name": self._name,
-            "ownerID": "Manually Removed Due To Being publiclly hosted",
-            "organizationId": "ucdavis",
-            "isActive": True,
-            "creationDate": "2025-08-01T23:40:20Z",
-            "lastModifiedDate": "2025-08-21T23:02:47Z",
-            "expiration": {
-                "startDate": None,
-                "endDate": None
-            }
-        }
+        # self._header = {
+        #     "id" : "Manually Removed Due To Being publiclly hosted",
+        #     "name": self._name,
+        #     "ownerID": "Manually Removed Due To Being publiclly hosted",
+        #     "organizationId": "ucdavis",
+        #     "isActive": True,
+        #     "creationDate": "2025-08-01T23:40:20Z",
+        #     "lastModifiedDate": "2025-08-21T23:02:47Z",
+        #     "expiration": {
+        #         "startDate": None,
+        #         "endDate": None
+        #     }
+        # }
     
     def pushToQualtrics(self, qualtrics:QualtricsConnection): #TODO: confirm using OAuth vs other approaches?
         print(f"Yep, totally pushing survey {self._name} to Qualtrics right now.") #TODO: modify Prof. Butner's sample code to push to personal test survey
@@ -28,6 +28,9 @@ class Survey:
         self._questions.append(question)
     
     def generate_json(self) -> Dict[str, Any]:
-        output = self._header
-        self._header["questions"] = {f"QID{i + 1}": question.generate_json() for (i, question) in enumerate(self._questions)}
-        return output
+        return {
+            "elements": [question.generate_json(f"QID{i + 1}") for (i,question) in enumerate(self._questions)]
+        }
+        # output = self._header
+        # self._header["questions"] = {f"QID{i + 1}": question.generate_json() for (i, question) in enumerate(self._questions)}
+        # return output

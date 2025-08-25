@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Any
 from .mc_choice import Choice
 from .validation import Validation
+from .display_logic import Display_Logic_Field
 from enum import Enum
 
 class Selector(Enum):
@@ -16,6 +17,7 @@ class Question(ABC):
         self._name = name
         self._description = description
         self._validation = validation
+        self._display_logic = []
     
     @abstractmethod
     def generate_json(self) -> dict[str, Any]:
@@ -49,46 +51,94 @@ class Multiple_Choice(Question):
             },
             "QuestionDescription":self._description,
             "Choices":{
-                str(i + 1): choice.generate_json(i) for (i, choice) in enumerate(self._choices)
-            }
+                str(i + 1): choice.generate_json() for (i, choice) in enumerate(self._choices)
+            },
+            "ChoiceOrder": [(i+1) for i in range(len(self._choices))],
+            "Validation": self._validation.generate_json(),
+            "GradingData": [],
+            "Language": [],
+            "NextChoiceId": 1 + len(self._choices),
+            "NextAnswerId": 1,
+            "QuestionText_Unsafe": self._description
         }        
 
     
 class Text_Entry(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, display_logic:Display_Logic_Field=None):
         super().__init__(name, description, validation)
         self._selector = selector
+        self._display_logic = display_logic
     
-    def generate_json(self) -> dict[str, Any]:
-        return {
-            "questionType": {
-                "type":"TE",
-                "selector":self._selector.name, 
-                "subSelector":None
+    def generate_json(self, question_ID:str) -> dict[str, Any]:
+        output = {
+            "QuestionText": self._description,
+            "DefaultChoices": False,
+            "DataExportTag": self._name,
+            "QuestionID": question_ID,
+            "QuestionType": "TE",
+            "Selector": self._selector.name,
+            "DataVisibility": {
+                "Private": False,
+                "Hidden": False,
             },
-            "questionText":self._description,
-            "questionLabel":None,
-            "validation":self._validation.generate_json(),
-            "questionName":self._name
+            "Configuration": {
+                "QuestionDescriptionOption": "UseText"
+            },
+            "QuestionDescription": self._description,
+            "Validation": self._validation.generate_json(),
+            "GradingData": [],
+            "Language": [],
+            "NextChoiceId": 4, # TODO: This shouldn't be hardcoded. How is it generated?
+            "NextAnswerId": 1,
+            "SearchSource": {
+                "AllowFreeResponse": False
+            },
+            "QuestionText_Unsafe": self._description,
         }
+        if self._display_logic is not None:
+            output["DisplayLogic"] = self._display_logic.generate_json()
+        
+        return output
+
 
 
 class File_Upload(Question):
-    def __init__(self, name:str, description:str, validation:Validation):
+    def __init__(self, name:str, description:str, validation:Validation, display_logic:Display_Logic_Field=None):
         super().__init__(name, description, validation)
+        self._display_logic = display_logic
     
-    def generate_json(self) -> dict[str, Any]:
-        return {
-            "questionType": {
-                "type":"FileUpload", 
-                "selector":"FileUpload",
-                "subSelector":None
+    def generate_json(self, question_ID:str) -> dict[str, Any]:
+        output = {
+            "QuestionText": self._description,
+            "DefaultChoices": False,
+            "DataExportTag": self._name,
+            "QuestionType": "FileUpload",
+            "Selector": "FileUpload",
+            "DataVisibility": {
+                "Private": False,
+                "Hidden": False,
             },
-            "questionText":self._description,
-            "questionLabel":None,
-            "validation":self._validation.generate_json(),
-            "questionName":self._name
+            "Configuration": {
+                "QuestionDescriptionOption": "UseText",
+                "MinSeconds": "0",
+                "MaxSeconds": "0",
+                "AudioOnly": False,
+                "VideoUpload": False
+            },
+            "QuestionDescription": self._description,
+            "Validation": self._validation.generate_json(),
+            "GradingData": [],
+            "Language": [],
+            "NextChoiceId": 4, # TODO: This shouldn't be hardcoded. How is it generated?
+            "NextAnswerId": 1,
+            "ScreenCaptureText": "Capture Screen",
+            "QuestionID": question_ID,
+            "QuestionText_Unsafe": self._description,
         }
+        if self._display_logic is not None:
+            output["DisplayLogic"] = self._display_logic.generate_json()
+        
+        return output
 
 
 

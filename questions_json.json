@@ -30,15 +30,35 @@
                 "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 1 </span>"
               },
               "1": {
-                "LogicType": "PanelData",
-                "LeftOperand": "m://Email1",
-                "Operator": "NotEqualTo",
-                "RightOperand": "Team1Person1@ucdavis.edu",
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "RecipientEmail",
+                "Operator": "EqualTo",
+                "RightOperand": "hello",
                 "Type": "Expression",
-                "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person1@ucdavis.edu</span>",
+                "Description": "<span class=\"ConjDesc\">And</span> <span class=\"LeftOpDesc\">RecipientEmail</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> hello </span>",
                 "Conjuction": "And"
               },
+              "2": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": "2",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">Or</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 2 </span>",
+                "Conjuction": "Or"
+              },
               "Type": "If"
+            },
+            "1": {
+              "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "RecipientFirstName",
+                "Operator": "EqualTo",
+                "RightOperand": "stajdklsjfldsf",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">RecipientFirstName</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> stajdklsjfldsf </span>"
+              },
+              "Type": "AndIf"
             },
             "Type": "BooleanExpression",
             "inPage": false
@@ -647,3 +667,4 @@
     }
   ]
 }
+Yep, totally pushing survey Test-Butner-Survey to Qualtrics right now.
