@@ -1,11 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
 
-# class Validation_Type(Enum):
-#     OPTIONAL = 0
-#     REQUIRED = 1
-#     VALID    = 2
-
 class Validation(ABC):
     @abstractmethod
     def generate_json(self) -> Dict[str, Any]:
@@ -53,7 +48,7 @@ class Min_Chars(Validation):
             "Settings": {
                 "ForceResponse": "ON",
                 "ForceResponseType": "ON",
-                "Type": "MinChars",
+                "Type": "MinChar",
                 "MinChars": f"{self._num_chars}"
             }
         }

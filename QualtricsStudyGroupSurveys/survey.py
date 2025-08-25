@@ -3,9 +3,10 @@ from .qualtrics_connection import QualtricsConnection
 from typing import Dict, Any
 
 class Survey:
-    def __init__(self, name:str):
+    def __init__(self, name:str, id:str):
         self._questions = []
         self._name = name
+        self._id = id
         # self._header = {
         #     "id" : "Manually Removed Due To Being publiclly hosted",
         #     "name": self._name,
@@ -20,9 +21,11 @@ class Survey:
         #     }
         # }
     
-    def pushToQualtrics(self, qualtrics:QualtricsConnection): #TODO: confirm using OAuth vs other approaches?
-        print(f"Yep, totally pushing survey {self._name} to Qualtrics right now.") #TODO: modify Prof. Butner's sample code to push to personal test survey
-        return
+    def pushToQualtrics(self, qualtrics:QualtricsConnection) -> str:
+        response = ""
+        for (i, question) in enumerate(self._questions):
+            response += qualtrics.update_question(self._id, f"QID{i + 1}", question) + '\n'
+        return response
     
     def addQuestion(self, question:Question):
         self._questions.append(question)

@@ -7,7 +7,6 @@ def main():
     # - sys.argv[3] is your oath client secret
     # - optionally, sys.argv[4] can be your scope, if not entered it will default to manage:all
     import sys
-    import json
     from QualtricsStudyGroupSurveys import QualtricsConnection
     from QualtricsStudyGroupSurveys import OathInformation
     from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader
@@ -35,9 +34,9 @@ def main():
     # print(json.dumps(questions, indent=2))
     students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
     activities = [f"Activity {i}" for i in range(1,4)]
-    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [5, 10, 20, "More than 20"], my_servey['name'])
+    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [5, 10, 20, "More than 20"], my_servey['name'], my_servey['id'])
     survey.pushToQualtrics(qualtrics)
-    print(json.dumps(survey.generate_json(), indent=2)) # indent for pretty-print
+    # print(json.dumps(survey.generate_json(), indent=2)) # indent for pretty-print
 
 if __name__ == "__main__":
     main()

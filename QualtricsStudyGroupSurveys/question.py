@@ -24,24 +24,27 @@ class Question(ABC):
         pass
 
 class Multiple_Choice(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice] = None):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice]):
         super().__init__(name, description, validation)
         self._selector = selector
         self._usesSubSelector = usesSubSelector
-        self._choices = choices if choices is not None else []
+        self._choices = choices
     
     def addChoice(self, choice:Choice):
         self._choices.append(choice)
     
     def generate_json(self, question_ID:str) -> dict[str, Any]:
-        return {
+        start = {
             "QuestionText":self._description,
             "DefaultChoices":False,
             "DataExportTag":self._name,
             "QuestionID":question_ID,
             "QuestionType":"MC",
             "Selector":self._selector.name,
-            "SubSelector":"TX",
+        }
+        if self._usesSubSelector:
+            start["SubSelector"] = "TX"
+        end = {
             "DataVisibility": {
                 "Private":False,
                 "Hidden":False
@@ -51,7 +54,7 @@ class Multiple_Choice(Question):
             },
             "QuestionDescription":self._description,
             "Choices":{
-                str(i + 1): choice.generate_json(question_ID) for (i, choice) in enumerate(self._choices)
+                str(i + 1): choice.generate_json() for (i, choice) in enumerate(self._choices)
             },
             "ChoiceOrder": [(i+1) for i in range(len(self._choices))],
             "Validation": self._validation.generate_json(),
@@ -60,11 +63,12 @@ class Multiple_Choice(Question):
             "NextChoiceId": 1 + len(self._choices),
             "NextAnswerId": 1,
             "QuestionText_Unsafe": self._description
-        }        
+        }
 
+        return start | end
     
 class Text_Entry(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, display_logic:Display_Logic=None):
+    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, display_logic:Display_Logic):
         super().__init__(name, description, validation)
         self._selector = selector
         self._display_logic = display_logic
@@ -96,14 +100,14 @@ class Text_Entry(Question):
             "QuestionText_Unsafe": self._description,
         }
         if self._display_logic is not None:
-            output["DisplayLogic"] = self._display_logic.generate_json(0)
+            output["DisplayLogic"] = self._display_logic.generate_json()
         
         return output
 
 
 
 class File_Upload(Question):
-    def __init__(self, name:str, description:str, validation:Validation, display_logic:Display_Logic=None):
+    def __init__(self, name:str, description:str, validation:Validation, display_logic:Display_Logic):
         super().__init__(name, description, validation)
         self._display_logic = display_logic
     
@@ -136,7 +140,7 @@ class File_Upload(Question):
             "QuestionText_Unsafe": self._description,
         }
         if self._display_logic is not None:
-            output["DisplayLogic"] = self._display_logic.generate_json(question_ID)
+            output["DisplayLogic"] = self._display_logic.generate_json()
         
         return output
 
