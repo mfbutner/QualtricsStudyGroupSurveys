@@ -11,19 +11,12 @@ API_TOKEN = os.getenv("Q_API_TOKEN")
 SURVEY_ID = os.getenv("Q_TEST_SURVEY_ID")
 BUTNER_SURVEY_ID = os.getenv("Q_BUTNER_SURVEY_ID")
 
-def fetch_survey_questions(survey_id: str, qualtrics_connection: QualtricsConnection):
-    endpoint = f"/API/v3/survey-definitions/{survey_id}/questions"
-    headers = { 'Accept' : 'application/json',}
-    response = qualtrics_connection.connection.get(endpoint, headers=headers)
-    response.raise_for_status()
-    return response.json()
-
 def upload_survey_questions(survey_id: str, qualtrics_connection: QualtricsConnection, questions_json: dict):
     endpoint = f"/API/v3/survey-definitions/{survey_id}/questions"
     headers = { 'Content-Type' : "application/json"}
 
     response = qualtrics_connection.connection.post(endpoint, headers=headers, json=questions_json)
-    response.raise_for_status()
+    # response.raise_for_status()
     return response.json()
 
 question_info = {
@@ -62,7 +55,7 @@ question_info = {
                             "RightOperand": "Team1Person1@ucdavis.edu",
                             "Type": "Expression",
                             "Description": "<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">Team1Person1@ucdavis.edu</span>",
-                            "Conjunction": "And"
+                            "Conjuction": "And"
                         },
                         "Type": "If"
                     },
@@ -288,7 +281,15 @@ question_info = {
             }
         },
         "ChoiceOrder": [
-            '1', '2', '3', '4', '5', '6', '7', '8', '9'
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
         ],
         "Validation": {
             "Settings": {
@@ -307,7 +308,7 @@ question_info = {
 
 if __name__ == "__main__":
     qualtrics = QualtricsConnection(DATA_CENTER, API_TOKEN)
-    # res = upload_survey_questions(SURVEY_ID, qualtrics, question_info)
-    res = fetch_survey_questions(BUTNER_SURVEY_ID, qualtrics)
+    res = upload_survey_questions(SURVEY_ID, qualtrics, question_info)
+    # res = qualtrics.download_all_survey_attributes(BUTNER_SURVEY_ID, r'PATH_TO_DOWNLOAD_SURVEY_INFO_TO', create_dir_if_missing=True, create_parents=True)
     with open("questions_output.json", "w") as f:
         json.dump(res, f, indent=2)
