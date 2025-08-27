@@ -1,0 +1,49 @@
+{
+	"name": "Python Devcontainer",
+    "privileged": true,
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"workspaceFolder": "/home/pythondev/qualtrics_study_group_survey",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/pythondev/qualtrics_study_group_survey,type=bind",
+	"customizations": {
+		"vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.formatting.autopep8Path": "/usr/local/bin/autopep8",
+				"python.formatting.blackPath": "/usr/local/bin/black",
+				"python.formatting.yapfPath": "/usr/local/bin/yapf",
+				"python.linting.banditPath": "/usr/local/bin/bandit",
+				"python.linting.flake8Path": "/usr/local/bin/flake8",
+				"python.linting.mypyPath": "/usr/local/bin/mypy",
+				"python.linting.pycodestylePath": "/usr/local/bin/pycodestyle",
+				"python.linting.pydocstylePath": "/usr/local/bin/pydocstyle",
+				"python.linting.pylintPath": "/usr/local/bin/pylint"
+            },
+			"extensions": [
+				"aaron-bond.better-comments",
+				"charliermarsh.ruff",
+				"christian-kohler.path-intellisense",
+				"github.remotehub",
+				"github.vscode-pull-request-github",
+				"kevinrose.vsc-python-indent",
+				"mechatroner.rainbow-csv",
+				"mgesbert.python-path",
+				"mhutchie.git-graph",
+				"ms-python.debugpy",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.vscode-python-envs",
+				"ms-toolsai.datawrangler",
+				"ms-vscode.remote-repositories",
+				"njpwerner.autodocstring",
+				"shd101wyy.markdown-preview-enhanced",
+				"streetsidesoftware.code-spell-checker",
+				"tamasfe.even-better-toml",
+				"tushortz.python-extended-snippets",
+				"waderyan.gitblame"
+			]
+		}
+	}
+}
