@@ -1,6 +1,6 @@
 {
 	"name": "Python Devcontainer",
-    "privileged": true,
+	"privileged": true,
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
@@ -8,8 +8,8 @@
 	"workspaceMount": "source=${localWorkspaceFolder},target=/home/pythondev/qualtrics_study_group_survey,type=bind",
 	"customizations": {
 		"vscode": {
-            "settings": {
-                "python.defaultInterpreterPath": "/usr/local/bin/python",
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
 				"python.linting.enabled": true,
 				"python.formatting.autopep8Path": "/usr/local/bin/autopep8",
 				"python.formatting.blackPath": "/usr/local/bin/black",
@@ -20,7 +20,7 @@
 				"python.linting.pycodestylePath": "/usr/local/bin/pycodestyle",
 				"python.linting.pydocstylePath": "/usr/local/bin/pydocstyle",
 				"python.linting.pylintPath": "/usr/local/bin/pylint"
-            },
+			},
 			"extensions": [
 				"aaron-bond.better-comments",
 				"charliermarsh.ruff",
