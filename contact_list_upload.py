@@ -23,35 +23,18 @@ contact_schema = {
         "embeddedData": {
             "type": "object",
             "properties": {
-                "group": {"type": "string"}
+                "Team": {"type": "string"}
             },
-            "required": ["group"]
+            "required": ["Team"]
         }
     },
     "required": ["email"]
 }
 
-def list_mailing_lists(qualtrics: QualtricsConnection, directory_id):
-    endpoint = f"/API/v3/directories/{directory_id}/mailinglists"
-    headers = {}
-    response = qualtrics.connection.get(endpoint, headers=headers)
-    response.raise_for_status()
-    return response.json()
 
-def get_mailing_list_contacts(qualtrics: QualtricsConnection, directory_id, mailing_list_id):
-    endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
-    headers = {}
-    response = qualtrics.connection.get(endpoint, headers=headers)
-    response.raise_for_status()
-    return response.json()
-
-def add_contact_to_mailing_list(qualtrics: QualtricsConnection, directory_id, mailing_list_id, contact):
-    endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
-    response = qualtrics.connection.post(endpoint, json=contact)
-    return response
 
 def is_in_mailing_list(qualtrics: QualtricsConnection, directory_id, mailing_list_id, email) -> bool:
-    contacts = get_mailing_list_contacts(qualtrics, directory_id, mailing_list_id)
+    contacts = qualtrics.get_mailing_list_contacts(directory_id, mailing_list_id)
     for contact in contacts['result']['elements']:
         if contact['email'] == email:
             return True
@@ -69,7 +52,8 @@ def upload_csv_to_mailing_list(qualtrics: QualtricsConnection, directory_id, mai
             "email": email,
             "extRef": str(row.StudentID),
             "embeddedData": {
-                "group": str(row.Team)
+                "Team": str(row.Team),
+                "canvasId": str(row.CanvasId)
             }
         }
         try:
@@ -80,7 +64,7 @@ def upload_csv_to_mailing_list(qualtrics: QualtricsConnection, directory_id, mai
         if is_in_mailing_list(qualtrics, directory_id, mailing_list_id, email):
             print(f"User with email {email} already in mailing list, skipping...")
             continue
-        response = add_contact_to_mailing_list(qualtrics, directory_id, mailing_list_id, contact)
+        response = qualtrics.add_contact_to_mailing_list(directory_id, mailing_list_id, contact)
         response.raise_for_status()
 
 def main():
@@ -89,7 +73,6 @@ def main():
         print("Please provide a path to a csv as a command line argument.")
         sys.exit(1)
     csv_path = sys.argv[1]
-    # res = get_mailing_list_contacts(qualtrics, DIRECTORY_ID, MAILING_LIST_ID)
     res = upload_csv_to_mailing_list(qualtrics, DIRECTORY_ID, MAILING_LIST_ID, csv_path)
 
     # new_contact = {
@@ -98,7 +81,7 @@ def main():
     #     "email": "nsching@ucdavis.edu",
     #     "extRef": "123456",
     #     "embeddedData": {
-    #         "group": "A"
+    #         "Team": "A"
     #     }
     # }
     # res = add_contact_to_mailing_list(qualtrics, DIRECTORY_ID, MAILING_LIST_ID, new_contact)

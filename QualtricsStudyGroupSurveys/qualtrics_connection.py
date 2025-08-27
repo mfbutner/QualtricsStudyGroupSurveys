@@ -6,7 +6,6 @@ from venv import create
 from requests_toolbelt import sessions
 from typing import Any
 from .oath_information import OathInformation
-from .question import Question
 
 
 class QualtricsConnection:
@@ -126,12 +125,44 @@ class QualtricsConnection:
         response.raise_for_status()
         return response.json()['result']
     
-    def add_question(self, survey_id: str, question_id:str, question:Question) -> str:
+    def add_question(self, survey_id: str, question: dict):
+        headers = {
+            "Content-Type": "application/json"
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        response = self.connection.post(endpoint, json=question, headers=headers)
+        response.raise_for_status()
+        return response.json
+
+    def update_question(self, survey_id: str, question_id:str, question_patch: dict) -> str:
         headers = {
             # purposefully empty
         }
-        print(f"question {question_id}:")
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
-        response = self.connection.post(endpoint, json=question.generate_json(question_id), headers=headers).text
-        print(response)
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions/{question_id}'
+        response = self.connection.put(endpoint, json=question_patch.generate_json(question_id), headers=headers)
+        response.raise_for_status()
         return response
+    
+    def list_mailing_lists(self, directory_id):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists"
+        headers = {}
+        response = self.connection.get(endpoint, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+    def get_mailing_list_contacts(self, directory_id, mailing_list_id):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
+        headers = {}
+        response = self.connection.get(endpoint, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+    def add_contact_to_mailing_list(self, directory_id, mailing_list_id, contact):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
+        response = self.connection.post(endpoint, json=contact)
+        return response
+    
+    def send_survey_to_mailing_list(self, mailing_list_id, survey_id, from_email, subject, message):
+        # Done by creating a distribution
+        endpoint = f"/API/v3/distributions"
+        # TODO: review docs to decide specific parameters for distribution (ex. individual links)
