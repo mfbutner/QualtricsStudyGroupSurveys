@@ -2,6 +2,7 @@ FROM ubuntu:rolling
 
 # Install stuff like git,pip,and pipx
 RUN apt-get update && apt-get install -y \
+    sudo \
     git \
     python3-pip \
     python3-venv \
