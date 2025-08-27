@@ -28,7 +28,7 @@ def main():
 
     surveys = qualtrics.list_surveys()
     my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
-    students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
+    students = CSV_reader.parse_CSV_for_students("MyExampleContacts.csv")
     activities = [f"Activity {i}" for i in range(1,4)]
     survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [str(5), str(10), str(20), "More than 20"], 
                                                             my_servey['name'], my_servey['id'], qualtrics)

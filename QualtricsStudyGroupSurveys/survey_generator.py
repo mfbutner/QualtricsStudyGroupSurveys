@@ -7,7 +7,7 @@ from .display_logic import Display_My_Team, Display_Only_If_Response_Matches
 from .mc_choice import Choice
 from .block import Block
 
-class Survey_Generator:
+class Survey_Generator: # TODO: Read from data file to generate questions
     @staticmethod
     def generate_survey_from_students(students:List[Student], dates:List[int], activities:List[str], durations:List[str], 
                                       survey_name:str, survey_id:str, qualtrics) -> Survey: # TODO: different datatype for dates. Probably datetime.
