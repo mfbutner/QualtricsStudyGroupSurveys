@@ -1,13 +1,13 @@
 import json
 from os import PathLike
-import pathlib
+from pathlib import Path
+from typing import Union
 from venv import create
 
 from requests_toolbelt import sessions
 from typing import Any
 from .oath_information import OathInformation
 from .question import Question
-
 
 class QualtricsConnection:
     def __init__(self, data_center: str,
@@ -91,7 +91,7 @@ class QualtricsConnection:
         endpoint = f'/API/v3/survey-definitions/{survey_id}/options'
         return self._url_only_get(endpoint)
 
-    def download_all_survey_attributes(self, survey_id: str, dir_path: str,
+    def download_all_survey_attributes(self, survey_id: str, dir_path: Union[str,Path],
                                        create_dir_if_missing: bool = False,
                                        create_parents: bool = False) -> None:
         """
@@ -103,7 +103,7 @@ class QualtricsConnection:
         be created?
         :return:
         """
-        dir_path = pathlib.Path(str(dir_path))
+        dir_path = Path(dir_path)
         if create_dir_if_missing and not dir_path.exists():
             dir_path.mkdir(parents=create_parents, exist_ok=True)
 
