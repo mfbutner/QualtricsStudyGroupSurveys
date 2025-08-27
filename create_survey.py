@@ -63,8 +63,13 @@ def meet_count_question():
         "DataExportTag": "Q1.1",
         "QuestionType": "TE",
         "Selector": "SL",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
         "Validation": {
             "Settings": {
@@ -76,14 +81,20 @@ def meet_count_question():
                 "ValidDateType": "DateWithFormat",
                 "ValidPhoneType": "ValidUSPhone",
                 "ValidZipType": "ValidUSZip",
-                "ValidNumber": {"Min": "0", "Max": "10", "NumDecimals": "0"}
+                "ValidNumber": {
+                    "Min": "0",
+                    "Max": "10",
+                    "NumDecimals": "0"
+                }
             }
         },
         "GradingData": [],
         "Language": [],
         "NextChoiceId": 3,
         "NextAnswerId": 1,
-        "SearchSource": {"AllowFreeResponse": "false"}
+        "SearchSource": {
+            "AllowFreeResponse": "false"
+        }
     }
 
 def no_meeting_explanation():
@@ -93,8 +104,13 @@ def no_meeting_explanation():
         "DataExportTag": "Q2.1",
         "QuestionType": "TE",
         "Selector": "ESTB",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "Please explain why you didn't meet with your group this week.",
         "Validation": {
             "Settings": {
@@ -105,7 +121,6 @@ def no_meeting_explanation():
             }
         }
     }
-
 
 def no_meeting_upload_question():
     return {
@@ -118,10 +133,19 @@ def no_meeting_upload_question():
         "DataExportTag": "Q2.2",
         "QuestionType": "FileUpload",
         "Selector": "FileUpload",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False, "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "Please upload any supporting screenshots, images, or other files that support why you didn't meet...",
-        "Validation": {"Settings": {"ForceResponse": "OFF", "Type": "None"}}
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "OFF",
+                "Type": "None"
+            }
+        }
     }
 
 def who_did_you_meet_with_question():
@@ -136,12 +160,24 @@ def who_did_you_meet_with_question():
         "QuestionType": "MC",
         "Selector": "MAVR",
         "SubSelector": "TX",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
         "Choices": choices,
         "ChoiceOrder": list(range(1, len(WHO_MET_CHOICES) + 1)),
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "MinChoices",
+                "MinChoices": "1"
+            }
+        },
         "GradingData": [],
         "Language": [],
         "NextChoiceId": len(WHO_MET_CHOICES) + 1,
@@ -155,17 +191,28 @@ def meeting_date_question():
         "DataExportTag": "Q3.1",
         "QuestionType": "MC",
         "Selector": "DL",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "When was your ${lm://Field/2} meeting?",
         "Choices": {
             "1": {"Display": "Date1"},
             "2": {"Display": "Date2"},
             "3": {"Display": "Date3"},
-            "4": {"Display": "Click to write Choice 4"}
+            "4": {"Display": "Date4"}
         },
         "ChoiceOrder": [1, 2, 3, 4],
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "None"}},
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "None"
+            }
+        },
         "GradingData": [],
         "Language": [],
         "NextChoiceId": 5,
@@ -180,8 +227,13 @@ def meeting_activities_question():
         "QuestionType": "MC",
         "Selector": "MAVR",
         "SubSelector": "TX",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "What did you do during your ${lm://Field/2} meeting?",
         "Choices": {
             "1": {"Display": "Activity 1"},
@@ -189,7 +241,14 @@ def meeting_activities_question():
             "3": {"Display": "Activity 3"}
         },
         "ChoiceOrder": [1, 2, 3],
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "MinChoices",
+                "MinChoices": "1"
+            }
+        },
         "GradingData": [],
         "Language": [],
         "NextChoiceId": 4,
@@ -203,8 +262,13 @@ def meeting_duration_question():
         "QuestionType": "MC",
         "Selector": "SAVR",
         "SubSelector": "TX",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False,
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "How long did your ${lm://Field/2} meeting last?",
         "Choices": {
             "1": {"Display": "5 minutes"},
@@ -213,15 +277,26 @@ def meeting_duration_question():
             "4": {"Display": "More than 20 minutes"}
         },
         "ChoiceOrder": [1, 2, 3, 4],
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "None"}},
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "None"
+            }
+        },
         "Language": [],
         "NextChoiceId": 5,
         "NextAnswerId": 1
     }
 
 def who_did_you_not_meet_with_question():
-    choices = {str(i): {"Display": f"Person {i}"} for i in range(1, 10)}
-    choices["10"] = {"Display": "I met with everyone in my group", "ExclusiveAnswer": True}
+    choices = {}
+    for i, (display, team, email) in enumerate(WHO_MET_CHOICES, start=1):
+        choices[str(i)] = build_person_choice(display, team, email)
+    choices["10"] = {
+        "Display": "I met with everyone in my group",
+        "ExclusiveAnswer": True
+    }    
     return {
         "QuestionText": "Who did you NOT meet with this week?",
         "DefaultChoices": False,
@@ -229,12 +304,24 @@ def who_did_you_not_meet_with_question():
         "QuestionType": "MC",
         "Selector": "MAVR",
         "SubSelector": "TX",
-        "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "DataVisibility": {
+            "Private": False, 
+            "Hidden": False
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
         "QuestionDescription": "Who did you NOT meet with this week?",
         "Choices": choices,
         "ChoiceOrder": list(range(1, 11)),
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON", 
+                "ForceResponseType": "ON", 
+                "Type": "MinChoices", 
+                "MinChoices": "1"
+            }
+        },
         "GradingData": [],
         "Language": [],
         "NextChoiceId": 11,
@@ -242,21 +329,18 @@ def who_did_you_not_meet_with_question():
     }
 
 def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> None:
-
     qualtrics_connection.add_question(survey_id, meet_count_question())
-
     qualtrics_connection.add_question(survey_id, no_meeting_explanation())
     #qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
-
     qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question())
     qualtrics_connection.add_question(survey_id, meeting_date_question())
     qualtrics_connection.add_question(survey_id, meeting_activities_question())
     qualtrics_connection.add_question(survey_id, meeting_duration_question())
-
     qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question())
+    print("Added all questions")
+
+
 
 if __name__ == "__main__":
-
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
     generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
-    print("Done")
