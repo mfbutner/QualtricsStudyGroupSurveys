@@ -9,11 +9,14 @@ from .block import Block
 
 class Survey_Generator:
     @staticmethod
-    def generate_survey_from_students(students:List[Student], dates:List[int], activities:List[str], durations:List[str], survey_name:str, survey_id:str, qualtrics) -> Survey: # TODO: different datatype for dates. Probably datetime.
+    def generate_survey_from_students(students:List[Student], dates:List[int], activities:List[str], durations:List[str], 
+                                      survey_name:str, survey_id:str, qualtrics) -> Survey: # TODO: different datatype for dates. Probably datetime.
+        
         survey = Survey(survey_name, survey_id, qualtrics)
 
         block_1_id = survey.add_block(Block("Met with group?"))
-        question_1_id_number = int(survey.add_question(Text_Entry("Q1.1", block_1_id, "How many times did you meet with your group this week? Report at most your top 10 interactions.",
+        question_1_id_number = int(survey.add_question(Text_Entry("Q1.1", block_1_id, "How many times did you meet with your group this week? " \
+        "Report at most your top 10 interactions.",
                            Number_In_Range(0,10), Selector.SL, None))[3:])
 
         
@@ -23,7 +26,8 @@ class Survey_Generator:
         survey.add_question(File_Upload("Q2.2", block_2_id, "Please upload any supporting screenshots, images, or other files that support why you didn't meet" \
                                        "with your group. For example, if you didn't meet with your group because you reached out to them but no one" \
                                        "responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to" \
-                                       "zip them first. <br><br>This question is optional.<br>", Optional_Response(), Display_Only_If_Response_Matches(f"QID{question_1_id_number}")))
+                                       "zip them first. <br><br>This question is optional.<br>", Optional_Response(),
+                                       Display_Only_If_Response_Matches(f"QID{question_1_id_number}")))
 
         
         block_3_id = survey.add_block(Block("Meeting details"))

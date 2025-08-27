@@ -46,7 +46,6 @@ class Multiple_Choice(Question):
             "QuestionText":self._description,
             "DefaultChoices":False,
             "DataExportTag":self._name,
-            # "QuestionID":self._ID,
             "QuestionType":"MC",
             "Selector":self._selector.name,
         }
@@ -86,7 +85,6 @@ class Text_Entry(Question):
             "QuestionText": self._description,
             "DefaultChoices": False,
             "DataExportTag": self._name,
-            # "QuestionID": self._ID,
             "QuestionType": "TE",
             "Selector": self._selector.name,
             "DataVisibility": {
@@ -144,81 +142,9 @@ class File_Upload(Question):
             "NextChoiceId": 4, # TODO: This shouldn't be hardcoded. How is it generated?
             "NextAnswerId": 1,
             "ScreenCaptureText": "Capture Screen",
-            # "QuestionID": self._ID,
             "QuestionText_Unsafe": self._description,
         }
         if self._display_logic is not None:
             output["DisplayLogic"] = self._display_logic.generate_json()
         
         return output
-
-
-
-# These are defined in the docs, but we might not need them:
-
-# class Text_Or_Grapic(Question):
-#     def __init__(self):
-#         pass
-    
-# class Matrix_Table(Question):
-#     def __init__(self):
-#         pass
-
-# class Descriptive_Text(Question):
-#     def __init__(self, name:str, description:str, force_response:bool):
-#         super().__init__()
-    
-# class Slider(Question):
-#     def __init__(self):
-#         pass
-
-# class Rank_Order(Question):
-#     def __init__(self):
-#         pass
-
-# class Side_By_Side(Question):
-#     def __init__(self):
-#         pass
-
-# class Constant_Sum(Question):
-#     def __init__(self):
-#         pass
-
-# class Pick_Group_And_Rank(Question):
-#     def __init__(self):
-#         pass
-
-# class Hot_Spot(Question):
-#     def __init__(self):
-#         pass
-
-# class Heat_Map(Question):
-#     def __init__(self):
-#         pass
-# class Drill_Down(Question):
-#     def __init__(self):
-#         pass
-
-# class Net_Promoter_Score(Question):
-#     def __init__(self):
-#         pass
-
-# class Highlight(Question):
-#     def __init__(self):
-#         pass
-
-# class Signature(Question):
-#     def __init__(self):
-#         pass
-
-# class Timer(Question):
-#     def __init__(self):
-#         pass
-
-# class Meta_Info(Question):
-#     def __init__(self):
-#         pass
-
-# class Captcha(Question):
-#     def __init__(self):
-#         pass
