@@ -1,8 +1,6 @@
 import json
-from os import PathLike
 from pathlib import Path
 from typing import Union
-from venv import create
 
 from requests_toolbelt import sessions
 from typing import Any
@@ -10,8 +8,7 @@ from .oath_information import OathInformation
 from .question import Question
 
 class QualtricsConnection:
-    def __init__(self, data_center: str,
-                 credentials: str | OathInformation):
+    def __init__(self, data_center: str, credentials: str | OathInformation):
         """
         Create a connection to the Qualtrics API servers
         :param data_center: url to the datacenter, ex: https://iad1.qualtrics.com/
@@ -22,28 +19,33 @@ class QualtricsConnection:
         common_headers = {"Accept": "application/json"}
 
         # TODO check data_center is properly formatted
-        if not data_center.endswith('/'):
-            data_center += '/'
+        if not data_center.endswith("/"):
+            data_center += "/"
         self.connection = sessions.BaseUrlSession(base_url=data_center)
 
         match credentials:
             case OathInformation():
                 # TODO: check into https://requests-oauthlib.readthedocs.io/en/latest/oauth2_workflow.html for easier oauth handling
                 self.oath_info = credentials  # this needs to be kept around in case the oauth token expires
-                oath_token_request = self.connection.post('/oauth2/token',
-                                                          data={'grant_type': 'client_credentials',
-                                                                'scope': self.oath_info.scope
-                                                                },
-                                                          auth=(self.oath_info.client_id, self.oath_info.client_secret))
+                oath_token_request = self.connection.post(
+                    "/oauth2/token",
+                    data={
+                        "grant_type": "client_credentials",
+                        "scope": self.oath_info.scope,
+                    },
+                    auth=(self.oath_info.client_id, self.oath_info.client_secret),
+                )
                 oath_token_request.raise_for_status()
                 values = oath_token_request.json()
-                access_token = values['access_token']
-                common_headers['Authorization'] = f'Bearer {access_token}'
+                access_token = values["access_token"]
+                common_headers["Authorization"] = f"Bearer {access_token}"
             case str():
-                common_headers['X-API-TOKEN'] = credentials
+                common_headers["X-API-TOKEN"] = credentials
                 self.oath_info = None
             case wrong_type:
-                raise TypeError(f'credentials must be one of str | OathInformation but {type(wrong_type)} was entered')
+                raise TypeError(
+                    f"credentials must be one of str | OathInformation but {type(wrong_type)} was entered"
+                )
 
         self.connection.headers.update(common_headers)
 
@@ -55,10 +57,10 @@ class QualtricsConnection:
 
         response = self.connection.get(endpoint, headers=headers)
 
-        return response.json()['result']
+        return response.json()["result"]
 
     def get_survey(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/survey-definitions/{survey_id}'
+        endpoint = f"/API/v3/survey-definitions/{survey_id}"
         return self._url_only_get(endpoint)
 
     def who_am_i(self) -> dict[str, Any]:
@@ -67,33 +69,39 @@ class QualtricsConnection:
         return self._url_only_get(endpoint)
 
     def get_questions(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        endpoint = f"/API/v3/survey-definitions/{survey_id}/questions"
         return self._url_only_get(endpoint)
 
     def get_blocks(self, survey_id: str) -> list[dict[str, Any]]:
-        endpoint = '/API/v3/survey-definitions/{survey_id}/blocks/{block_id}'
+        endpoint = "/API/v3/survey-definitions/{survey_id}/blocks/{block_id}"
         headers = {
             # purposefully empty
         }
         survey = self.get_survey(survey_id)
         blocks = []
-        for block_id in survey['Blocks']:
-            block = self.connection.get(endpoint.format(survey_id=survey_id, block_id=block_id), headers=headers)
+        for block_id in survey["Blocks"]:
+            block = self.connection.get(
+                endpoint.format(survey_id=survey_id, block_id=block_id), headers=headers
+            )
             block.raise_for_status()
-            blocks.append(block.json()['result'])
+            blocks.append(block.json()["result"])
         return blocks
 
     def get_flow(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        endpoint = f"/API/v3/survey-definitions/{survey_id}/flow"
         return self._url_only_get(endpoint)
 
     def get_survey_options(self, survey_id: str):
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/options'
+        endpoint = f"/API/v3/survey-definitions/{survey_id}/options"
         return self._url_only_get(endpoint)
 
-    def download_all_survey_attributes(self, survey_id: str, dir_path: Union[str,Path],
-                                       create_dir_if_missing: bool = False,
-                                       create_parents: bool = False) -> None:
+    def download_all_survey_attributes(
+        self,
+        survey_id: str,
+        dir_path: Union[str, Path],
+        create_dir_if_missing: bool = False,
+        create_parents: bool = False,
+    ) -> None:
         """
         Downloads the survey and its questions, options, flow, and blocks to the specified directory
         :param survey_id: the survey's id
@@ -108,14 +116,14 @@ class QualtricsConnection:
             dir_path.mkdir(parents=create_parents, exist_ok=True)
 
         locations_and_generators = {
-            'survey.json': lambda: self.get_survey(survey_id),
-            'questions.json': lambda: self.get_questions(survey_id),
-            'survey_options.json': lambda: self.get_survey_options(survey_id),
-            'flow.json': lambda: self.get_flow(survey_id),
-            'blocks.json': lambda: self.get_blocks(survey_id)
+            "survey.json": lambda: self.get_survey(survey_id),
+            "questions.json": lambda: self.get_questions(survey_id),
+            "survey_options.json": lambda: self.get_survey_options(survey_id),
+            "flow.json": lambda: self.get_flow(survey_id),
+            "blocks.json": lambda: self.get_blocks(survey_id),
         }
         for location, generator in locations_and_generators.items():
-            with open(dir_path / location, 'w') as dest_file:
+            with open(dir_path / location, "w") as dest_file:
                 json.dump(generator(), dest_file, indent=2)
 
     def _url_only_get(self, endpoint):
