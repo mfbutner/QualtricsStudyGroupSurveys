@@ -1,14 +1,20 @@
 import json
 from pathlib import Path
 from typing import Union
+from wsgiref import validate
 
 from requests_toolbelt import sessions
 from typing import Any
+from pydantic import ValidationError
+from QualtricsStudyGroupSurveys.validate_endpoint import QualtricsEndpoint
 from .oath_information import OathInformation
 from .question import Question
 
+
 class QualtricsConnection:
-    def __init__(self, data_center: str, credentials: str | OathInformation):
+    def __init__(
+        self, data_center: str | QualtricsEndpoint, credentials: str | OathInformation
+    ):
         """
         Create a connection to the Qualtrics API servers
         :param data_center: url to the datacenter, ex: https://iad1.qualtrics.com/
@@ -17,11 +23,20 @@ class QualtricsConnection:
 
         # these are the headers that all Qualtrics APIS have in common
         common_headers = {"Accept": "application/json"}
-
-        # TODO check data_center is properly formatted
-        if not data_center.endswith("/"):
-            data_center += "/"
-        self.connection = sessions.BaseUrlSession(base_url=data_center)
+        
+        # Validate the endpoint
+        if isinstance(data_center, str):
+            try:
+                endpoint = QualtricsEndpoint(api_url=data_center)
+            except ValidationError as e:
+                raise ValueError(f"Invalid Qualtrics endpoint: {e}")
+        else:
+            endpoint = data_center
+        
+        self.endpoint = endpoint
+        
+        # Create session with base URL
+        self.connection = sessions.BaseUrlSession(base_url=endpoint.base_url)
 
         match credentials:
             case OathInformation():
@@ -50,7 +65,7 @@ class QualtricsConnection:
         self.connection.headers.update(common_headers)
 
     def list_surveys(self) -> dict[str, Any]:
-        endpoint = "/API/v3/surveys"
+        endpoint = self.endpoint.build_api_path("survey")
         headers = {
             # purposefully empty
         }
@@ -60,20 +75,20 @@ class QualtricsConnection:
         return response.json()["result"]
 
     def get_survey(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f"/API/v3/survey-definitions/{survey_id}"
+        endpoint = self.endpoint.build_api_path(f"/survey-definitions/{survey_id}")
         return self._url_only_get(endpoint)
 
     def who_am_i(self) -> dict[str, Any]:
-        endpoint = "/API/v3/whoami"
+        endpoint = self.endpoint.build_api_path("/whoami")
 
         return self._url_only_get(endpoint)
 
     def get_questions(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f"/API/v3/survey-definitions/{survey_id}/questions"
+        endpoint = self.endpoint.build_api_path(f"/survey-definitions/{survey_id}/questions")
         return self._url_only_get(endpoint)
 
     def get_blocks(self, survey_id: str) -> list[dict[str, Any]]:
-        endpoint = "/API/v3/survey-definitions/{survey_id}/blocks/{block_id}"
+        endpoint = self.endpoint.build_api_path("/survey-definitions/{survey_id}/blocks/{block_id}")
         headers = {
             # purposefully empty
         }
@@ -88,11 +103,11 @@ class QualtricsConnection:
         return blocks
 
     def get_flow(self, survey_id: str) -> dict[str, Any]:
-        endpoint = f"/API/v3/survey-definitions/{survey_id}/flow"
+        endpoint = self.endpoint.build_api_path(f"/survey-definitions/{survey_id}/flow")
         return self._url_only_get(endpoint)
 
     def get_survey_options(self, survey_id: str):
-        endpoint = f"/API/v3/survey-definitions/{survey_id}/options"
+        endpoint = self.endpoint.build_api_path(f"survey-definitions/{survey_id}/options")
         return self._url_only_get(endpoint)
 
     def download_all_survey_attributes(
@@ -132,14 +147,18 @@ class QualtricsConnection:
         }
         response = self.connection.get(endpoint, headers=headers)
         response.raise_for_status()
-        return response.json()['result']
-    
-    def update_question(self, survey_id: str, question_id:str, question:Question) -> str:
+        return response.json()["result"]
+
+    def update_question(
+        self, survey_id: str, question_id: str, question: Question
+    ) -> str:
         headers = {
             # purposefully empty
         }
         print(f"question {question_id}:")
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions/{question_id}'
-        response = self.connection.put(endpoint, json=question.generate_json(question_id), headers=headers).text
+        endpoint = self.endpoint.build_api_path(f"survey-definitions/{survey_id}/questions/{question_id}")
+        response = self.connection.put(
+            endpoint, json=question.generate_json(question_id), headers=headers
+        ).text
         print(response)
         return response
