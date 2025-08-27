@@ -4,9 +4,11 @@ from QualtricsStudyGroupSurveys import QualtricsConnection
 
 load_dotenv()
 
-def build_person_choice(display: str, team_value: str, person_email: str):
+
+def build_person_choice(first_name: str, last_name: str, team_value: str, person_email: str):
+    name = f"{first_name.strip()} {last_name.strip()}"
     return {
-        "Display": display,
+        "Display": name,
         "DisplayLogic": {
             "0": {
                 "0": {
@@ -44,16 +46,16 @@ def build_person_choice(display: str, team_value: str, person_email: str):
         }
     }
 
-WHO_MET_CHOICES = [
-    ("Person 1 Team1", "1", "Team1Person1@ucdavis.edu"),
-    ("Person 2 Team 1", "1", "Team1Person2@ucdavis.edu"),
-    ("Person 3 Team 1", "1", "Team1Person3@ucdavis.edu"),
-    ("Person 4 Team 1", "1", "Team1Person4@ucdavis.edu"),
-    ("Person 5 Team 1", "1", "Team1Person5@ucdavis.edu"),
-    ("Person 1 Team2", "2", "Team2Person1@ucdavis.edu"),
-    ("Person 2 Team 2", "2", "Team2Person2@ucdavis.edu"),
-    ("Person 3 Team 2", "2", "Team2Person3@ucdavis.edu"),
-    ("Person 4 Team 2", "2", "Team2Person4@ucdavis.edu"),
+PEOPLE = [
+    ("Person 1", "Team1", "1", "Team1Person1@ucdavis.edu"),
+    ("Person 2", "Team 1", "1", "Team1Person2@ucdavis.edu"),
+    ("Person 3", "Team 1", "1", "Team1Person3@ucdavis.edu"),
+    ("Person 4", "Team 1", "1", "Team1Person4@ucdavis.edu"),
+    ("Person 5", "Team 1", "1", "Team1Person5@ucdavis.edu"),
+    ("Person 1", "Team2", "2", "Team2Person1@ucdavis.edu"),
+    ("Person 2", "Team 2", "2", "Team2Person2@ucdavis.edu"),
+    ("Person 3", "Team 2", "2", "Team2Person3@ucdavis.edu"),
+    ("Person 4", "Team 2", "2", "Team2Person4@ucdavis.edu"),
 ]
 
 def meet_count_question():
@@ -150,8 +152,8 @@ def no_meeting_upload_question():
 
 def who_did_you_meet_with_question():
     choices = {}
-    for i, (display, team, email) in enumerate(WHO_MET_CHOICES, start=1):
-        choices[str(i)] = build_person_choice(display, team, email)
+    for i, (first, last, team, email) in enumerate(PEOPLE, start=1):
+        choices[str(i)] = build_person_choice(first, last, team, email)
 
     return {
         "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
@@ -169,7 +171,7 @@ def who_did_you_meet_with_question():
         },
         "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
         "Choices": choices,
-        "ChoiceOrder": list(range(1, len(WHO_MET_CHOICES) + 1)),
+        "ChoiceOrder": list(range(1, len(PEOPLE) + 1)),
         "Validation": {
             "Settings": {
                 "ForceResponse": "ON",
@@ -180,7 +182,7 @@ def who_did_you_meet_with_question():
         },
         "GradingData": [],
         "Language": [],
-        "NextChoiceId": len(WHO_MET_CHOICES) + 1,
+        "NextChoiceId": len(PEOPLE) + 1,
         "NextAnswerId": 1
     }
 
@@ -291,9 +293,9 @@ def meeting_duration_question():
 
 def who_did_you_not_meet_with_question():
     choices = {}
-    for i, (display, team, email) in enumerate(WHO_MET_CHOICES, start=1):
-        choices[str(i)] = build_person_choice(display, team, email)
-    choices["10"] = {
+    for i, (first, last, team, email) in enumerate(PEOPLE, start=1):
+        choices[str(i)] = build_person_choice(first, last, team, email)
+    choices[str(len(choices)+1)] = {
         "Display": "I met with everyone in my group",
         "ExclusiveAnswer": True
     }    
