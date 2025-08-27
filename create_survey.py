@@ -86,34 +86,7 @@ def meet_count_question():
         "SearchSource": {"AllowFreeResponse": "false"}
     }
 
-def _display_logic(qid: str, equals_text: str):
-    return {
-        "Type": "BooleanExpression",
-        "inPage": False,
-        "0": {
-            "Type": "If",
-            "0": {
-                "LogicType": "Question",
-                "QuestionID": qid,
-                "QuestionIsInLoop": "no",
-                "ChoiceLocator": f"q://{qid}/ChoiceTextEntryValue",
-                "Operator": "EqualTo",
-                "QuestionIDFromLocator": qid,
-                "LeftOperand": f"q://{qid}/ChoiceTextEntryValue",
-                "RightOperand": equals_text,
-                "Type": "Expression",
-                "Description": (
-                    f'<span class="ConjDesc">If</span> '
-                    f'<span class="QuestionDesc">{qid}</span> '
-                    f'<span class="LeftOpDesc">Text Response</span> '
-                    f'<span class="OpDesc">Is Equal to</span> '
-                    f'<span class="RightOpDesc"> {equals_text} </span>'
-                )
-            }
-        }
-    }
-
-def no_meeting_explanation(qid_meet_count: str):
+def no_meeting_explanation():
     return {
         "QuestionText": "Please explain why you didn't meet with your group this week.",
         "DefaultChoices": False,
@@ -123,16 +96,18 @@ def no_meeting_explanation(qid_meet_count: str):
         "DataVisibility": {"Private": False, "Hidden": False},
         "Configuration": {"QuestionDescriptionOption": "UseText"},
         "QuestionDescription": "Please explain why you didn't meet with your group this week.",
-        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChar", "MinChars": "10"}},
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 4,
-        "NextAnswerId": 1,
-        "SearchSource": {"AllowFreeResponse": "false"},
-        "DisplayLogic": _display_logic(qid_meet_count, "0")
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "MinChar",
+                "MinChars": "10"
+            }
+        }
     }
 
-def no_meeting_upload_question(qid_meet_count: str):
+
+def no_meeting_upload_question():
     return {
         "QuestionText": (
             "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. "
@@ -144,21 +119,9 @@ def no_meeting_upload_question(qid_meet_count: str):
         "QuestionType": "FileUpload",
         "Selector": "FileUpload",
         "DataVisibility": {"Private": False, "Hidden": False},
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText",
-            "MinSeconds": "0",
-            "MaxSeconds": "0",
-            "AudioOnly": False,
-            "VideoUpload": False
-        },
+        "Configuration": {"QuestionDescriptionOption": "UseText"},
         "QuestionDescription": "Please upload any supporting screenshots, images, or other files that support why you didn't meet...",
-        "Validation": {"Settings": {"ForceResponse": "OFF", "Type": "None"}},
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 4,
-        "NextAnswerId": 1,
-        "ScreenCaptureText": "Capture Screen",
-        "DisplayLogic": _display_logic(qid_meet_count, "0")
+        "Validation": {"Settings": {"ForceResponse": "OFF", "Type": "None"}}
     }
 
 def who_did_you_meet_with_question():
@@ -279,12 +242,11 @@ def who_did_you_not_meet_with_question():
     }
 
 def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> None:
-    meet_count = meet_count_question()
-    resp = qualtrics_connection.add_question(survey_id, meet_count)
-    qid_meet_count = resp['result']['QuestionID']
 
-    #qualtrics_connection.add_question(survey_id, no_meeting_explanation(qid_meet_count))
-    #qualtrics_connection.add_question(survey_id, no_meeting_upload_question(qid_meet_count))
+    qualtrics_connection.add_question(survey_id, meet_count_question())
+
+    qualtrics_connection.add_question(survey_id, no_meeting_explanation())
+    #qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
 
     qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question())
     qualtrics_connection.add_question(survey_id, meeting_date_question())
