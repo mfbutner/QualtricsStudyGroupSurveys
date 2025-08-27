@@ -1,8 +1,10 @@
+import os
+from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection
-from typing import Dict, Any
-import json
 
-def build_person_choice(display: str, team_value: str, person_email: str) -> Dict[str, Any]:
+load_dotenv()
+
+def build_person_choice(display: str, team_value: str, person_email: str):
     return {
         "Display": display,
         "DisplayLogic": {
@@ -42,7 +44,19 @@ def build_person_choice(display: str, team_value: str, person_email: str) -> Dic
         }
     }
 
-def meet_count_question() -> Dict[str, Any]:
+WHO_MET_CHOICES = [
+    ("Person 1 Team1", "1", "Team1Person1@ucdavis.edu"),
+    ("Person 2 Team 1", "1", "Team1Person2@ucdavis.edu"),
+    ("Person 3 Team 1", "1", "Team1Person3@ucdavis.edu"),
+    ("Person 4 Team 1", "1", "Team1Person4@ucdavis.edu"),
+    ("Person 5 Team 1", "1", "Team1Person5@ucdavis.edu"),
+    ("Person 1 Team2", "2", "Team2Person1@ucdavis.edu"),
+    ("Person 2 Team 2", "2", "Team2Person2@ucdavis.edu"),
+    ("Person 3 Team 2", "2", "Team2Person3@ucdavis.edu"),
+    ("Person 4 Team 2", "2", "Team2Person4@ucdavis.edu"),
+]
+
+def meet_count_question():
     return {
         "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
         "DefaultChoices": False,
@@ -72,9 +86,12 @@ def meet_count_question() -> Dict[str, Any]:
         "SearchSource": {"AllowFreeResponse": "false"}
     }
 
-def _display_logic_equals_text_of(qid: str, equals_text: str) -> Dict[str, Any]:
+def _display_logic(qid: str, equals_text: str):
     return {
+        "Type": "BooleanExpression",
+        "inPage": False,
         "0": {
+            "Type": "If",
             "0": {
                 "LogicType": "Question",
                 "QuestionID": qid,
@@ -92,14 +109,11 @@ def _display_logic_equals_text_of(qid: str, equals_text: str) -> Dict[str, Any]:
                     f'<span class="OpDesc">Is Equal to</span> '
                     f'<span class="RightOpDesc"> {equals_text} </span>'
                 )
-            },
-            "Type": "If"
-        },
-        "Type": "BooleanExpression",
-        "inPage": False
+            }
+        }
     }
 
-def no_meeting_explanation(qid_meet_count: str) -> Dict[str, Any]:
+def no_meeting_explanation(qid_meet_count: str):
     return {
         "QuestionText": "Please explain why you didn't meet with your group this week.",
         "DefaultChoices": False,
@@ -115,10 +129,10 @@ def no_meeting_explanation(qid_meet_count: str) -> Dict[str, Any]:
         "NextChoiceId": 4,
         "NextAnswerId": 1,
         "SearchSource": {"AllowFreeResponse": "false"},
-        "DisplayLogic": _display_logic_equals_text_of(qid_meet_count, "0")
+        "DisplayLogic": _display_logic(qid_meet_count, "0")
     }
 
-def no_meeting_upload_question(qid_meet_count: str) -> Dict[str, Any]:
+def no_meeting_upload_question(qid_meet_count: str):
     return {
         "QuestionText": (
             "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. "
@@ -144,10 +158,14 @@ def no_meeting_upload_question(qid_meet_count: str) -> Dict[str, Any]:
         "NextChoiceId": 4,
         "NextAnswerId": 1,
         "ScreenCaptureText": "Capture Screen",
-        "DisplayLogic": _display_logic_equals_text_of(qid_meet_count, "0")
+        "DisplayLogic": _display_logic(qid_meet_count, "0")
     }
 
-def who_did_you_meet_with_question() -> Dict[str, Any]:
+def who_did_you_meet_with_question():
+    choices = {}
+    for i, (display, team, email) in enumerate(WHO_MET_CHOICES, start=1):
+        choices[str(i)] = build_person_choice(display, team, email)
+
     return {
         "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
         "DefaultChoices": False,
@@ -158,16 +176,16 @@ def who_did_you_meet_with_question() -> Dict[str, Any]:
         "DataVisibility": {"Private": False, "Hidden": False},
         "Configuration": {"QuestionDescriptionOption": "UseText"},
         "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
-        "Choices": {},
-        "ChoiceOrder": [],
+        "Choices": choices,
+        "ChoiceOrder": list(range(1, len(WHO_MET_CHOICES) + 1)),
         "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
         "GradingData": [],
         "Language": [],
-        "NextChoiceId": 1,
+        "NextChoiceId": len(WHO_MET_CHOICES) + 1,
         "NextAnswerId": 1
     }
 
-def meeting_date_question() -> Dict[str, Any]:
+def meeting_date_question():
     return {
         "QuestionText": "When was your ${lm://Field/2} meeting?",
         "DefaultChoices": False,
@@ -191,7 +209,7 @@ def meeting_date_question() -> Dict[str, Any]:
         "NextAnswerId": 1
     }
 
-def meeting_activities_question() -> Dict[str, Any]:
+def meeting_activities_question():
     return {
         "QuestionText": "What did you do during your ${lm://Field/2} meeting?",
         "DefaultChoices": False,
@@ -207,7 +225,7 @@ def meeting_activities_question() -> Dict[str, Any]:
             "2": {"Display": "Activity 2"},
             "3": {"Display": "Activity 3"}
         },
-        "ChoiceOrder": ["1", "2", "3"],
+        "ChoiceOrder": [1, 2, 3],
         "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
         "GradingData": [],
         "Language": [],
@@ -215,7 +233,7 @@ def meeting_activities_question() -> Dict[str, Any]:
         "NextAnswerId": 1
     }
 
-def meeting_duration_question() -> Dict[str, Any]:
+def meeting_duration_question():
     return {
         "QuestionText": "How long did your&nbsp;${lm://Field/2} meeting last?",
         "DataExportTag": "Q3.4",
@@ -238,23 +256,45 @@ def meeting_duration_question() -> Dict[str, Any]:
         "NextAnswerId": 1
     }
 
-def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> None:
-    meet_count_question = meet_count_question()
-    response = qualtrics_connection.add_question(survey_id, meet_count_question)
-    question_id_meet_count = json.loads(response)['result']['QuestionID']
+def who_did_you_not_meet_with_question():
+    choices = {str(i): {"Display": f"Person {i}"} for i in range(1, 10)}
+    choices["10"] = {"Display": "I met with everyone in my group", "ExclusiveAnswer": True}
+    return {
+        "QuestionText": "Who did you NOT meet with this week?",
+        "DefaultChoices": False,
+        "DataExportTag": "Q4.1",
+        "QuestionType": "MC",
+        "Selector": "MAVR",
+        "SubSelector": "TX",
+        "DataVisibility": {"Private": False, "Hidden": False},
+        "Configuration": {"QuestionDescriptionOption": "UseText"},
+        "QuestionDescription": "Who did you NOT meet with this week?",
+        "Choices": choices,
+        "ChoiceOrder": list(range(1, 11)),
+        "Validation": {"Settings": {"ForceResponse": "ON", "ForceResponseType": "ON", "Type": "MinChoices", "MinChoices": "1"}},
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": 11,
+        "NextAnswerId": 1
+    }
 
-    qualtrics_connection.add_question(survey_id, no_meeting_explanation(question_id_meet_count))
-    qualtrics_connection.add_question(survey_id, no_meeting_upload_question(question_id_meet_count))
+def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> None:
+    meet_count = meet_count_question()
+    resp = qualtrics_connection.add_question(survey_id, meet_count)
+    qid_meet_count = resp['result']['QuestionID']
+
+    #qualtrics_connection.add_question(survey_id, no_meeting_explanation(qid_meet_count))
+    #qualtrics_connection.add_question(survey_id, no_meeting_upload_question(qid_meet_count))
 
     qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question())
     qualtrics_connection.add_question(survey_id, meeting_date_question())
     qualtrics_connection.add_question(survey_id, meeting_activities_question())
     qualtrics_connection.add_question(survey_id, meeting_duration_question())
 
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
+    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question())
 
-    load_dotenv()
+if __name__ == "__main__":
+
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
     generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    print("Done")

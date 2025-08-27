@@ -132,7 +132,7 @@ class QualtricsConnection:
         endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
         response = self.connection.post(endpoint, json=question, headers=headers)
         response.raise_for_status()
-        return response.json
+        return response.json()
 
     def update_question(self, survey_id: str, question_id:str, question_patch: dict) -> str:
         headers = {
