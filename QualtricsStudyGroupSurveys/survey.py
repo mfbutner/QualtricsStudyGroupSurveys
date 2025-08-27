@@ -24,7 +24,7 @@ class Survey:
     def pushToQualtrics(self, qualtrics:QualtricsConnection) -> str: # TODO: Push flow, blocks as well so that the survey is formatted properly
         response = ""
         for (i, question) in enumerate(self._questions):
-            response += qualtrics.update_question(self._id, f"QID{i + 1}", question) + '\n'
+            response += qualtrics.add_question(self._id, f"QID{i + 1}", question) + '\n'
         return response
     
     def addQuestion(self, question:Question):

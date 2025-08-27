@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def main():
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
@@ -12,29 +16,29 @@ def main():
     from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader
     from QualtricsStudyGroupSurveys.survey_generator import Survey_Generator
 
-    match sys.argv:
-        case [_, data_center, api_token]:
-            qualtrics = QualtricsConnection(data_center, api_token)
-        case [_, data_center, client_id, client_secret, scope]:
-            oath = OathInformation(client_id, client_secret, scope)
-            qualtrics = QualtricsConnection(data_center, oath)
-        case [_, data_center, client_id, client_secret]:
-            oath = OathInformation(client_id, client_secret)
-            qualtrics = QualtricsConnection(data_center, oath)
-        case _:
-            print('Incorrect number of command line arguments entered')
-            exit(1)
+    # match sys.argv:
+    #     case [_, data_center, api_token]:
+    #         qualtrics = QualtricsConnection(data_center, api_token)
+    #     case [_, data_center, client_id, client_secret, scope]:
+    #         oath = OathInformation(client_id, client_secret, scope)
+    #         qualtrics = QualtricsConnection(data_center, oath)
+    #     case [_, data_center, client_id, client_secret]:
+    #         oath = OathInformation(client_id, client_secret)
+    #         qualtrics = QualtricsConnection(data_center, oath)
+    #     case _:
+    #         print('Incorrect number of command line arguments entered')
+    #         exit(1)
 
     # print(qualtrics.who_am_i())
-    surveys = qualtrics.list_surveys()
+    qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
     # print(surveys)
-    my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
+    # my_servey = surveys['elements'][0] if surveys['elements'][0]['name'] == 'Test-Butner-Survey' else surveys['elements'][1]
     # print(qualtrics.get_survey(my_servey['id']))
     # questions = (qualtrics.get_questions(my_servey['id']))
     # print(json.dumps(questions, indent=2))
-    students = CSV_reader.parse_CSV_for_students("ExampleContacts.csv")
+    students = CSV_reader.parse_CSV_for_students("data/ExampleContacts.csv")
     activities = [f"Activity {i}" for i in range(1,4)]
-    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [5, 10, 20, "More than 20"], my_servey['name'], my_servey['id'])
+    survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [5, 10, 20, "More than 20"], "practice", os.getenv("Q_TEST_SURVEY_ID"))
     survey.pushToQualtrics(qualtrics)
     # print(json.dumps(survey.generate_json(), indent=2)) # indent for pretty-print
 
