@@ -1,0 +1,34 @@
+{
+    "QuestionText": "What did you do during your ${lm://Field/2} meeting?",
+    "DefaultChoices": false,
+    "DataExportTag": "Q3.3",
+    "QuestionType": "MC",
+    "Selector": "MAVR",
+    "SubSelector": "TX",
+    "DataVisibility": {
+        "Private": false,
+        "Hidden": false
+    },
+    "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+    },
+    "QuestionDescription": "What did you do during your ${lm://Field/2} meeting?",
+    "Choices": {
+        "1": {"Display": "Activity 1"},
+        "2": {"Display": "Activity 2"},
+        "3": {"Display": "Activity 3"}
+    },
+    "ChoiceOrder": [1, 2, 3],
+    "Validation": {
+        "Settings": {
+            "ForceResponse": "ON",
+            "ForceResponseType": "ON",
+            "Type": "MinChoices",
+            "MinChoices": "1"
+        }
+    },
+    "GradingData": [],
+    "Language": [],
+    "NextChoiceId": 4,
+    "NextAnswerId": 1
+}

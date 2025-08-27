@@ -1,0 +1,23 @@
+{
+    "QuestionText": "Please explain why you didn't meet with your group this week.",
+    "DefaultChoices": false,
+    "DataExportTag": "Q2.1",
+    "QuestionType": "TE",
+    "Selector": "ESTB",
+    "DataVisibility": {
+        "Private": false,
+        "Hidden": false
+    },
+    "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+    },
+    "QuestionDescription": "Please explain why you didn't meet with your group this week.",
+    "Validation": {
+        "Settings": {
+            "ForceResponse": "ON",
+            "ForceResponseType": "ON",
+            "Type": "MinChar",
+            "MinChars": "10"
+        }
+    }
+}

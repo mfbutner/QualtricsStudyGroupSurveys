@@ -1,0 +1,30 @@
+{
+        "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
+        "DefaultChoices": false,
+        "DataExportTag": "Q3.2",
+        "QuestionType": "MC",
+        "Selector": "MAVR",
+        "SubSelector": "TX",
+        "DataVisibility": {
+            "Private": false,
+            "Hidden": false
+        },
+        "Configuration": {
+            "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
+        "Choices": null,
+        "ChoiceOrder": null,
+        "Validation": {
+            "Settings": {
+                "ForceResponse": "ON",
+                "ForceResponseType": "ON",
+                "Type": "MinChoices",
+                "MinChoices": "1"
+            }
+        },
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": null,
+        "NextAnswerId": 1
+    }

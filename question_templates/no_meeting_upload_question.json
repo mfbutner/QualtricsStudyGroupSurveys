@@ -1,0 +1,20 @@
+{
+    "QuestionText": "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. For example, if you didn't meet with your group because you reached out to them but no one responded, include those screen shots here.<br><br>If you need to upload multiple files, you will need to zip them first.&nbsp;<br><br>This question is optional.<br>",
+    "DefaultChoices": false,
+    "DataExportTag": "Q2.2",
+    "QuestionType": "FileUpload",
+    "Selector": "FileUpload",
+    "DataVisibility": {
+        "Private": false, "Hidden": false
+    },
+    "Configuration": {
+        "QuestionDescriptionOption": "UseText"
+    },
+    "QuestionDescription": "Please upload any supporting screenshots, images, or other files that support why you didn't meet...",
+    "Validation": {
+        "Settings": {
+            "ForceResponse": "OFF",
+            "Type": "None"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "Display": null,
+    "DisplayLogic": {
+        "0": {
+            "0": {
+                "LogicType": "EmbeddedField",
+                "LeftOperand": "Team",
+                "Operator": "EqualTo",
+                "RightOperand": null,
+                "Type": "Expression",
+                "Description": null
+            },
+            "1": {
+                "LogicType": "PanelData",
+                "LeftOperand": "m://Email1",
+                "Operator": "NotEqualTo",
+                "RightOperand": null,
+                "Type": "Expression",
+                "Description": null,
+                "Conjuction": "And"
+            },
+            "Type": "If"
+        },
+        "Type": "BooleanExpression",
+        "inPage": false
+    }
+}

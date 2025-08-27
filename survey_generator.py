@@ -1,50 +1,10 @@
 import os
+import json
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection
 
 load_dotenv()
-
-
-def build_person_choice(first_name: str, last_name: str, team_value: str, person_email: str):
-    name = f"{first_name.strip()} {last_name.strip()}"
-    return {
-        "Display": name,
-        "DisplayLogic": {
-            "0": {
-                "0": {
-                    "LogicType": "EmbeddedField",
-                    "LeftOperand": "Team",
-                    "Operator": "EqualTo",
-                    "RightOperand": str(team_value),
-                    "Type": "Expression",
-                    "Description": (
-                        '<span class="ConjDesc">If</span> '
-                        '<span class="LeftOpDesc">Team</span> '
-                        '<span class="OpDesc">Is Equal to</span> '
-                        f'<span class="RightOpDesc"> {team_value} </span>'
-                    )
-                },
-                "1": {
-                    "LogicType": "PanelData",
-                    "LeftOperand": "m://Email1",
-                    "Operator": "NotEqualTo",
-                    "RightOperand": person_email,
-                    "Type": "Expression",
-                    "Description": (
-                        '<span class="ConjDesc">And</span>'
-                        '<span class="schema_desc">Contact List</span>'
-                        '<span class="select_val_desc LeftOperand_desc">Email</span>'
-                        '<span class="select_val_desc Operator_desc">Is Not Equal to</span>'
-                        f'<span class="textbox_val_desc RightOperand_desc">{person_email}</span>'
-                    ),
-                    "Conjuction": "And"
-                },
-                "Type": "If"
-            },
-            "Type": "BooleanExpression",
-            "inPage": False
-        }
-    }
 
 PEOPLE = [
     ("Person 1", "Team1", "1", "Team1Person1@ucdavis.edu"),
@@ -58,238 +18,102 @@ PEOPLE = [
     ("Person 4", "Team 2", "2", "Team2Person4@ucdavis.edu"),
 ]
 
-def meet_count_question():
-    return {
-        "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-        "DefaultChoices": False,
-        "DataExportTag": "Q1.1",
-        "QuestionType": "TE",
-        "Selector": "SL",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "ContentType",
-                "MinChars": "1",
-                "ContentType": "ValidNumber",
-                "ValidDateType": "DateWithFormat",
-                "ValidPhoneType": "ValidUSPhone",
-                "ValidZipType": "ValidUSZip",
-                "ValidNumber": {
-                    "Min": "0",
-                    "Max": "10",
-                    "NumDecimals": "0"
-                }
-            }
-        },
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 3,
-        "NextAnswerId": 1,
-        "SearchSource": {
-            "AllowFreeResponse": "false"
+def get_date_range(start_date: datetime, end_date: datetime):
+    delta = end_date - start_date
+    return [start_date + timedelta(days=i) for i in range(delta.days + 1)]
+
+def get_date_choices(start_date: datetime, end_date: datetime):
+    range = get_date_range(start_date, end_date)
+    choices = {}
+    for i, date in enumerate(range):
+        choices[str(i+1)] = {
+            "Display": date.strftime("%m-%d-%Y")
         }
-    }
+    return choices
+
+def build_person_choice(first_name: str, last_name: str, team_value: str, email: str):
+    name = f"{first_name.strip()} {last_name.strip()}"
+
+    team_info = (
+        '<span class="ConjDesc">If</span> '
+        '<span class="LeftOpDesc">Team</span> '
+        '<span class="OpDesc">Is Equal to</span> '
+        f'<span class="RightOpDesc"> {team_value} </span>'
+    )
+    email_info = (
+        '<span class="ConjDesc">And</span>'
+        '<span class="schema_desc">Contact List</span>'
+        '<span class="select_val_desc LeftOperand_desc">Email</span>'
+        '<span class="select_val_desc Operator_desc">Is Not Equal to</span>'
+        f'<span class="textbox_val_desc RightOperand_desc">{email}</span>'
+    )
+
+    with open("question_templates/build_person_choice.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    template_content["Display"] = name
+    template_content["DisplayLogic"]["0"]["0"]["RightOperand"] = team_value
+    template_content["DisplayLogic"]["0"]["1"]["RightOperand"] = email
+    template_content["DisplayLogic"]["0"]["0"]["Description"] = team_info
+    template_content["DisplayLogic"]["0"]["1"]["Description"] = email_info
+
+    return template_content
+
+def meet_count_question():
+    with open("question_templates/meet_count_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    return template_content
 
 def no_meeting_explanation():
-    return {
-        "QuestionText": "Please explain why you didn't meet with your group this week.",
-        "DefaultChoices": False,
-        "DataExportTag": "Q2.1",
-        "QuestionType": "TE",
-        "Selector": "ESTB",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "Please explain why you didn't meet with your group this week.",
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "MinChar",
-                "MinChars": "10"
-            }
-        }
-    }
+    with open("question_templates/no_meeting_explanation.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    return template_content
 
 def no_meeting_upload_question():
-    return {
-        "QuestionText": (
-            "Please upload any supporting screenshots, images, or other files that support why you didn't meet with your group. "
-            "For example, if you didn't meet with your group because you reached out to them but no one responded, include those screen shots here.<br><br>"
-            "If you need to upload multiple files, you will need to zip them first.&nbsp;<br><br>This question is optional.<br>"
-        ),
-        "DefaultChoices": False,
-        "DataExportTag": "Q2.2",
-        "QuestionType": "FileUpload",
-        "Selector": "FileUpload",
-        "DataVisibility": {
-            "Private": False, "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "Please upload any supporting screenshots, images, or other files that support why you didn't meet...",
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "OFF",
-                "Type": "None"
-            }
-        }
-    }
+    with open("question_templates/no_meeting_upload_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    return template_content
 
 def who_did_you_meet_with_question():
     choices = {}
     for i, (first, last, team, email) in enumerate(PEOPLE, start=1):
         choices[str(i)] = build_person_choice(first, last, team, email)
 
-    return {
-        "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
-        "DefaultChoices": False,
-        "DataExportTag": "Q3.2",
-        "QuestionType": "MC",
-        "Selector": "MAVR",
-        "SubSelector": "TX",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "Who did you meet with during your ${lm://Field/2} meeting?",
-        "Choices": choices,
-        "ChoiceOrder": list(range(1, len(PEOPLE) + 1)),
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "MinChoices",
-                "MinChoices": "1"
-            }
-        },
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": len(PEOPLE) + 1,
-        "NextAnswerId": 1
-    }
+    with open("question_templates/who_did_you_meet_with_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
 
-def meeting_date_question():
-    return {
-        "QuestionText": "When was your ${lm://Field/2} meeting?",
-        "DefaultChoices": False,
-        "DataExportTag": "Q3.1",
-        "QuestionType": "MC",
-        "Selector": "DL",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "When was your ${lm://Field/2} meeting?",
-        "Choices": {
-            "1": {"Display": "Date1"},
-            "2": {"Display": "Date2"},
-            "3": {"Display": "Date3"},
-            "4": {"Display": "Date4"}
-        },
-        "ChoiceOrder": [1, 2, 3, 4],
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "None"
-            }
-        },
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 5,
-        "NextAnswerId": 1
-    }
+    template_content["Choices"] = choices
+    template_content["ChoiceOrder"] = list(range(1, len(choices) + 1))
+    template_content["NextChoiceId"] = len(choices) + 1
+
+    return template_content
+
+def meeting_date_question(start_date: datetime, end_date: datetime):
+    dates = get_date_choices(start_date, end_date)
+
+    with open("question_templates/meeting_date_question.json", "r", encoding="utf-8") as f:
+        base = json.load(f)
+
+    base["Choices"] = dates
+    base["ChoiceOrder"] = list(range(1, len(dates)+1))
+    base["NextChoiceId"] = len(dates) + 1
+
+    return base
 
 def meeting_activities_question():
-    return {
-        "QuestionText": "What did you do during your ${lm://Field/2} meeting?",
-        "DefaultChoices": False,
-        "DataExportTag": "Q3.3",
-        "QuestionType": "MC",
-        "Selector": "MAVR",
-        "SubSelector": "TX",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "What did you do during your ${lm://Field/2} meeting?",
-        "Choices": {
-            "1": {"Display": "Activity 1"},
-            "2": {"Display": "Activity 2"},
-            "3": {"Display": "Activity 3"}
-        },
-        "ChoiceOrder": [1, 2, 3],
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "MinChoices",
-                "MinChoices": "1"
-            }
-        },
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 4,
-        "NextAnswerId": 1
-    }
+    with open("question_templates/meeting_activities_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    return template_content
 
 def meeting_duration_question():
-    return {
-        "QuestionText": "How long did your&nbsp;${lm://Field/2} meeting last?",
-        "DataExportTag": "Q3.4",
-        "QuestionType": "MC",
-        "Selector": "SAVR",
-        "SubSelector": "TX",
-        "DataVisibility": {
-            "Private": False,
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "How long did your ${lm://Field/2} meeting last?",
-        "Choices": {
-            "1": {"Display": "5 minutes"},
-            "2": {"Display": "10 minutes"},
-            "3": {"Display": "20 minutes"},
-            "4": {"Display": "More than 20 minutes"}
-        },
-        "ChoiceOrder": [1, 2, 3, 4],
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON",
-                "ForceResponseType": "ON",
-                "Type": "None"
-            }
-        },
-        "Language": [],
-        "NextChoiceId": 5,
-        "NextAnswerId": 1
-    }
+    with open("question_templates/meeting_duration_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)
+
+    return template_content
 
 def who_did_you_not_meet_with_question():
     choices = {}
@@ -299,43 +123,22 @@ def who_did_you_not_meet_with_question():
         "Display": "I met with everyone in my group",
         "ExclusiveAnswer": True
     }    
-    return {
-        "QuestionText": "Who did you NOT meet with this week?",
-        "DefaultChoices": False,
-        "DataExportTag": "Q4.1",
-        "QuestionType": "MC",
-        "Selector": "MAVR",
-        "SubSelector": "TX",
-        "DataVisibility": {
-            "Private": False, 
-            "Hidden": False
-        },
-        "Configuration": {
-            "QuestionDescriptionOption": "UseText"
-        },
-        "QuestionDescription": "Who did you NOT meet with this week?",
-        "Choices": choices,
-        "ChoiceOrder": list(range(1, 11)),
-        "Validation": {
-            "Settings": {
-                "ForceResponse": "ON", 
-                "ForceResponseType": "ON", 
-                "Type": "MinChoices", 
-                "MinChoices": "1"
-            }
-        },
-        "GradingData": [],
-        "Language": [],
-        "NextChoiceId": 11,
-        "NextAnswerId": 1
-    }
+    
+    with open("question_templates/who_did_you_not_meet_with_question.json", "r", encoding="utf-8") as f:
+        template_content = json.load(f)  
 
-def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> None:
+    template_content["Choices"] = choices
+    template_content["ChoiceOrder"] = list(range(1, len(choices) + 1))
+    template_content["NextChoiceId"] = len(choices) + 1
+
+    return template_content
+
+def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, start_date, end_date) -> None:
     qualtrics_connection.add_question(survey_id, meet_count_question())
     qualtrics_connection.add_question(survey_id, no_meeting_explanation())
-    #qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
+    # qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
     qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question())
-    qualtrics_connection.add_question(survey_id, meeting_date_question())
+    qualtrics_connection.add_question(survey_id, meeting_date_question(start_date, end_date))
     qualtrics_connection.add_question(survey_id, meeting_activities_question())
     qualtrics_connection.add_question(survey_id, meeting_duration_question())
     qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question())
@@ -344,5 +147,10 @@ def generate_survey(qualtrics_connection: QualtricsConnection, survey_id) -> Non
 
 
 if __name__ == "__main__":
+    start = "08-27-2027"
+    end = "09-02-2027"
+    date_format = "%m-%d-%Y"
+    start_date = datetime.strptime(start, date_format)
+    end_date = datetime.strptime(end, date_format)
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), start_date, end_date)
