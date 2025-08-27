@@ -13,19 +13,27 @@ class Selector(Enum):
     SAVR = 4
 
 class Question(ABC):
-    def __init__(self, name:str, description:str, validation:Validation):
+    def __init__(self, name:str, block_ID:str, description:str, validation:Validation):
         self._name = name
-        self._validation = validation
+        self._ID = None
+        self._block_ID = block_ID
         self._description = description
+        self._validation = validation
         self._display_logic = None
     
     @abstractmethod
     def generate_json(self) -> dict[str, Any]:
         pass
 
+    def get_ID(self) -> str:
+        return self._ID if self._ID is not None else "No ID set!"
+
+    def set_ID(self, ID:str):
+        self._ID = ID
+
 class Multiple_Choice(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice]):
-        super().__init__(name, description, validation)
+    def __init__(self, name:str, block_ID:str, description:str, validation:Validation, selector:Selector, usesSubSelector:bool, choices:List[Choice]):
+        super().__init__(name, block_ID, description, validation)
         self._selector = selector
         self._usesSubSelector = usesSubSelector
         self._choices = choices
@@ -33,12 +41,12 @@ class Multiple_Choice(Question):
     def addChoice(self, choice:Choice):
         self._choices.append(choice)
     
-    def generate_json(self, question_ID:str) -> dict[str, Any]:
+    def generate_json(self) -> dict[str, Any]:
         start = {
             "QuestionText":self._description,
             "DefaultChoices":False,
             "DataExportTag":self._name,
-            "QuestionID":question_ID,
+            # "QuestionID":self._ID,
             "QuestionType":"MC",
             "Selector":self._selector.name,
         }
@@ -68,17 +76,17 @@ class Multiple_Choice(Question):
         return start | end
     
 class Text_Entry(Question):
-    def __init__(self, name:str, description:str, validation:Validation, selector:Selector, display_logic:Display_Logic):
-        super().__init__(name, description, validation)
+    def __init__(self, name:str, block_ID:str, description:str, validation:Validation, selector:Selector, display_logic:Display_Logic):
+        super().__init__(name, block_ID, description, validation)
         self._selector = selector
         self._display_logic = display_logic
     
-    def generate_json(self, question_ID:str) -> dict[str, Any]:
+    def generate_json(self) -> dict[str, Any]:
         output = {
             "QuestionText": self._description,
             "DefaultChoices": False,
             "DataExportTag": self._name,
-            "QuestionID": question_ID,
+            # "QuestionID": self._ID,
             "QuestionType": "TE",
             "Selector": self._selector.name,
             "DataVisibility": {
@@ -107,11 +115,11 @@ class Text_Entry(Question):
 
 
 class File_Upload(Question):
-    def __init__(self, name:str, description:str, validation:Validation, display_logic:Display_Logic):
-        super().__init__(name, description, validation)
+    def __init__(self, name:str, block_ID:str, description:str, validation:Validation, display_logic:Display_Logic):
+        super().__init__(name, block_ID, description, validation)
         self._display_logic = display_logic
     
-    def generate_json(self, question_ID:str) -> dict[str, Any]:
+    def generate_json(self) -> dict[str, Any]:
         output = {
             "QuestionText": self._description,
             "DefaultChoices": False,
@@ -136,7 +144,7 @@ class File_Upload(Question):
             "NextChoiceId": 4, # TODO: This shouldn't be hardcoded. How is it generated?
             "NextAnswerId": 1,
             "ScreenCaptureText": "Capture Screen",
-            "QuestionID": question_ID,
+            # "QuestionID": self._ID,
             "QuestionText_Unsafe": self._description,
         }
         if self._display_logic is not None:
