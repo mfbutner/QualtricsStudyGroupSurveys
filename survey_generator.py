@@ -1,22 +1,11 @@
 import os
 import json
+import pandas as pd
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection
 
 load_dotenv()
-
-PEOPLE = [
-    ("Person 1", "Team1", "1", "Team1Person1@ucdavis.edu"),
-    ("Person 2", "Team 1", "1", "Team1Person2@ucdavis.edu"),
-    ("Person 3", "Team 1", "1", "Team1Person3@ucdavis.edu"),
-    ("Person 4", "Team 1", "1", "Team1Person4@ucdavis.edu"),
-    ("Person 5", "Team 1", "1", "Team1Person5@ucdavis.edu"),
-    ("Person 1", "Team2", "2", "Team2Person1@ucdavis.edu"),
-    ("Person 2", "Team 2", "2", "Team2Person2@ucdavis.edu"),
-    ("Person 3", "Team 2", "2", "Team2Person3@ucdavis.edu"),
-    ("Person 4", "Team 2", "2", "Team2Person4@ucdavis.edu"),
-]
 
 def get_date_range(start_date: datetime, end_date: datetime):
     delta = end_date - start_date
@@ -77,9 +66,9 @@ def no_meeting_upload_question():
 
     return template_content
 
-def who_did_you_meet_with_question():
+def who_did_you_meet_with_question(people):
     choices = {}
-    for i, (first, last, team, email) in enumerate(PEOPLE, start=1):
+    for i, (first, last, team, email) in enumerate(people, start=1):
         choices[str(i)] = build_person_choice(first, last, team, email)
 
     with open("question_templates/who_did_you_meet_with_question.json", "r", encoding="utf-8") as f:
@@ -115,9 +104,9 @@ def meeting_duration_question():
 
     return template_content
 
-def who_did_you_not_meet_with_question():
+def who_did_you_not_meet_with_question(people):
     choices = {}
-    for i, (first, last, team, email) in enumerate(PEOPLE, start=1):
+    for i, (first, last, team, email) in enumerate(people, start=1):
         choices[str(i)] = build_person_choice(first, last, team, email)
     choices[str(len(choices)+1)] = {
         "Display": "I met with everyone in my group",
@@ -133,15 +122,26 @@ def who_did_you_not_meet_with_question():
 
     return template_content
 
-def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, start_date, end_date) -> None:
+def build_people_list(csv_path):
+    df = pd.read_csv(csv_path)
+    people = []
+    for row in df.itertuples():
+        first_name = row.FirstName
+        last_name = row.LastName
+        team = str(row.Team)
+        email = row.Email
+        people.append((first_name, last_name, team, email))
+    return people
+
+def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, start_date, end_date, people) -> None:
     qualtrics_connection.add_question(survey_id, meet_count_question())
     qualtrics_connection.add_question(survey_id, no_meeting_explanation())
     # qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
-    qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question())
+    qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question(people))
     qualtrics_connection.add_question(survey_id, meeting_date_question(start_date, end_date))
     qualtrics_connection.add_question(survey_id, meeting_activities_question())
     qualtrics_connection.add_question(survey_id, meeting_duration_question())
-    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question())
+    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question(people))
     print("Added all questions")
 
 
@@ -152,5 +152,6 @@ if __name__ == "__main__":
     date_format = "%m-%d-%Y"
     start_date = datetime.strptime(start, date_format)
     end_date = datetime.strptime(end, date_format)
+    people = build_people_list("data/ExampleContacts.csv")
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), start_date, end_date)
+    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), start_date, end_date, people)
