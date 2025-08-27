@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 from .mc_choice import Choice
-from .validation import Validation
+from .survey_validate import Validation
 from .display_logic import Display_Logic
 from enum import Enum
 

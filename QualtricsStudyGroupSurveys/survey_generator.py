@@ -2,7 +2,7 @@ from typing import List
 from .student import Student
 from .survey import Survey
 from .question import Multiple_Choice, Text_Entry, File_Upload, Selector
-from .validation import Optional_Response, Required_MAVR, Required_SAVR_DL, Min_Chars, Number_In_Range
+from .survey_validate import Optional_Response, Required_MAVR, Required_SAVR_DL, Min_Chars, Number_In_Range
 from .display_logic import Display_My_Team, Display_Only_If_Response_Matches
 from .mc_choice import Choice
 
