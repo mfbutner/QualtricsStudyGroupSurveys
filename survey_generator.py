@@ -1,17 +1,37 @@
 import os
-import json
 import pandas as pd
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection
 
+from questions import (
+    meet_count_question,
+    no_meeting_explanation,
+    no_meeting_upload_question,
+    who_did_you_meet_with_question,
+    meeting_date_question,
+    meeting_activities_question,
+    meeting_duration_question,
+    who_did_you_not_meet_with_question
+)
+from blocks import create_block_and_return_id, get_loop_options
+
+
 load_dotenv()
+
 
 def get_date_range(start_date: datetime, end_date: datetime):
     delta = end_date - start_date
     return [start_date + timedelta(days=i) for i in range(delta.days + 1)]
 
-def get_date_choices(start_date: datetime, end_date: datetime):
+def get_date_choices(start_date: datetime | str, end_date: datetime | str):
+    date_format = "%m-%d-%Y"
+    if isinstance(start_date, str):
+        start_date = datetime.strptime(start_date, date_format)
+    
+    if isinstance(end_date, str):
+        end_date = datetime.strptime(end_date, date_format)
+
     range = get_date_range(start_date, end_date)
     choices = {}
     for i, date in enumerate(range):
@@ -19,108 +39,6 @@ def get_date_choices(start_date: datetime, end_date: datetime):
             "Display": date.strftime("%m-%d-%Y")
         }
     return choices
-
-def build_person_choice(first_name: str, last_name: str, team_value: str, email: str):
-    name = f"{first_name.strip()} {last_name.strip()}"
-
-    team_info = (
-        '<span class="ConjDesc">If</span> '
-        '<span class="LeftOpDesc">Team</span> '
-        '<span class="OpDesc">Is Equal to</span> '
-        f'<span class="RightOpDesc"> {team_value} </span>'
-    )
-    email_info = (
-        '<span class="ConjDesc">And</span>'
-        '<span class="schema_desc">Contact List</span>'
-        '<span class="select_val_desc LeftOperand_desc">Email</span>'
-        '<span class="select_val_desc Operator_desc">Is Not Equal to</span>'
-        f'<span class="textbox_val_desc RightOperand_desc">{email}</span>'
-    )
-
-    with open("question_templates/build_person_choice.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    template_content["Display"] = name
-    template_content["DisplayLogic"]["0"]["0"]["RightOperand"] = team_value
-    template_content["DisplayLogic"]["0"]["1"]["RightOperand"] = email
-    template_content["DisplayLogic"]["0"]["0"]["Description"] = team_info
-    template_content["DisplayLogic"]["0"]["1"]["Description"] = email_info
-
-    return template_content
-
-def meet_count_question():
-    with open("question_templates/meet_count_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    return template_content
-
-def no_meeting_explanation():
-    with open("question_templates/no_meeting_explanation.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    return template_content
-
-def no_meeting_upload_question():
-    with open("question_templates/no_meeting_upload_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    return template_content
-
-def who_did_you_meet_with_question(people):
-    choices = {}
-    for i, (first, last, team, email) in enumerate(people, start=1):
-        choices[str(i)] = build_person_choice(first, last, team, email)
-
-    with open("question_templates/who_did_you_meet_with_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    template_content["Choices"] = choices
-    template_content["ChoiceOrder"] = list(range(1, len(choices) + 1))
-    template_content["NextChoiceId"] = len(choices) + 1
-
-    return template_content
-
-def meeting_date_question(start_date: datetime, end_date: datetime):
-    dates = get_date_choices(start_date, end_date)
-
-    with open("question_templates/meeting_date_question.json", "r", encoding="utf-8") as f:
-        base = json.load(f)
-
-    base["Choices"] = dates
-    base["ChoiceOrder"] = list(range(1, len(dates)+1))
-    base["NextChoiceId"] = len(dates) + 1
-
-    return base
-
-def meeting_activities_question():
-    with open("question_templates/meeting_activities_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    return template_content
-
-def meeting_duration_question():
-    with open("question_templates/meeting_duration_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)
-
-    return template_content
-
-def who_did_you_not_meet_with_question(people):
-    choices = {}
-    for i, (first, last, team, email) in enumerate(people, start=1):
-        choices[str(i)] = build_person_choice(first, last, team, email)
-    choices[str(len(choices)+1)] = {
-        "Display": "I met with everyone in my group",
-        "ExclusiveAnswer": True
-    }    
-    
-    with open("question_templates/who_did_you_not_meet_with_question.json", "r", encoding="utf-8") as f:
-        template_content = json.load(f)  
-
-    template_content["Choices"] = choices
-    template_content["ChoiceOrder"] = list(range(1, len(choices) + 1))
-    template_content["NextChoiceId"] = len(choices) + 1
-
-    return template_content
 
 def build_people_list(csv_path):
     df = pd.read_csv(csv_path)
@@ -133,15 +51,26 @@ def build_people_list(csv_path):
         people.append((first_name, last_name, team, email))
     return people
 
-def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, start_date, end_date, people) -> None:
-    qualtrics_connection.add_question(survey_id, meet_count_question())
-    qualtrics_connection.add_question(survey_id, no_meeting_explanation())
-    # qualtrics_connection.add_question(survey_id, no_meeting_upload_question())
-    qualtrics_connection.add_question(survey_id, who_did_you_meet_with_question(people))
-    qualtrics_connection.add_question(survey_id, meeting_date_question(start_date, end_date))
-    qualtrics_connection.add_question(survey_id, meeting_activities_question())
-    qualtrics_connection.add_question(survey_id, meeting_duration_question())
-    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_with_question(people))
+
+def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, date_choices, people) -> None:
+    met_with_group_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Met with group?")
+    meet_count_question_response = qualtrics_connection.add_question(survey_id, met_with_group_block_id, meet_count_question())
+    meet_count_question_id = meet_count_question_response.get("result", {}).get("QuestionID", "")
+
+    no_meeting_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Explanation for why you didn't meet")
+    qualtrics_connection.add_question(survey_id, no_meeting_block_id, no_meeting_explanation(meet_count_question_id))
+    # qualtrics_connection.add_question(survey_id, no_meeting_block_id, no_meeting_upload_question(meet_count_question_id))
+    
+    meeting_details_loop_options = get_loop_options(meet_count_question_id)
+    meeting_details_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Meeting details", meeting_details_loop_options)
+    qualtrics_connection.add_question(survey_id, meeting_details_block_id, who_did_you_meet_with_question(people))
+    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_date_question(date_choices))
+    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_activities_question())
+    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_duration_question())
+    
+    who_did_you_not_meet_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Who didn't you meet with?")
+    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_block_id, who_did_you_not_meet_with_question(people))
+
     print("Added all questions")
 
 
@@ -149,9 +78,7 @@ def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, start_
 if __name__ == "__main__":
     start = "08-27-2027"
     end = "09-02-2027"
-    date_format = "%m-%d-%Y"
-    start_date = datetime.strptime(start, date_format)
-    end_date = datetime.strptime(end, date_format)
+    date_choices = get_date_choices(start, end)
     people = build_people_list("data/ExampleContacts.csv")
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), start_date, end_date, people)
+    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), date_choices, people)

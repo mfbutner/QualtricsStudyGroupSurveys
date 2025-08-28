@@ -75,16 +75,6 @@ def main():
     csv_path = sys.argv[1]
     res = upload_csv_to_mailing_list(qualtrics, DIRECTORY_ID, MAILING_LIST_ID, csv_path)
 
-    # new_contact = {
-    #     "firstName": "Test",
-    #     "lastName": "User",
-    #     "email": "nsching@ucdavis.edu",
-    #     "extRef": "123456",
-    #     "embeddedData": {
-    #         "Team": "A"
-    #     }
-    # }
-    # res = add_contact_to_mailing_list(qualtrics, DIRECTORY_ID, MAILING_LIST_ID, new_contact)
     print(json.dumps(res, indent=4))
 
 if __name__ == "__main__":

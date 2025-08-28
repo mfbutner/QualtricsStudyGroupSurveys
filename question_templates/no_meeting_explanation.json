@@ -19,5 +19,24 @@
             "Type": "MinChar",
             "MinChars": "10"
         }
+    },
+    "DisplayLogic": {
+        "0": {
+            "0": {
+                "LogicType": "Question",
+                "QuestionID": null,
+                "QuestionIsInLoop": "no",
+                "ChoiceLocator": null,
+                "Operator": "EqualTo",
+                "QuestionIDFromLocator": null,
+                "LeftOperand": null,
+                "RightOperand": "0",
+                "Type": "Expression",
+                "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
+            },
+          "Type": "If"
+        },
+        "Type": "BooleanExpression",
+        "inPage": false
     }
 }

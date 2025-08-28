@@ -125,12 +125,15 @@ class QualtricsConnection:
         response.raise_for_status()
         return response.json()['result']
     
-    def add_question(self, survey_id: str, question: dict):
+    def add_question(self, survey_id: str, block_id: str, question: dict):
         headers = {
             "Content-Type": "application/json"
         }
+        params = {
+            "blockId": block_id
+        }
         endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
-        response = self.connection.post(endpoint, json=question, headers=headers)
+        response = self.connection.post(endpoint, json=question, headers=headers, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -162,7 +165,18 @@ class QualtricsConnection:
         response = self.connection.post(endpoint, json=contact)
         return response
     
-    def send_survey_to_mailing_list(self, mailing_list_id, survey_id, from_email, subject, message):
-        # Done by creating a distribution
-        endpoint = f"/API/v3/distributions"
-        # TODO: review docs to decide specific parameters for distribution (ex. individual links)
+    def add_block(self, survey_id, block) -> dict[str, Any]:
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/blocks'
+        response = self.connection.post(endpoint, json=block, headers=headers)
+        return response.json()
+    
+    def update_flows(self, survey_id, flow):
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        response = self.connection.put(endpoint, json=flow, headers=headers)
+        return response.json()
