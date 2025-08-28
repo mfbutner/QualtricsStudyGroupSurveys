@@ -74,10 +74,3 @@ def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, date_c
     survey_flow = build_all_flows(meet_count_question_id, met_with_group_block_id, no_meeting_block_id, meeting_details_block_id, who_did_you_not_meet_block_id)
     qualtrics_connection.update_flows(survey_id, survey_flow)
 
-if __name__ == "__main__":
-    start = "08-27-2027"
-    end = "09-02-2027"
-    date_choices = get_date_choices(start, end)
-    people = build_people_list("data/ExampleContacts.csv")
-    qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), date_choices, people)
