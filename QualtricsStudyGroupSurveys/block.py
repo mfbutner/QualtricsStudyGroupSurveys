@@ -1,5 +1,5 @@
-from typing import List, Dict, Any
-from .question import Question
+from typing import Dict, Any
+
 class Block():
     def __init__(self, description:str):
         self._description = description
