@@ -15,6 +15,7 @@ from .questions import (
     who_did_you_not_meet_with_question
 )
 from .blocks import create_block_and_return_id, get_loop_options
+from .flows import build_all_flows
 
 load_dotenv()
 
@@ -70,6 +71,8 @@ def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, date_c
     who_did_you_not_meet_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Who didn't you meet with?")
     qualtrics_connection.add_question(survey_id, who_did_you_not_meet_block_id, who_did_you_not_meet_with_question(people))
 
+    survey_flow = build_all_flows(meet_count_question_id, met_with_group_block_id, no_meeting_block_id, meeting_details_block_id, who_did_you_not_meet_block_id)
+    qualtrics_connection.update_flows(survey_id, survey_flow)
 
 if __name__ == "__main__":
     start = "08-27-2027"
