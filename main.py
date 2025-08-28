@@ -7,7 +7,6 @@ def main():
     # - sys.argv[3] is your oath client secret
     # - optionally, sys.argv[4] can be your scope, if not entered it will default to manage:all
     import sys
-    import json
     from QualtricsStudyGroupSurveys import QualtricsConnection
     from QualtricsStudyGroupSurveys import OathInformation
     from QualtricsStudyGroupSurveys.CSV_reader import CSV_reader

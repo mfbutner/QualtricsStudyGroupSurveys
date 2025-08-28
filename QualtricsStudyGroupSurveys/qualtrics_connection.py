@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 from typing import Union
-from wsgiref import validate
 
 from requests_toolbelt import sessions
 from typing import Any, List
@@ -89,7 +88,7 @@ class QualtricsConnection:
         endpoint = self.endpoint.build_api_path(f"/survey-definitions/{survey_id}/questions")
         return self._url_only_get(endpoint)
 
-    def get_blocks(self, survey_id: str) -> list[dict[str, Any]]:
+    def get_blocks(self, survey_id: str) -> List[dict[str, Any]]:
         endpoint = self.endpoint.build_api_path("/survey-definitions/{survey_id}/blocks/{block_id}")
         headers = {
             # purposefully empty
@@ -152,7 +151,7 @@ class QualtricsConnection:
         return response.json()['result']
     
     def create_question(self, survey_id:str, question:Question) -> dict[str, Any]:
-        question_id = question.get_ID()
+        # question_id = question.get_ID()
         headers = {
             # purposefully empty
         }
