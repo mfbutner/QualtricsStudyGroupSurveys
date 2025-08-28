@@ -5,7 +5,8 @@ from .question import Multiple_Choice, Text_Entry, File_Upload, Selector
 from .validation import Optional_Response, Required_MAVR, Required_SAVR_DL, Min_Chars, Number_In_Range
 from .display_logic import Display_My_Team, Display_Only_If_Response_Matches
 from .mc_choice import Choice
-from .block import Block
+from .block import Block, Looping_Block
+from .flow import Embedded_Data, Standard, Branch, End_Survey, Branch_Logic
 
 class Survey_Generator: # TODO: Read from data file to generate questions
     @staticmethod
@@ -30,7 +31,7 @@ class Survey_Generator: # TODO: Read from data file to generate questions
                                        Display_Only_If_Response_Matches(f"QID{question_1_id_number}")))
 
         
-        block_3_id = survey.add_block(Block("Meeting details"))
+        block_3_id = survey.add_block(Looping_Block("Meeting details", f"QID{question_1_id_number}"))
         q3_1 = Multiple_Choice("Q3.1", block_3_id,"When was your ${lm://Field/2} meeting?", Required_SAVR_DL(), Selector.DL, False, [])
         for date in dates:
             q3_1.addChoice(Choice(f"Date{date}", f"Date{date}", False, None))
@@ -59,6 +60,12 @@ class Survey_Generator: # TODO: Read from data file to generate questions
         for student in students:
             q3_5.addChoice(Choice(student.get_name_first_last(), student.get_name_first_last(), False, Display_My_Team(student)))
         q3_5.addChoice(Choice("I met with everyone in my group", "I met with everyone in my group", True, None))
-        survey.add_question(q3_5)  
+        survey.add_question(q3_5)
+
+        survey.add_flow(Embedded_Data("FL_2"))
+        survey.add_flow(Standard("FL_3", block_1_id))
+        survey.add_flow(Branch("FL_4", Branch_Logic(f"QID{question_1_id_number}"), [Standard("FL_5", block_2_id), End_Survey("FL_6")]))
+        survey.add_flow(Standard("FL_7", block_3_id))
+        survey.add_flow(Standard("FL_8", block_4_id))
 
         return survey

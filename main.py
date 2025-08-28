@@ -32,6 +32,7 @@ def main():
     activities = [f"Activity {i}" for i in range(1,4)]
     survey = Survey_Generator.generate_survey_from_students(students, [1,2,3], activities, [str(5), str(10), str(20), "More than 20"], 
                                                             my_servey['name'], my_servey['id'], qualtrics)
+    survey.push_flows_to_qualtrics()
     # print(json.dumps(survey.generate_json(), indent=2)) # indent for pretty-print
 
 if __name__ == "__main__":

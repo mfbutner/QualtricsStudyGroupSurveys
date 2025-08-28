@@ -4,10 +4,11 @@ import pathlib
 from venv import create
 
 from requests_toolbelt import sessions
-from typing import Any
+from typing import Any, List
 from .oath_information import OathInformation
 from .question import Question
 from .block import Block
+from .flow import Flow
 
 
 class QualtricsConnection:
@@ -148,3 +149,13 @@ class QualtricsConnection:
         response = self.connection.post(endpoint, json=block.generate_json(), headers=headers)
         print(response.text)
         return response.json()
+    
+    def update_flows(self, survey_id:str, flow:Flow):
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        response = self.connection.put(endpoint, json=flow.generate_json(), headers=headers)
+        print(response.text)
+        return response.json()
+
