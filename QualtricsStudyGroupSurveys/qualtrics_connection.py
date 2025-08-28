@@ -159,7 +159,7 @@ class QualtricsConnection:
         params = {
             "blockId": question._block_ID
         }
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        endpoint = self.endpoint.build_api_path(f'survey-definitions/{survey_id}/questions')
         response = self.connection.post(endpoint, json=question.generate_json(), headers=headers, params=params)
         print(response.text)
         return response.json()
@@ -168,7 +168,7 @@ class QualtricsConnection:
         headers = {
             # purposefully empty
         }
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/blocks'
+        endpoint = self.endpoint.build_api_path(f'survey-definitions/{survey_id}/blocks')
         response = self.connection.post(endpoint, json=block.generate_json(), headers=headers)
         print(response.text)
         return response.json()
@@ -177,7 +177,7 @@ class QualtricsConnection:
         headers = {
             # purposefully empty
         }
-        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        endpoint = self.endpoint.build_api_path(f'survey-definitions/{survey_id}/flow')
         response = self.connection.put(endpoint, json=flow.generate_json(), headers=headers)
         print(response.text)
         return response.json()
