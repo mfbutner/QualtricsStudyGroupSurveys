@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from QualtricsStudyGroupSurveys import QualtricsConnection
+from .qualtrics_connection import QualtricsConnection
 
 from .questions import (
     meet_count_question,
@@ -15,7 +15,6 @@ from .questions import (
     who_did_you_not_meet_with_question
 )
 from .blocks import create_block_and_return_id, get_loop_options
-
 
 load_dotenv()
 
@@ -70,7 +69,6 @@ def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, date_c
     
     who_did_you_not_meet_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Who didn't you meet with?")
     qualtrics_connection.add_question(survey_id, who_did_you_not_meet_block_id, who_did_you_not_meet_with_question(people))
-
 
 
 if __name__ == "__main__":

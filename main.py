@@ -3,7 +3,7 @@ import sys
 import os
 from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
-from QualtricsStudyGroupSurveys.survey_generator import generate_survey, build_people_list, get_date_choices
+from QualtricsStudyGroupSurveys import generate_survey, build_people_list, get_date_choices
 
 load_dotenv()
 
