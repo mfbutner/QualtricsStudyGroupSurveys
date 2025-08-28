@@ -1,39 +1,39 @@
-from .question import Question
-from .qualtrics_connection import QualtricsConnection
 from typing import Dict, Any
+from .question import Question
+from .block import Block
+from .qualtrics_connection import QualtricsConnection
+from .flow import Flow, Root
 
+import json
 class Survey:
-    def __init__(self, name:str, id:str):
+    def __init__(self, name:str, id:str, qualtrics:QualtricsConnection):
         self._questions = []
+        self._blocks = []
+        self._flows = []
         self._name = name
         self._id = id
-        # self._header = {
-        #     "id" : "Manually Removed Due To Being publiclly hosted",
-        #     "name": self._name,
-        #     "ownerID": "Manually Removed Due To Being publiclly hosted",
-        #     "organizationId": "ucdavis",
-        #     "isActive": True,
-        #     "creationDate": "2025-08-01T23:40:20Z",
-        #     "lastModifiedDate": "2025-08-21T23:02:47Z",
-        #     "expiration": {
-        #         "startDate": None,
-        #         "endDate": None
-        #     }
-        # }
-    
-    def pushToQualtrics(self, qualtrics:QualtricsConnection) -> str: # TODO: Push flow, blocks as well so that the survey is formatted properly
-        response = ""
-        for (i, question) in enumerate(self._questions):
-            response += qualtrics.update_question(self._id, f"QID{i + 1}", question) + '\n'
-        return response
-    
-    def addQuestion(self, question:Question):
+        self._qualtrics = qualtrics
+        
+    def add_question(self, question:Question) -> str:
+        response = self._qualtrics.create_question(self._id, question)
+        question.set_ID(response['result']['QuestionID'])
         self._questions.append(question)
+        return response['result']['QuestionID']
     
-    def generate_json(self) -> Dict[str, Any]:
+    def add_block(self, block:Block) -> str:
+        response = self._qualtrics.create_block(self._id, block)
+        return response['result']['BlockID']
+
+    def add_flow(self, flow:Flow):
+        self._flows.append(flow)
+    
+    def push_flows_to_qualtrics(self):
+        all_flows = Root("FL_1", self._flows)
+        self._qualtrics.update_flows(self._id, all_flows)
+    
+    def generate_json(self) -> Dict[str, Any]: # can be used for checking output on cmdline, but probably not sent to qualtrics itself.
         return {
-            "elements": [question.generate_json(f"QID{i + 1}") for (i,question) in enumerate(self._questions)]
+            "elements": [question.generate_json() for question in self._questions],
+            "blocks": [block.generate_json() for block in self._blocks],
         }
-        # output = self._header
-        # self._header["questions"] = {f"QID{i + 1}": question.generate_json() for (i, question) in enumerate(self._questions)}
-        # return output
+        

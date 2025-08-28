@@ -4,7 +4,7 @@ from .student import Student
 
 class Display_Logic(ABC):
     @abstractmethod
-    def generate_json(self, choice_number:int) -> Dict[str, Any]:
+    def generate_json(self) -> Dict[str, Any]:
         pass
 
 class Display_My_Team(Display_Logic):
@@ -20,7 +20,7 @@ class Display_My_Team(Display_Logic):
                     "Operator": "EqualTo",
                     "RightOperand": f"{self._student._team}",
                     "Type": "Expression",
-                    "Description": fr"<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> f{self._student._team} </span>"
+                    "Description": f"<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> {self._student._team} </span>"
                 },
                 "1": {
                     "LogicType": "PanelData",
@@ -28,8 +28,8 @@ class Display_My_Team(Display_Logic):
                     "Operator": "NotEqualTo",
                     "RightOperand": f"{self._student._email}",
                     "Type": "Expression",
-                    "Description": fr"<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">{self._student._email}</span>",
-                    "Conjunction": "And"
+                    "Description": f"<span class=\"ConjDesc\">And</span><span class=\"schema_desc\">Contact List</span><span class=\"select_val_desc LeftOperand_desc\">Email</span><span class=\"select_val_desc Operator_desc\">Is Not Equal to</span><span class=\"textbox_val_desc RightOperand_desc\">{self._student._email}</span>",
+                    "Conjuction": "And" # NOT "Conjunction". This typo exists in the API itself.
                 },
                 "Type": "If"
             },
@@ -50,11 +50,11 @@ class Display_Only_If_Response_Matches(Display_Logic):
                     "QuestionIsInLoop": "no",
                     "ChoiceLocator": f"q://{self._question_ID}/ChoiceTextEntryValue",
                     "Operator": "EqualTo",
-                    "QuestionIDFromLocator": f"{self._question_ID}",
+                    "QuestionIDFromLocator": self._question_ID,
                     "LeftOperand": f"q://{self._question_ID}/ChoiceTextEntryValue",
                     "RightOperand": "0",
                     "Type": "Expression",
-                    # "Description": fr"<span class=\"ConjDesc\">If</span> <span class=\"LeftOpDesc\">Team</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> f{self._team_number} </span>"
+                    "Description": "<span class=\"ConjDesc\">If</span> <span class=\"QuestionDesc\">How many times did you meet with your group this week? Report at most your top 10 interactions.</span> <span class=\"LeftOpDesc\">Text Response</span> <span class=\"OpDesc\">Is Equal to</span> <span class=\"RightOpDesc\"> 0 </span>"
                 },
                 "Type": "If"
             },

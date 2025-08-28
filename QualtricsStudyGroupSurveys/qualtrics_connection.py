@@ -4,11 +4,13 @@ from typing import Union
 from wsgiref import validate
 
 from requests_toolbelt import sessions
-from typing import Any
+from typing import Any, List
 from pydantic import ValidationError
 from QualtricsStudyGroupSurveys.validate_endpoint import QualtricsEndpoint
 from .oath_information import OathInformation
 from .question import Question
+from .block import Block
+from .flow import Flow
 
 
 class QualtricsConnection:
@@ -147,18 +149,36 @@ class QualtricsConnection:
         }
         response = self.connection.get(endpoint, headers=headers)
         response.raise_for_status()
-        return response.json()["result"]
-
-    def update_question(
-        self, survey_id: str, question_id: str, question: Question
-    ) -> str:
+        return response.json()['result']
+    
+    def create_question(self, survey_id:str, question:Question) -> dict[str, Any]:
+        question_id = question.get_ID()
         headers = {
             # purposefully empty
         }
-        print(f"question {question_id}:")
-        endpoint = self.endpoint.build_api_path(f"survey-definitions/{survey_id}/questions/{question_id}")
-        response = self.connection.put(
-            endpoint, json=question.generate_json(question_id), headers=headers
-        ).text
-        print(response)
-        return response
+        params = {
+            "blockId": question._block_ID
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        response = self.connection.post(endpoint, json=question.generate_json(), headers=headers, params=params)
+        print(response.text)
+        return response.json()
+    
+    def create_block(self, survey_id:str, block:Block) -> dict[str, Any]:
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/blocks'
+        response = self.connection.post(endpoint, json=block.generate_json(), headers=headers)
+        print(response.text)
+        return response.json()
+    
+    def update_flows(self, survey_id:str, flow:Flow):
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        response = self.connection.put(endpoint, json=flow.generate_json(), headers=headers)
+        print(response.text)
+        return response.json()
+
