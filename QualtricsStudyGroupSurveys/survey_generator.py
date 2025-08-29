@@ -1,4 +1,5 @@
 import os
+import json
 import pandas as pd
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -54,23 +55,24 @@ def build_people_list(csv_path):
 
 def generate_survey(qualtrics_connection: QualtricsConnection, survey_id, date_choices, people) -> None:
     met_with_group_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Met with group?")
-    meet_count_question_response = qualtrics_connection.add_question(survey_id, met_with_group_block_id, meet_count_question())
-    meet_count_question_id = meet_count_question_response.get("result", {}).get("QuestionID", "")
+    print(json.dumps(meet_count_question(), indent=4))
+    # meet_count_question_response = qualtrics_connection.add_question(survey_id, met_with_group_block_id, meet_count_question())
+    #meet_count_question_id = meet_count_question_response.get("result", {}).get("QuestionID", "")
 
-    no_meeting_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Explanation for why you didn't meet")
-    qualtrics_connection.add_question(survey_id, no_meeting_block_id, no_meeting_explanation(meet_count_question_id))
+    #no_meeting_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Explanation for why you didn't meet")
+    #qualtrics_connection.add_question(survey_id, no_meeting_block_id, no_meeting_explanation(meet_count_question_id))
     # qualtrics_connection.add_question(survey_id, no_meeting_block_id, no_meeting_upload_question(meet_count_question_id))
     
-    meeting_details_loop_options = get_loop_options(meet_count_question_id)
-    meeting_details_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Meeting details", meeting_details_loop_options)
-    qualtrics_connection.add_question(survey_id, meeting_details_block_id, who_did_you_meet_with_question(people))
-    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_date_question(date_choices))
-    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_activities_question())
-    qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_duration_question())
+    # meeting_details_loop_options = get_loop_options(meet_count_question_id)
+    # meeting_details_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Meeting details", meeting_details_loop_options)
+    # qualtrics_connection.add_question(survey_id, meeting_details_block_id, who_did_you_meet_with_question(people))
+    # qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_date_question(date_choices))
+    # qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_activities_question())
+    # qualtrics_connection.add_question(survey_id, meeting_details_block_id, meeting_duration_question())
     
-    who_did_you_not_meet_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Who didn't you meet with?")
-    qualtrics_connection.add_question(survey_id, who_did_you_not_meet_block_id, who_did_you_not_meet_with_question(people))
+    # who_did_you_not_meet_block_id = create_block_and_return_id(qualtrics_connection, survey_id, "Who didn't you meet with?")
+    # qualtrics_connection.add_question(survey_id, who_did_you_not_meet_block_id, who_did_you_not_meet_with_question(people))
 
-    survey_flow = build_all_flows(meet_count_question_id, met_with_group_block_id, no_meeting_block_id, meeting_details_block_id, who_did_you_not_meet_block_id)
-    qualtrics_connection.update_flows(survey_id, survey_flow)
+    # survey_flow = build_all_flows(meet_count_question_id, met_with_group_block_id, no_meeting_block_id, meeting_details_block_id, who_did_you_not_meet_block_id)
+    # qualtrics_connection.update_flows(survey_id, survey_flow)
 
