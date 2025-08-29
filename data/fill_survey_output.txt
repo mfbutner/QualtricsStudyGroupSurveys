@@ -80,7 +80,8 @@
         "inPage": false
     },
     "QuestionID": "QID31",
-    "QuestionText_Unsafe": "Please explain why you didn't meet with your group this week."
+    "QuestionText_Unsafe": "Please explain why you didn't meet with your group this week.",
+    "Language": []
 }{
     "QuestionText": "Who did you meet with during your ${lm://Field/2} meeting?",
     "DefaultChoices": false,
@@ -438,35 +439,11 @@
     "QuestionDescription": "When was your ${lm://Field/2} meeting?",
     "Choices": {
         "1": {
-            "Display": "08-27-2027"
-        },
-        "2": {
-            "Display": "08-28-2027"
-        },
-        "3": {
-            "Display": "08-29-2027"
-        },
-        "4": {
-            "Display": "08-30-2027"
-        },
-        "5": {
-            "Display": "08-31-2027"
-        },
-        "6": {
-            "Display": "09-01-2027"
-        },
-        "7": {
-            "Display": "09-02-2027"
+            "Display": "{{ dates }}"
         }
     },
     "ChoiceOrder": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
+        1
     ],
     "Validation": {
         "Settings": {
@@ -477,7 +454,7 @@
     },
     "GradingData": [],
     "Language": [],
-    "NextChoiceId": 8,
+    "NextChoiceId": 2,
     "NextAnswerId": 1,
     "QuestionID": "QID33",
     "QuestionText_Unsafe": "When was your ${lm://Field/2} meeting?"
@@ -918,164 +895,4 @@
     "NextAnswerId": 1,
     "QuestionID": "QID36",
     "QuestionText_Unsafe": "Who did you NOT meet with this week?"
-}{
-    "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "DefaultChoices": false,
-    "DataExportTag": "Q1.1",
-    "QuestionType": "TE",
-    "Selector": "SL",
-    "DataVisibility": {
-        "Private": false,
-        "Hidden": false
-    },
-    "Configuration": {
-        "QuestionDescriptionOption": "UseText"
-    },
-    "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "Validation": {
-        "Settings": {
-            "ForceResponse": "ON",
-            "ForceResponseType": "ON",
-            "Type": "ContentType",
-            "MinChars": "1",
-            "ContentType": "ValidNumber",
-            "ValidDateType": "DateWithFormat",
-            "ValidPhoneType": "ValidUSPhone",
-            "ValidZipType": "ValidUSZip",
-            "ValidNumber": {
-                "Min": "0",
-                "Max": "10",
-                "NumDecimals": "0"
-            }
-        }
-    },
-    "GradingData": [],
-    "Language": [],
-    "NextChoiceId": 3,
-    "NextAnswerId": 1,
-    "SearchSource": {
-        "AllowFreeResponse": "false"
-    },
-    "QuestionID": "QID37",
-    "QuestionText_Unsafe": "How many times did you meet with your group this week? Report at most your top 10 interactions."
-}{
-    "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "DefaultChoices": false,
-    "DataExportTag": "Q1.1",
-    "QuestionType": "TE",
-    "Selector": "SL",
-    "DataVisibility": {
-        "Private": false,
-        "Hidden": false
-    },
-    "Configuration": {
-        "QuestionDescriptionOption": "UseText"
-    },
-    "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "Validation": {
-        "Settings": {
-            "ForceResponse": "ON",
-            "ForceResponseType": "ON",
-            "Type": "ContentType",
-            "MinChars": "1",
-            "ContentType": "ValidNumber",
-            "ValidDateType": "DateWithFormat",
-            "ValidPhoneType": "ValidUSPhone",
-            "ValidZipType": "ValidUSZip",
-            "ValidNumber": {
-                "Min": "0",
-                "Max": "10",
-                "NumDecimals": "0"
-            }
-        }
-    },
-    "GradingData": [],
-    "Language": [],
-    "NextChoiceId": 3,
-    "NextAnswerId": 1,
-    "SearchSource": {
-        "AllowFreeResponse": "false"
-    },
-    "QuestionID": "QID38",
-    "QuestionText_Unsafe": "How many times did you meet with your group this week? Report at most your top 10 interactions."
-}{
-    "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "DefaultChoices": false,
-    "DataExportTag": "Q1.1",
-    "QuestionType": "TE",
-    "Selector": "SL",
-    "DataVisibility": {
-        "Private": false,
-        "Hidden": false
-    },
-    "Configuration": {
-        "QuestionDescriptionOption": "UseText"
-    },
-    "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "Validation": {
-        "Settings": {
-            "ForceResponse": "ON",
-            "ForceResponseType": "ON",
-            "Type": "ContentType",
-            "MinChars": "1",
-            "ContentType": "ValidNumber",
-            "ValidDateType": "DateWithFormat",
-            "ValidPhoneType": "ValidUSPhone",
-            "ValidZipType": "ValidUSZip",
-            "ValidNumber": {
-                "Min": "0",
-                "Max": "10",
-                "NumDecimals": "0"
-            }
-        }
-    },
-    "GradingData": [],
-    "Language": [],
-    "NextChoiceId": 3,
-    "NextAnswerId": 1,
-    "SearchSource": {
-        "AllowFreeResponse": "false"
-    },
-    "QuestionText_Unsafe": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "QuestionID": "QID39"
-}{
-    "QuestionText": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "DefaultChoices": false,
-    "DataExportTag": "Q1.1",
-    "QuestionType": "TE",
-    "Selector": "SL",
-    "DataVisibility": {
-        "Private": false,
-        "Hidden": false
-    },
-    "Configuration": {
-        "QuestionDescriptionOption": "UseText"
-    },
-    "QuestionDescription": "How many times did you meet with your group this week? Report at most your top 10 interactions.",
-    "Validation": {
-        "Settings": {
-            "ForceResponse": "ON",
-            "ForceResponseType": "ON",
-            "Type": "ContentType",
-            "MinChars": "1",
-            "ContentType": "ValidNumber",
-            "ValidDateType": "DateWithFormat",
-            "ValidPhoneType": "ValidUSPhone",
-            "ValidZipType": "ValidUSZip",
-            "ValidNumber": {
-                "Min": "0",
-                "Max": "10",
-                "NumDecimals": "0"
-            }
-        }
-    },
-    "GradingData": [],
-    "Language": [],
-    "NextChoiceId": 3,
-    "NextAnswerId": 1,
-    "SearchSource": {
-        "AllowFreeResponse": "false"
-    },
-    "QuestionID": "QID40",
-    "QuestionText_Unsafe": "How many times did you meet with your group this week? Report at most your top 10 interactions."
 }

@@ -142,7 +142,7 @@ class QualtricsConnection:
             # purposefully empty
         }
         endpoint = f'/API/v3/survey-definitions/{survey_id}/questions/{question_id}'
-        response = self.connection.put(endpoint, json=question_patch.generate_json(question_id), headers=headers)
+        response = self.connection.put(endpoint, json=question_patch, headers=headers)
         response.raise_for_status()
         return response
     

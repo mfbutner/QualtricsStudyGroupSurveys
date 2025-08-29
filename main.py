@@ -2,8 +2,11 @@ import json
 import sys
 import os
 from dotenv import load_dotenv
-from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
-from QualtricsStudyGroupSurveys import generate_survey, build_people_list, get_date_choices
+from QualtricsStudyGroupSurveys import (
+    QualtricsConnection, 
+    OathInformation,
+    fill_survey)
+from QualtricsStudyGroupSurveys.helpers import get_date_choices, build_people_list
 
 load_dotenv()
 
@@ -342,6 +345,6 @@ if __name__ == '__main__':
     people = build_people_list(csv_path)
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
 
-    generate_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), date_choices, people)
+    fill_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), date_choices, people)
 
     print("Done")
