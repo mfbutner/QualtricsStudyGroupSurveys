@@ -1,13 +1,9 @@
 import sys
 import os
 from dotenv import load_dotenv
-from QualtricsStudyGroupSurveys import (
-    QualtricsConnection, 
-    OathInformation,
-    fill_survey)
-from QualtricsStudyGroupSurveys.helpers import get_date_choices, build_people_list
+from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
+from QualtricsStudyGroupSurveys.fetch_responses import fetch_responses
 
-load_dotenv()
 
 def main():
     # first command line argument is the datacenter: https://iad1.qualtrics.com/
@@ -37,14 +33,8 @@ def main():
 
 
 if __name__ == '__main__':
-    start = "08-27-2027"
-    end = "09-02-2027"
-    csv_path = "data/ExampleContacts.csv"
-
-    date_choices = get_date_choices(start, end)
-    people = build_people_list(csv_path)
+    load_dotenv()
+    
+    csv_path = "data/responses.csv"
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-
-    fill_survey(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), date_choices, people)
-
-    print("Done")
+    fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), csv_path)
