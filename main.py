@@ -1,5 +1,7 @@
 import sys
 import os
+import pandas as pd
+import streamlit as st
 from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
 from QualtricsStudyGroupSurveys.fetch_responses import fetch_responses
@@ -31,10 +33,25 @@ def main():
     qualtrics.download_all_survey_attributes(survey_id,
                                              dir_path)
 
-
-if __name__ == '__main__':
+def fetch_df() -> pd.DataFrame:
     load_dotenv()
     
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    df = fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
-    print(df)
+    return fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+
+def format_df_for_display(df: pd.DataFrame) -> pd.DataFrame:
+    # for row in df.iterrows():
+    #     if row.Finished != 1:
+    #         df.drop(row)
+    # cols_to_drop = ["StartDate", "EndDate", "Status", "IPAddress", "Progress", "Duration", "ResponseID"]
+    # df.drop(cols_to_drop, axis="columns")
+    return df
+
+def make_streamlit(df: pd.DataFrame):
+    st.title("Qualtrics Study Group Survey Responses")
+    st.dataframe(df)
+
+if __name__ == '__main__':
+    df = fetch_df()
+    formatted_df = format_df_for_display(df)
+    make_streamlit(formatted_df)
