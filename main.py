@@ -35,6 +35,6 @@ def main():
 if __name__ == '__main__':
     load_dotenv()
     
-    csv_path = "data/responses.csv"
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"), csv_path)
+    df = fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    print(df)
