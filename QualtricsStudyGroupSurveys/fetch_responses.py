@@ -1,21 +1,21 @@
 import time
 import pandas as pd
-from zipfile import ZipFile
 from io import BytesIO
+from zipfile import ZipFile
 from .qualtrics_connection import QualtricsConnection
 
 
-def poll_export_status(qualtrics: QualtricsConnection, survey_id: str, export_progress_id: str, poll_interval_seconds = 5.0, timeout_seconds = 600):
-    timeout = time.monotonic() + timeout_seconds
+def poll_export_status(qualtrics: QualtricsConnection, survey_id: str, export_progress_id: str, poll_interval_seconds = 5.0, timeout_duration_seconds = 600):
+    timeout_deadline = time.monotonic() + timeout_duration_seconds
     while True:
         result = qualtrics.get_export_status(survey_id, export_progress_id)
         status = result.get("status", "")
         if status == "complete":
             return result.get("fileId", "")
         elif status == "failed":
-            raise RuntimeError("Export failed")
+            raise RuntimeError("Qualtrics results export failed.")
         
-        if time.monotonic() >= timeout:
+        if time.monotonic() >= timeout_deadline:
             raise TimeoutError("Export status polling timed out.")
         
         time.sleep(poll_interval_seconds)
@@ -28,7 +28,7 @@ def fetch_responses(qualtrics: QualtricsConnection, survey_id: str) -> pd.DataFr
     zip_bytes = BytesIO(export_bytes)
 
     with ZipFile(zip_bytes) as f:
-        csv_name = f.namelist()[0]
+        csv_name = f.namelist()[0] # should only have the single results csv in the zip file
         csv_bytes = f.read(csv_name)
         df = pd.read_csv(BytesIO(csv_bytes))
         return df
