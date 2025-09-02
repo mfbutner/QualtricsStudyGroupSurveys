@@ -39,12 +39,14 @@ def fetch_df() -> pd.DataFrame:
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
     return fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
 
-def format_df_for_display(df: pd.DataFrame) -> pd.DataFrame:
+def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
+    df = original_df.copy()
     # for row in df.iterrows():
     #     if row.Finished != 1:
     #         df.drop(row)
+    # df.drop_duplicates()
     # cols_to_drop = ["StartDate", "EndDate", "Status", "IPAddress", "Progress", "Duration", "ResponseID"]
-    # df.drop(cols_to_drop, axis="columns")
+    # df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
     return df
 
 def make_streamlit(df: pd.DataFrame):
