@@ -41,12 +41,16 @@ def fetch_df() -> pd.DataFrame:
 
 def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
-    # for row in df.iterrows():
-    #     if row.Finished != 1:
-    #         df.drop(row)
-    # df.drop_duplicates()
-    # cols_to_drop = ["StartDate", "EndDate", "Status", "IPAddress", "Progress", "Duration", "ResponseID"]
-    # df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
+    df = df[df.Finished == '1'] # Show only complete responses
+    df.drop_duplicates(inplace=True)
+    df["RecordedDate"] = df["RecordedDate"].str[:10]
+    cols_to_drop = ["StartDate", "EndDate", "Status", "IPAddress", 
+                    "Progress", "Duration (in seconds)", "ResponseId",
+                    "LocationLatitude", "LocationLongitude", "DistributionChannel",
+                    "UserLanguage", "Finished", "RecipientEmail.1", "ExternalReference"]
+    df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
+
+    df.reset_index(drop=True, inplace=True) # Fix indices after dropping rows
     return df
 
 def make_streamlit(df: pd.DataFrame):
