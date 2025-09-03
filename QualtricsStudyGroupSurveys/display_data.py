@@ -7,18 +7,27 @@ def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
     front_col_names = ["RecordedDate", "Team", "RecipientEmail", 
                        "RecipientFirstName", "RecipientLastName"]
     remaining_col_names = [col for col in df.columns if col not in front_col_names]
-    return df[front_col_names + remaining_col_names]
+    reordered_df = df[front_col_names + remaining_col_names]
+    reordered_df["RecordedDate"] = df["RecordedDate"].str[:10] # cut out timestamp
+    return reordered_df
+
+def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
+    old_to_new_col_name_map = {"RecipientEmail": "Email", "RecipientFirstName": "First Name",
+                                "RecipientLastName": "Last Name", "RecordedDate": "Date"}
+    # TODO rename the question id columns for easier reading
+    return df.rename(columns = old_to_new_col_name_map)
 
 def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
-    df = df[df.Finished == "True"] # Show only complete ('Finished') responses
-    df.drop_duplicates(inplace=True)
-    df["RecordedDate"] = df["RecordedDate"].str[:10] # cut out timestamp from display
+    df = df[df.Finished == "True"].drop_duplicates(ignore_index=True) # Show only complete responses
+
     cols_to_drop = ["RecipientEmail.1", "Finished"]
-    df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
-    df.reset_index(drop=True, inplace=True) # Fix indices after dropping rows
-    ordered_df = reorder_columns(df)
-    return ordered_df
+    df = df.drop(columns=cols_to_drop, errors='ignore')
+
+    df = reorder_columns(df)
+    df = rename_columns(df)
+    # df = highlight_discrepancies(df)
+    return df
 
 def fetch_qualtrics_response_data(qualtrics, survey_id) -> pd.DataFrame:
     @st.cache_data() # cache dataframe
