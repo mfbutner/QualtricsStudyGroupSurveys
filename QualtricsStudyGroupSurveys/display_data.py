@@ -3,6 +3,10 @@ import streamlit as st
 from .fetch_responses import fetch_responses
 
 
+def row_by_interaction(df: pd.DataFrame):
+    """Make each row its own interaction"""
+    return df
+
 def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
     front_col_names = ["RecipientEmail", "Team", 
                        "RecipientLastName", "RecipientFirstName"]
@@ -16,13 +20,23 @@ def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df.rename(columns = old_to_new_col_name_map)
 
 def insert_people_names(original_df: pd.DataFrame) -> pd.DataFrame:
-    # TODO implement to replace piped texted with the embedded data people names from row
-    return original_df
+    df = original_df.copy()
+    question_cols = [col for col in df.columns if col.endswith("_Q3.2")]
+
+    def get_team_member_number(s: str):
+        for c in reversed(s):
+            if c.isdigit():
+                return c
+        return None
+
+    for col in question_cols:
+        pass
+    return df
 
 def populate_dates(original_df: pd.DataFrame) -> pd.DataFrame:
     """Converts 'Date1' -> actual date"""
     df = original_df.copy()
-    start_date = pd.to_datetime(df["__js_StartDate"]).dt.normalize()
+    start_date = pd.to_datetime(df["__js_StartDate"])
     for date_column in [col for col in df.columns if col.endswith("_Q3.1")]:
         days_from_start = int(date_column[-1]) - 1
         days_difference = pd.to_timedelta(days_from_start, unit="D")
@@ -78,6 +92,7 @@ def build_streamlit(df: pd.DataFrame):
     if meeting_number_choice == "0":
         df = df.loc[meet_count == 0].copy()
     elif meeting_number_choice == "1+":
-        df = df.loc[meet_count != 0].copy() 
+        df = df.loc[meet_count != 0].copy()
+        df = row_by_interaction(df)
 
     st.dataframe(df)
