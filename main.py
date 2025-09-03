@@ -1,10 +1,6 @@
 import sys
-import os
-import pandas as pd
-import streamlit as st
-from dotenv import load_dotenv
 from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
-from QualtricsStudyGroupSurveys.fetch_responses import fetch_responses
+from QualtricsStudyGroupSurveys.data_display import fetch_df, build_streamlit
 
 
 def main():
@@ -29,45 +25,14 @@ def main():
             exit(1)
 
     survey_id = 'SURVEY_ID'
-    dir_path = r'PATH_TO_DOWNLOAD_SURVEY_INFO_TO'
-    qualtrics.download_all_survey_attributes(survey_id,
-                                             dir_path)
-
-def fetch_df() -> pd.DataFrame:
-    @st.cache_data()
-    def load_data():
-        load_dotenv()
-        qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-        return fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
-    return load_data()
-
-def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
-    df = original_df.copy()
-    df = df[df.Finished == "True"] # Show only complete ('Finished') responses
-    df.drop_duplicates(inplace=True)
-    df["RecordedDate"] = df["RecordedDate"].str[:10]
-    cols_to_drop = ["RecipientEmail.1", "Finished"]
-    df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
-    df.reset_index(drop=True, inplace=True) # Fix indices after dropping rows
-    return df
-
-def make_streamlit(df: pd.DataFrame):
-    st.set_page_config(layout="wide")
-    st.title("Qualtrics Study Group Survey Responses")
-
-    teams_options = df["Team"].dropna().astype(str).unique().tolist()
-    team_choices = sorted([team for team in teams_options if team])
-    team_choices.insert(0, "All teams")
-
-    choice = st.selectbox("Choose a team", options=team_choices, index=0) # autoselect "All teams"
-
-    if choice != "All teams":
-        df = df[df["Team"].astype(str) == choice]
-        df.reset_index(drop=True, inplace=True)
-
-    st.dataframe(df)
+    df = fetch_df(qualtrics, survey_id)
+    build_streamlit(df)
 
 if __name__ == '__main__':
-    df = fetch_df()
-    formatted_df = format_df_for_display(df)
-    make_streamlit(formatted_df)
+    import os
+    from dotenv import load_dotenv
+    
+    load_dotenv()
+    qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
+    df = fetch_df(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    build_streamlit(df)
