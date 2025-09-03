@@ -1,6 +1,6 @@
 import sys
 from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
-from QualtricsStudyGroupSurveys.data_display import fetch_df, build_streamlit
+from QualtricsStudyGroupSurveys.display_data import fetch_df, build_streamlit
 
 
 def main():
