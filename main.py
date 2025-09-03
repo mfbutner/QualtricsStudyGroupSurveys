@@ -1,6 +1,6 @@
 import sys
 from QualtricsStudyGroupSurveys import QualtricsConnection, OathInformation
-from QualtricsStudyGroupSurveys.display_data import fetch_df, build_streamlit
+from QualtricsStudyGroupSurveys.display_data import fetch_qualtrics_response_data, build_streamlit
 
 
 def main():
@@ -25,14 +25,15 @@ def main():
             exit(1)
 
     survey_id = 'SURVEY_ID'
-    df = fetch_df(qualtrics, survey_id)
+    df = fetch_qualtrics_response_data(qualtrics, survey_id)
     build_streamlit(df)
 
 if __name__ == '__main__':
+    # main()
     import os
     from dotenv import load_dotenv
     
     load_dotenv()
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    df = fetch_df(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    df = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
     build_streamlit(df)

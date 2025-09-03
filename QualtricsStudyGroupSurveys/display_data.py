@@ -20,7 +20,7 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     ordered_df = reorder_columns(df)
     return ordered_df
 
-def fetch_df(qualtrics, survey_id) -> pd.DataFrame:
+def fetch_qualtrics_response_data(qualtrics, survey_id) -> pd.DataFrame:
     @st.cache_data() # cache dataframe
     def load_data():
         return fetch_responses(qualtrics, survey_id)
