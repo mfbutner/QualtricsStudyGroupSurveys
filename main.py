@@ -34,10 +34,12 @@ def main():
                                              dir_path)
 
 def fetch_df() -> pd.DataFrame:
-    load_dotenv()
-    
-    qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    return fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    @st.cache_data()
+    def load_data():
+        load_dotenv()
+        qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
+        return fetch_responses(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    return load_data()
 
 def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
@@ -52,6 +54,17 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
 def make_streamlit(df: pd.DataFrame):
     st.set_page_config(layout="wide")
     st.title("Qualtrics Study Group Survey Responses")
+
+    teams_options = df["Team"].dropna().astype(str).unique().tolist()
+    team_choices = sorted([team for team in teams_options if team])
+    team_choices.insert(0, "All teams")
+
+    choice = st.selectbox("Choose a team", options=team_choices, index=0) # autoselect "All teams"
+
+    if choice != "All teams":
+        df = df[df["Team"].astype(str) == choice]
+        df.reset_index(drop=True, inplace=True)
+
     st.dataframe(df)
 
 if __name__ == '__main__':
