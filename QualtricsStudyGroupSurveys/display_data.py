@@ -10,11 +10,9 @@ def highlight_discrepancies(df: pd.DataFrame) -> pd.DataFrame:
 
 def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
     front_col_names = ["RecordedDate", "Team", "RecipientEmail", 
-                       "RecipientFirstName", "RecipientLastName"]
+                       "RecipientLastName", "RecipientFirstName"]
     remaining_col_names = [col for col in df.columns if col not in front_col_names]
-    reordered_df = df[front_col_names + remaining_col_names]
-    reordered_df["RecordedDate"] = df["RecordedDate"].str[:10] # cut out timestamp
-    return reordered_df
+    return df[front_col_names + remaining_col_names]
 
 def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
     old_to_new_col_name_map = {"RecipientEmail": "Email", "RecipientFirstName": "First Name",

@@ -35,5 +35,5 @@ if __name__ == '__main__':
     
     load_dotenv()
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    response_data = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    response_data = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_BUTNER_SURVEY_ID"))
     build_streamlit(response_data)

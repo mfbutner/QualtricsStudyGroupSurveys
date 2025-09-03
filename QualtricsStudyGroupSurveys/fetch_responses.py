@@ -23,8 +23,7 @@ def poll_export_status(qualtrics: QualtricsConnection, survey_id: str, export_pr
 
 def fetch_responses(qualtrics: QualtricsConnection, survey_id: str) -> pd.DataFrame:
     included_metadata = ["finished", "recipientLastName", 
-                         "recipientFirstName", "recipientEmail",
-                         "recordedDate"]
+                         "recipientFirstName", "recipientEmail"]
     export_params = {
         "format": "csv",
         "useLabels": True,
