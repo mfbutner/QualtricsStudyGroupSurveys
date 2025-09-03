@@ -181,13 +181,10 @@ class QualtricsConnection:
         response = self.connection.put(endpoint, json=flow, headers=headers)
         return response.json()
     
-    def start_response_export(self, survey_id):
+    def start_response_export(self, survey_id, export_params):
         endpoint = f"/API/v3/surveys/{survey_id}/export-responses"
-        payload = {
-            "format": "csv",
-        }
         headers = {}
-        response = self.connection.post(endpoint, headers=headers, json=payload)
+        response = self.connection.post(endpoint, headers=headers, json=export_params)
         response.raise_for_status()
         return response.json()["result"]["progressId"]
     

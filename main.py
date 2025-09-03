@@ -41,19 +41,16 @@ def fetch_df() -> pd.DataFrame:
 
 def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
-    df = df[df.Finished == '1'] # Show only complete responses
+    df = df[df.Finished == "True"] # Show only complete ('Finished') responses
     df.drop_duplicates(inplace=True)
     df["RecordedDate"] = df["RecordedDate"].str[:10]
-    cols_to_drop = ["StartDate", "EndDate", "Status", "IPAddress", 
-                    "Progress", "Duration (in seconds)", "ResponseId",
-                    "LocationLatitude", "LocationLongitude", "DistributionChannel",
-                    "UserLanguage", "Finished", "RecipientEmail.1", "ExternalReference"]
+    cols_to_drop = ["RecipientEmail.1", "Finished"]
     df.drop(columns=cols_to_drop, errors='ignore', inplace=True)
-
     df.reset_index(drop=True, inplace=True) # Fix indices after dropping rows
     return df
 
 def make_streamlit(df: pd.DataFrame):
+    st.set_page_config(layout="wide")
     st.title("Qualtrics Study Group Survey Responses")
     st.dataframe(df)
 

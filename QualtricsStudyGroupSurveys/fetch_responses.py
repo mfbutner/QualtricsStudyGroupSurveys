@@ -22,7 +22,17 @@ def poll_export_status(qualtrics: QualtricsConnection, survey_id: str, export_pr
 
 
 def fetch_responses(qualtrics: QualtricsConnection, survey_id: str) -> pd.DataFrame:
-    progress_id = qualtrics.start_response_export(survey_id)
+    included_metadata = ["finished", "recipientLastName", 
+                         "recipientFirstName", "recipientEmail",
+                         "recordedDate"]
+    export_params = {
+        "format": "csv",
+        "useLabels": True,
+        "breakoutSets": "False",
+        "timeZone": "America/Los_Angeles",
+        "surveyMetadataIds": included_metadata
+    }
+    progress_id = qualtrics.start_response_export(survey_id, export_params)
     file_id = poll_export_status(qualtrics, survey_id, progress_id)
     export_bytes = qualtrics.get_export_file(survey_id, file_id)
     zip_bytes = BytesIO(export_bytes)
