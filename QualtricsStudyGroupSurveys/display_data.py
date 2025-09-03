@@ -2,6 +2,11 @@ import pandas as pd
 import streamlit as st
 from .fetch_responses import fetch_responses
 
+def highlight_discrepancies(df: pd.DataFrame) -> pd.DataFrame:
+    # TODO implement this function, which highlights grading discrepancies for TAs to see
+    # this function should also move those rows to the top of the dataframe
+    # if it gets too messy we will only apply it when a team filter has also been applied
+    return df
 
 def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
     front_col_names = ["RecordedDate", "Team", "RecipientEmail", 
@@ -26,7 +31,7 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
 
     df = reorder_columns(df)
     df = rename_columns(df)
-    # df = highlight_discrepancies(df)
+    df = highlight_discrepancies(df)
     return df
 
 def fetch_qualtrics_response_data(qualtrics, survey_id) -> pd.DataFrame:

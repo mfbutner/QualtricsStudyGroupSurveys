@@ -25,8 +25,8 @@ def main():
             exit(1)
 
     survey_id = 'SURVEY_ID'
-    df = fetch_qualtrics_response_data(qualtrics, survey_id)
-    build_streamlit(df)
+    response_data = fetch_qualtrics_response_data(qualtrics, survey_id)
+    build_streamlit(response_data)
 
 if __name__ == '__main__':
     # main()
@@ -35,5 +35,5 @@ if __name__ == '__main__':
     
     load_dotenv()
     qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    df = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
-    build_streamlit(df)
+    response_data = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_TEST_SURVEY_ID"))
+    build_streamlit(response_data)
