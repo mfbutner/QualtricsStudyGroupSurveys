@@ -14,8 +14,9 @@ def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df[front_col_names + remaining_col_names]
 
 def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
-    old_to_new_col_name_map = {"RecipientEmail": "Email", "RecipientFirstName": "First Name",
-                                "RecipientLastName": "Last Name"}
+    old_to_new_col_name_map = {"RecipientEmail": "Email",
+                               "RecipientFirstName": "First Name",
+                               "RecipientLastName": "Last Name"}
     # TODO rename the question id columns for easier reading
     return df.rename(columns = old_to_new_col_name_map)
 
@@ -23,14 +24,27 @@ def insert_people_names(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
     question_cols = [col for col in df.columns if col.endswith("_Q3.2")]
 
-    def get_team_member_number(s: str):
-        for c in reversed(s):
-            if c.isdigit():
-                return c
-        return None
+    def piped_text_to_embedded_data(piped_text: str) -> str:
+        piped_text = str(piped_text)
+        removed_piped_text_notation = piped_text.strip().rstrip("}").lstrip("${e:/Field}")
+        return removed_piped_text_notation.replace("%20"," ")
 
     for col in question_cols:
-        pass
+        out_col = []
+        for index, entry in df[col].items():
+            if not isinstance(entry, str) or not entry.strip():
+                out_col.append(entry)
+                continue
+
+            piped_text_parts = entry.split(",")
+            embedded_data_parts = [piped_text_to_embedded_data(part) for part in piped_text_parts]
+            
+            entry_with_embedded_data = []
+            for team_member in embedded_data_parts:
+                person_name = df.at[index, team_member]
+                entry_with_embedded_data.append(person_name)
+            df.at[index, col] = ", ".join(entry_with_embedded_data)
+
     return df
 
 def populate_dates(original_df: pd.DataFrame) -> pd.DataFrame:
@@ -38,7 +52,8 @@ def populate_dates(original_df: pd.DataFrame) -> pd.DataFrame:
     df = original_df.copy()
     start_date = pd.to_datetime(df["__js_StartDate"])
     for date_column in [col for col in df.columns if col.endswith("_Q3.1")]:
-        days_from_start = int(date_column[-1]) - 1
+        df.loc[:, date_column] = df[date_column].astype("string").str.strip().str[-1]
+        days_from_start = pd.to_numeric(df[date_column], errors="coerce") - 1
         days_difference = pd.to_timedelta(days_from_start, unit="D")
         df[date_column] = (start_date + days_difference).dt.strftime("%m-%d-%Y")
     return df
@@ -48,7 +63,7 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     df = df[df.Finished == "True"].drop_duplicates(ignore_index=True) # Show only complete responses
 
     df = populate_dates(df)
-    df = insert_people_names(df)
+    # df = insert_people_names(df)
 
     cols_to_drop = ["RecipientEmail.1", "Finished", "CanvasId", "StudentID", 
                     "__js_StartDate"]
