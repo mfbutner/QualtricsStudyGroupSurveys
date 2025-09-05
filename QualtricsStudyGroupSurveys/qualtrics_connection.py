@@ -124,3 +124,76 @@ class QualtricsConnection:
         response = self.connection.get(endpoint, headers=headers)
         response.raise_for_status()
         return response.json()['result']
+    
+    def add_question(self, survey_id: str, block_id: str, question: dict):
+        headers = {
+            "Content-Type": "application/json"
+        }
+        params = {
+            "blockId": block_id
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions'
+        response = self.connection.post(endpoint, json=question, headers=headers, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def update_question(self, survey_id: str, question_id:str, question_patch: dict) -> str:
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/questions/{question_id}'
+        response = self.connection.put(endpoint, json=question_patch, headers=headers)
+        response.raise_for_status()
+        return response
+    
+    def list_mailing_lists(self, directory_id):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists"
+        headers = {}
+        response = self.connection.get(endpoint, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+    def get_mailing_list_contacts(self, directory_id, mailing_list_id):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
+        headers = {}
+        response = self.connection.get(endpoint, headers=headers)
+        response.raise_for_status()
+        return response.json()
+
+    def add_contact_to_mailing_list(self, directory_id, mailing_list_id, contact):
+        endpoint = f"/API/v3/directories/{directory_id}/mailinglists/{mailing_list_id}/contacts"
+        response = self.connection.post(endpoint, json=contact)
+        return response
+    
+    def add_block(self, survey_id, block) -> dict[str, Any]:
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/blocks'
+        response = self.connection.post(endpoint, json=block, headers=headers)
+        return response.json()
+    
+    def update_flows(self, survey_id, flow):
+        headers = {
+            # purposefully empty
+        }
+        endpoint = f'/API/v3/survey-definitions/{survey_id}/flow'
+        response = self.connection.put(endpoint, json=flow, headers=headers)
+        return response.json()
+    
+    def start_response_export(self, survey_id, export_params):
+        endpoint = f"/API/v3/surveys/{survey_id}/export-responses"
+        headers = {}
+        response = self.connection.post(endpoint, headers=headers, json=export_params)
+        response.raise_for_status()
+        return response.json()["result"]["progressId"]
+    
+    def get_export_status(self, survey_id, export_progress_id):
+        endpoint = f"/API/v3/surveys/{survey_id}/export-responses/{export_progress_id}"
+        return self._url_only_get(endpoint)
+
+    def get_export_file(self, survey_id, file_id):
+        endpoint = f"/API/v3/surveys/{survey_id}/export-responses/{file_id}/file"
+        response = self.connection.get(endpoint)
+        response.raise_for_status()
+        return response.content

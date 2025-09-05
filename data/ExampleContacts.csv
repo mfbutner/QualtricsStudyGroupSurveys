@@ -1,0 +1,12 @@
+LastName,FirstName,Email,StudentID,CanvasId,Team
+Team1,Person1,Team1Person1@ucdavis.edu,0,1001,1
+Team1,Person2,Team1Person2@ucdavis.edu,0,1002,1
+Team1,Person3,Team1Person3@ucdavis.edu,0,1003,1
+Team1,Person4,Team1Person4@ucdavis.edu,0,1004,1
+Team1,Person5,Team1Person5@ucdavis.edu,0,1005,1
+Team2,Person1,Team2Person1@ucdavis.edu,0,1006,2
+Team2,Person2,Team2Person2@ucdavis.edu,0,1007,2
+Team2,Person3,Team2Person3@ucdavis.edu,0,1008,2
+Team2,Person4,Team2Person4@ucdavis.edu,0,1009,2
+Team2,Person5,Team2Person5@ucdavis.edu,0,1010,2
+Team2,Nolan,nsching@ucdavis.edu,28,1028,2
