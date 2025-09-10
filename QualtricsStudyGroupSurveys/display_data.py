@@ -5,9 +5,27 @@ from .fetch_responses import fetch_responses
 
 def row_by_interaction(df: pd.DataFrame):
     """Make each row its own interaction"""
-    return df
+
+    named_cols = ["Email", "Last_Name", "First_Name"]
+    variable_cols = ["Date_of_Meeting", "Activities", "Other_Activity"]
+    
+    headers = named_cols + variable_cols + [f"Duration_With_{i + 1}" for i in range(9)]
+
+    new_df = pd.DataFrame(columns=headers)
+    for index, row in df.iterrows():
+        for meeting in range(int((row["Times_Met"]))):
+            interaction_data_cols = named_cols + [f"{col}_{meeting + 1}" for col in variable_cols]
+            interaction_data_cols += [f"Duration_With_{i + 1}_{meeting + 1}" for i in range(9)]
+            new_df.loc[len(new_df)] = [row[header] for header in interaction_data_cols]
+            
+            for i in range(9):
+                duration = new_df[f"Duration_With_{i + 1}"][len(new_df) - 1]
+                new_df[f"Duration_With_{i + 1}"][len(new_df) - 1] = f"{row[f"TeamMember{i + 1}"]}, {duration}"
+                
+    return new_df
 
 def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
+
     front_col_names = ["RecipientEmail", "Team", 
                        "RecipientLastName", "RecipientFirstName"]
     remaining_col_names = [col for col in df.columns if col not in front_col_names]
@@ -15,9 +33,23 @@ def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
     old_to_new_col_name_map = {"RecipientEmail": "Email",
-                               "RecipientFirstName": "First Name",
-                               "RecipientLastName": "Last Name"}
-    # TODO rename the question id columns for easier reading
+                               "RecipientLastName": "Last_Name",
+                               "RecipientFirstName": "First_Name",
+                               "Q1.1": "Times_Met",
+                               "Q2.1": "Reason_For_Not_Meeting",
+                               "Q2.2": "Evidence_For_Not_Meeting",
+                               "Q2.2_Name": "File_Name",
+                               "Q2.2_Size": "File_Size",
+                               "Q2.2_Type": "File_Type",
+                               "Q4.1": "Didn't_Meet_With"
+                               }
+    for i in range(10):
+        old_to_new_col_name_map[f"{i + 1}_Q3.1"] = f"Date_of_Meeting_{i + 1}"
+        old_to_new_col_name_map[f"{i + 1}_Q3.2"] = f"Activities_{i + 1}"
+        old_to_new_col_name_map[f"{i + 1}_Q3.2_8_TEXT"] = f"Other_Activity_{i + 1}"
+        for j in range(9):
+            old_to_new_col_name_map[f"{i + 1}_Q3.3_{j + 1}"] = f"Duration_With_{j + 1}_{i + 1}"
+
     return df.rename(columns = old_to_new_col_name_map)
 
 def insert_people_names(original_df: pd.DataFrame) -> pd.DataFrame:
@@ -66,12 +98,26 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
     # df = insert_people_names(df)
 
     cols_to_drop = ["RecipientEmail.1", "Finished", "CanvasId", "StudentID", 
-                    "__js_StartDate"]
+                    "__js_StartDate", "Q2.2_Id"]
     df = df.drop(columns=cols_to_drop, errors='ignore')
 
     df = reorder_columns(df)
     df = rename_columns(df)
     return df
+
+def format_df_for_no_meetings(original_df: pd.DataFrame) -> pd.DataFrame:
+    meet_count = pd.to_numeric(original_df["Times_Met"]).fillna(0)
+    new_df = original_df.loc[meet_count == 0].copy()
+    col_names = ["Email", "Team", "Last_Name", "First_Name", 
+                 "Times_Met", "Reason_For_Not_Meeting", "File_Name",
+                 "File_Size", "File_Type"]
+    return new_df[col_names]
+
+def format_df_for_interactions(original_df: pd.DataFrame) -> pd.DataFrame:
+        meet_count = pd.to_numeric(original_df["Times_Met"]).fillna(0)
+        new_df = original_df.loc[meet_count > 0].copy()
+        new_df = row_by_interaction(new_df)
+        return new_df
 
 def fetch_qualtrics_response_data(qualtrics, survey_id) -> pd.DataFrame:
     @st.cache_data(show_spinner=False) # cache dataframe
@@ -102,12 +148,11 @@ def build_streamlit(df: pd.DataFrame):
         df.reset_index(drop=True, inplace=True)
 
     meeting_number_choice = st.selectbox("Filter for number of meetings", options=["All", "0", "1+"], index=0)
-    meet_count = pd.to_numeric(df["Q1.1"]).fillna(0)
+    meet_count = pd.to_numeric(df["Times_Met"]).fillna(0)
 
     if meeting_number_choice == "0":
-        df = df.loc[meet_count == 0].copy()
+        df = format_df_for_no_meetings(df)
     elif meeting_number_choice == "1+":
-        df = df.loc[meet_count != 0].copy()
-        df = row_by_interaction(df)
+        df = format_df_for_interactions(df)
 
     st.dataframe(df)
