@@ -21,7 +21,7 @@ def row_by_interaction(df: pd.DataFrame):
             for i in range(9):
                 duration = new_df[f"Duration_With_{i + 1}"][len(new_df) - 1]
                 new_df[f"Duration_With_{i + 1}"][len(new_df) - 1] = f"{row[f"TeamMember{i + 1}"]}, {duration}"
-                
+
     return new_df
 
 def reorder_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -109,7 +109,7 @@ def format_df_for_no_meetings(original_df: pd.DataFrame) -> pd.DataFrame:
     meet_count = pd.to_numeric(original_df["Times_Met"]).fillna(0)
     new_df = original_df.loc[meet_count == 0].copy()
     col_names = ["Email", "Team", "Last_Name", "First_Name", 
-                 "Times_Met", "Reason_For_Not_Meeting", "File_Name",
+                 "Reason_For_Not_Meeting", "File_Name",
                  "File_Size", "File_Type"]
     return new_df[col_names]
 
