@@ -24,16 +24,16 @@ def main():
             print('Incorrect number of command line arguments entered')
             exit(1)
 
-    survey_id = 'SURVEY_ID'
+    survey_id = 'SV_6hey5Lp3Ogsm15Y'
     response_data = fetch_qualtrics_response_data(qualtrics, survey_id)
     build_streamlit(response_data)
 
 if __name__ == '__main__':
-    # main()
-    import os
-    from dotenv import load_dotenv
+    main()
+    # import os
+    # from dotenv import load_dotenv
     
-    load_dotenv()
-    qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
-    response_data = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_BUTNER_SURVEY_ID"))
-    build_streamlit(response_data)
+    # load_dotenv()
+    # qualtrics = QualtricsConnection(os.getenv("Q_DATA_CENTER"), os.getenv("Q_API_TOKEN"))
+    # response_data = fetch_qualtrics_response_data(qualtrics, os.getenv("Q_BUTNER_SURVEY_ID"))
+    # build_streamlit(response_data)
