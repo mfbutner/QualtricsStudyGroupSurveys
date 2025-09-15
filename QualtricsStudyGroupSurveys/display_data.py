@@ -8,19 +8,19 @@ def row_by_interaction(df: pd.DataFrame):
 
     named_cols = ["Email", "Last_Name", "First_Name"]
     variable_cols = ["Date_of_Meeting", "Activities", "Other_Activity"]
-    
     headers = named_cols + variable_cols + [f"Duration_With_{i + 1}" for i in range(9)]
 
     new_df = pd.DataFrame(columns=headers)
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         for meeting in range(int((row["Times_Met"]))):
             interaction_data_cols = named_cols + [f"{col}_{meeting + 1}" for col in variable_cols]
             interaction_data_cols += [f"Duration_With_{i + 1}_{meeting + 1}" for i in range(9)]
             new_df.loc[len(new_df)] = [row[header] for header in interaction_data_cols]
             
             for i in range(9):
-                duration = new_df[f"Duration_With_{i + 1}"][len(new_df) - 1]
-                new_df[f"Duration_With_{i + 1}"][len(new_df) - 1] = f"{row[f"TeamMember{i + 1}"]}, {duration}"
+                row_index = len(new_df) - 1
+                duration = new_df.loc[row_index, f"Duration_With_{i + 1}"]
+                new_df.loc[row_index, f"Duration_With_{i + 1}"] = f"{row.get(f"TeamMember{i + 1}", "")}, {duration}"
 
     return new_df
 
