@@ -17,10 +17,20 @@ def row_by_interaction(df: pd.DataFrame):
             interaction_data_cols += [f"Duration_With_{i + 1}_{meeting + 1}" for i in range(9)]
             new_df.loc[len(new_df)] = [row[header] for header in interaction_data_cols]
             
+            row_index = len(new_df) - 1
             for i in range(9):
-                row_index = len(new_df) - 1
-                duration = new_df.loc[row_index, f"Duration_With_{i + 1}"]
-                new_df.loc[row_index, f"Duration_With_{i + 1}"] = f"{row.get(f"TeamMember{i + 1}", "")}, {duration}"
+                col = f"Duration_With_{i+1}"
+
+                if new_df[col].dtype != "string":
+                    new_df[col] = new_df[col].astype("string")
+
+                team_member = row.get(f"TeamMember{i + 1}", "")
+                team_member = "" if pd.isna(team_member) else str(team_member)
+
+                duration = new_df.loc[row_index, col]
+                duration = "" if pd.isna(duration) else str(duration)
+
+                new_df.loc[row_index, col] = f"{team_member}, {duration}"
 
     return new_df
 
@@ -107,7 +117,7 @@ def format_df_for_display(original_df: pd.DataFrame) -> pd.DataFrame:
 
 def format_df_for_no_meetings(original_df: pd.DataFrame) -> pd.DataFrame:
     meet_count = pd.to_numeric(original_df["Times_Met"]).fillna(0)
-    new_df = original_df.loc[meet_count == 0].copy()
+    new_df = original_df.loc[meet_count == 0].reset_index(drop=True).copy()
     col_names = ["Email", "Team", "Last_Name", "First_Name", 
                  "Reason_For_Not_Meeting", "File_Name",
                  "File_Size", "File_Type"]
@@ -136,23 +146,25 @@ def build_streamlit(df: pd.DataFrame):
     st.set_page_config(layout="wide")
     st.title("Qualtrics Study Group Survey Responses")
 
-    teams_options = df["Team"].dropna().astype(str).unique().tolist()
-    team_choices = sorted([team for team in teams_options if team])
-    team_choices.insert(0, "All")
+    meeting_number_choice = st.selectbox(
+        "Filter for number of meetings", 
+        options=["1+", "0"], 
+        index=0) # defaults to '1+' meetings
     
-    team_choice = st.selectbox("Choose a team", options=team_choices, index=0) # autoselect "All teams"
-
-    if team_choice != "All":
-        df = df.loc[df["Team"].astype(str) == team_choice].copy() # .copy() silences a pandas warning
-        df.drop(columns="Team", inplace=True) # Remove team name column if already filtering for team
-        df.reset_index(drop=True, inplace=True)
-
-    meeting_number_choice = st.selectbox("Filter for number of meetings", options=["All", "0", "1+"], index=0)
-    meet_count = pd.to_numeric(df["Times_Met"]).fillna(0)
-
     if meeting_number_choice == "0":
-        df = format_df_for_no_meetings(df)
-    elif meeting_number_choice == "1+":
-        df = format_df_for_interactions(df)
+        no_meeting_df = format_df_for_no_meetings(df)
+        st.dataframe(no_meeting_df)
+        return 
 
-    st.dataframe(df)
+    teams_options = sorted(df["Team"].dropna().astype(str).unique().tolist())
+    if not teams_options:
+        st.info("No teams found")
+        return
+    
+    for team in teams_options:
+        team_df = df.loc[df["Team"].astype(str) == team].copy()
+        interactions_df = format_df_for_interactions(team_df)
+
+        label = f"Team {team}: {len(interactions_df)} interaction(s)"
+        with st.expander(label, expanded=False):
+            st.dataframe(interactions_df)
