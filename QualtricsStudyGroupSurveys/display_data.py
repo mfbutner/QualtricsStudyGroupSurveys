@@ -2,6 +2,21 @@ import pandas as pd
 import streamlit as st
 from .fetch_responses import fetch_responses
 
+def split_interactions_by_discrepancies(team_interactions: pd.DataFrame):
+    """PLACEHOLDER REPLACE LATER puts all interactions into discrepancy category"""
+    discrepancies = team_interactions
+    no_discrepancies = team_interactions.iloc[:0].copy() # df with same columns but no data
+    return discrepancies, no_discrepancies
+
+def create_discrepancy_bucket(title: str, team_dfs: dict[str, pd.DataFrame]):
+    with st.expander(title, expanded=(title == "Discrepancies")): # "Discrepancies" bucket is automatically expanded, other is not
+        if not team_dfs:
+            st.info("No teams found.")
+            return
+        for team, interactions in team_dfs.items():
+            label = f"Team {team}: {len(interactions)} interaction(s)"
+            with st.expander(label, expanded=False):
+                st.dataframe(interactions)
 
 def row_by_interaction(df: pd.DataFrame):
     """Make each row its own interaction"""
@@ -63,6 +78,7 @@ def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df.rename(columns = old_to_new_col_name_map)
 
 def insert_people_names(original_df: pd.DataFrame) -> pd.DataFrame:
+    """Not yet implemented"""
     df = original_df.copy()
     question_cols = [col for col in df.columns if col.endswith("_Q3.2")]
 
@@ -157,14 +173,16 @@ def build_streamlit(df: pd.DataFrame):
         return 
 
     teams_options = sorted(df["Team"].dropna().astype(str).unique().tolist())
-    if not teams_options:
-        st.info("No teams found")
-        return
+    suspect_interactions = {}
+    normal_interactions = {}
     
     for team in teams_options:
         team_df = df.loc[df["Team"].astype(str) == team].copy()
         interactions_df = format_df_for_interactions(team_df)
 
-        label = f"Team {team}: {len(interactions_df)} interaction(s)"
-        with st.expander(label, expanded=False):
-            st.dataframe(interactions_df)
+        discrepancies_df, no_discrepancies_df = split_interactions_by_discrepancies(interactions_df) # TODO implement this function :)
+        suspect_interactions[team] = discrepancies_df
+        normal_interactions[team] = no_discrepancies_df
+
+    create_discrepancy_bucket("Discrepancies", suspect_interactions)
+    create_discrepancy_bucket("No Discrepancies", normal_interactions)
